@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Vim 相关笔记</title>
+    <url>/2021/06/02/vimUsage/</url>
+    <content><![CDATA[<h1 id="the-usage-of-vim"><a href="#the-usage-of-vim" class="headerlink" title="the usage of vim"></a>the usage of vim</h1><h2 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h2><p>vim共分三种模式：</p>
+<ul>
+<li>命令模式(Command mode)</li>
+<li>输入模式(Insert mode)</li>
+<li>“底线命令模式”(Last line mode)</li>
+</ul>
+<h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><ul>
+<li>i 切换到输入模式，以输入字符</li>
+<li>x删除当前光标所在字符</li>
+<li>：切换到底线命令模式，在最后一行输入命令</li>
+</ul>
+<h3 id="输入模式"><a href="#输入模式" class="headerlink" title="输入模式"></a>输入模式</h3><ul>
+<li>字符及<kbd>Shift</kbd>键组合，输入字符</li>
+<li><kbd>ENTER</kbd>，回车键，换行</li>
+<li><kbd>BACK SPACE</kbd>退格键，删除光标前一个字符</li>
+<li><kbd>DEL</kbd>删除键，删除光标后一个字符</li>
+<li>方向键，在文本中移动光标</li>
+<li><kbd>HOME/END</kbd>移动光标到行首/行尾</li>
+<li><kbd>Page Up/Page Down</kbd>上下翻页</li>
+<li><kbd>Insert</kbd>切换光标尾输入/替换模式，光标将变成竖线/下划线  <a href="%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C%E5%9B%A0%E7%B3%BB%E7%BB%9F%E8%80%8C%E5%BC%82">^tag1</a></li>
+<li><kbd>ESC</kbd>退出输入模式，切换到命令模式</li>
+</ul>
+<h3 id="底线命令模式-Last-line-mode"><a href="#底线命令模式-Last-line-mode" class="headerlink" title="底线命令模式(Last line mode)"></a>底线命令模式(Last line mode)</h3><p><em>在命令模式下按下:（英文冒号）就进入了底线命令模式。</em></p>
+<ul>
+<li><kbd>q</kbd>退出程序</li>
+<li><kbd>w</kbd>保存文件</li>
+<li>……</li>
+</ul>
+<h2 id="补充其它按键命令"><a href="#补充其它按键命令" class="headerlink" title="补充其它按键命令"></a>补充其它按键命令</h2><h3 id="第一部分：一般模式使用的光标移动、复制粘贴、搜索替换等"><a href="#第一部分：一般模式使用的光标移动、复制粘贴、搜索替换等" class="headerlink" title="第一部分：一般模式使用的光标移动、复制粘贴、搜索替换等"></a>第一部分：一般模式使用的光标移动、复制粘贴、搜索替换等</h3><p><strong>移动光标的方法</strong></p>
+<table>
+<thead>
+<tr>
+<th align="right">按键</th>
+<th align="right">效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right"><kbd>h</kbd>/<kbd>$\leftarrow$</kbd></td>
+<td align="right">光标向左移动一个字符</td>
+</tr>
+<tr>
+<td align="right"><kbd>j</kbd>/<kbd>$\downarrow$</kbd></td>
+<td align="right">光标向下移动</td>
+</tr>
+<tr>
+<td align="right"><kbd>k</kbd>/<kbd>$\uparrow$</kbd></td>
+<td align="right">光标向上移动</td>
+</tr>
+<tr>
+<td align="right"><kbd>l</kbd>/<kbd>$\rightarrow$</kbd></td>
+<td align="right">光标向右移动一个字符</td>
+</tr>
+</tbody></table>
+<p><strong>可以使用数字加按键的形式进行移动，如先输入“30”再按<kbd>h</kbd>，光标就会向左移动30个字符</strong> </p>
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><table>
+<thead>
+<tr>
+<th align="right">按键</th>
+<th align="right">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">数字0或<kbd>Home</kbd></td>
+<td align="right">移动到这一行的最前面字符处</td>
+</tr>
+<tr>
+<td align="right">$ 或 <kbd>End</kbd></td>
+<td align="right">移动到这一行的最后一个字符处</td>
+</tr>
+<tr>
+<td align="right">G</td>
+<td align="right">光标移动到该档案的最后一行</td>
+</tr>
+<tr>
+<td align="right">nG</td>
+<td align="right">n为数字，移动到第n行</td>
+</tr>
+<tr>
+<td align="right">gg</td>
+<td align="right">移动到这个档案的第一行，相当于1G</td>
+</tr>
+<tr>
+<td align="right">n<kbd>Enter</kbd></td>
+<td align="right">n为数字，光标向下移动n行</td>
+</tr>
+</tbody></table>
+<p><strong>搜索替换</strong></p>
+<table>
+<thead>
+<tr>
+<th align="right">按键</th>
+<th align="right">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">/word</td>
+<td align="right">向光标之下寻找一个名为word的字符串，如要查找字符串 usage ，只需要输入/usage即可。</td>
+</tr>
+<tr>
+<td align="right">?word</td>
+<td align="right">向光标之上寻找字符串word</td>
+</tr>
+<tr>
+<td align="right"><kbd>n</kbd></td>
+<td align="right">执行上一个搜索命令，如上一个命令是/word,则按下<kbd>n</kbd>后，会再次执行/word 。</td>
+</tr>
+<tr>
+<td align="right"><kbd>N</kbd></td>
+<td align="right">“反向”执行上一个搜索命令，如上一个命令是/word , 则按下<kbd>N</kbd>后，会执行向上搜索的命令?word 。</td>
+</tr>
+</tbody></table>
+<p><strong>长命令</strong></p>
+<blockquote>
+<ul>
+<li>:n1,n2s/word1/word2/g<ul>
+<li>n1，n2为数字，在第n1与n2行之间寻找word1这个字符串，并将其改为word2 。</li>
+<li>举例：将100到200行之间的所有usage字符串修改为USAGE，则：</li>
+<li>:100,200s/usage/USAGE/g</li>
+</ul>
+</li>
+<li>:1,$s/word1/word2/g 或者 :%s/word1/word2/g<ul>
+<li>将第一行到最后一行的所有word1字符串修改为word2</li>
+</ul>
+</li>
+<li>:1,$s/word1/word2/gc 或者 :%s/word1/word2/gc<ul>
+<li>将第一行到最后一行的所有word1字符串替换为word2，每次替换时提示用户是否确认（confirm）替换。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>删除，复制与贴上（粘贴）</strong></p>
+<table>
+<thead>
+<tr>
+<th align="right">按键</th>
+<th align="right">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">x，X</td>
+<td align="right">在一行中，x为向后删除一个字符，X为向前删除一个字符，同时删除的字符会被复制，按p会粘贴</td>
+</tr>
+<tr>
+<td align="right">nx</td>
+<td align="right">n为数字，连续向后删除n个字符。如：要连续向后删除10个字符，则是10x</td>
+</tr>
+<tr>
+<td align="right">dd</td>
+<td align="right">删除游标所在那一整行</td>
+</tr>
+<tr>
+<td align="right">ndd</td>
+<td align="right">n为数字，删除光标所在的向下n行（包括所在那一行）。如：20dd是连续删除20行</td>
+</tr>
+<tr>
+<td align="right">d1G</td>
+<td align="right">删除光标所在行到第一行的所有数据</td>
+</tr>
+<tr>
+<td align="right">dG</td>
+<td align="right">删除光标所在行到最后一行的所有数据</td>
+</tr>
+<tr>
+<td align="right">d$</td>
+<td align="right">删除光标所在处到该行最后一个字符</td>
+</tr>
+<tr>
+<td align="right">d0</td>
+<td align="right">数字0，删除光标所在处到该行第一个字符</td>
+</tr>
+<tr>
+<td align="right">yy （常用）</td>
+<td align="right">复制光标所在行</td>
+</tr>
+<tr>
+<td align="right">nyy</td>
+<td align="right">复制光标所在行以下n行（包括该行）</td>
+</tr>
+<tr>
+<td align="right">y1G，yG，y0，y$</td>
+<td align="right">同删除命令，分别是复制光标所在行到第一行数据，复制光标所在行到最后一行数据，复制光标所在处到该行第一个字符，复制光标所在处到该行最后一个字符</td>
+</tr>
+<tr>
+<td align="right">p，P</td>
+<td align="right">p为将已复制数据粘贴在光标下一行，P则是光标上一行</td>
+</tr>
+<tr>
+<td align="right">J</td>
+<td align="right">将光标所在行与下一行的数据结合成同一行</td>
+</tr>
+<tr>
+<td align="right">c</td>
+<td align="right">重复删除多个数据，如向下删除10行，10cj 。补充解释，c即为删除指令，数字表示执行次数，最后的j表示方向，j为向下移动，则10cj是向下执行10次删除，即向下删除10行。同理，10cl是向右执行10次删除，即删除光标后的10个字符，不会超出该行。</td>
+</tr>
+<tr>
+<td align="right">u（常用）</td>
+<td align="right">撤销上一个操作</td>
+</tr>
+<tr>
+<td align="right"><kbd>Ctrl</kbd>+r</td>
+<td align="right">重复上一个操作</td>
+</tr>
+<tr>
+<td align="right">.</td>
+<td align="right">小数点，重复前一个命令</td>
+</tr>
+</tbody></table>
+<h3 id="第二部分：一般模式切换到编辑模式的可用按键"><a href="#第二部分：一般模式切换到编辑模式的可用按键" class="headerlink" title="第二部分：一般模式切换到编辑模式的可用按键"></a>第二部分：一般模式切换到编辑模式的可用按键</h3><table>
+<thead>
+<tr>
+<th align="right">按键</th>
+<th align="right">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">i,I</td>
+<td align="right">进入输入模式（Insert mode）：i为从目前光标所在处输入，I（大写i）为从所在行的第一个非空字符处输入</td>
+</tr>
+<tr>
+<td align="right">a，A</td>
+<td align="right">a为从目前光标所在的下一个字符处输入，A为所在行的最后一个字符处输入</td>
+</tr>
+<tr>
+<td align="right">o，O</td>
+<td align="right">英文字母o的大小写，小写o在所在行的下一行插入新的一行，大写O在所在行的上一行插入新一行</td>
+</tr>
+<tr>
+<td align="right">r，R</td>
+<td align="right">进入取代模式（Replace mode）：r只会取代光标所在的字符一次，R会一直取代光标所在的文字，直到按下<kbd>ESC</kbd></td>
+</tr>
+</tbody></table>
+<h3 id="第三部分：一般模式切换到指令行模式的可用的按键及命令"><a href="#第三部分：一般模式切换到指令行模式的可用的按键及命令" class="headerlink" title="第三部分：一般模式切换到指令行模式的可用的按键及命令"></a>第三部分：一般模式切换到指令行模式的可用的按键及命令</h3><table>
+<thead>
+<tr>
+<th align="right">按键</th>
+<th align="right">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">:w</td>
+<td align="right">将编辑的数据写入硬盘中（保存）</td>
+</tr>
+<tr>
+<td align="right">:w!</td>
+<td align="right">如果文件为只读，强制写入（如果有相关权限的话）</td>
+</tr>
+<tr>
+<td align="right">:q</td>
+<td align="right">退出vim</td>
+</tr>
+<tr>
+<td align="right">:q!</td>
+<td align="right">强制退出而不保存修改</td>
+</tr>
+<tr>
+<td align="right">:wq</td>
+<td align="right">保存后退出，若为:wq!则是强制保存后退出</td>
+</tr>
+<tr>
+<td align="right">ZZ</td>
+<td align="right">大写的英文字母Z，保存并退出，相当于:wq</td>
+</tr>
+<tr>
+<td align="right">ZQ</td>
+<td align="right">不保存，强制退出，相当于:q!</td>
+</tr>
+<tr>
+<td align="right">:w [filename]</td>
+<td align="right">相当于另存为filename</td>
+</tr>
+<tr>
+<td align="right">:r [filename]</td>
+<td align="right">读入一个新文件，即将filename文件中的数据从下一行开始写入</td>
+</tr>
+<tr>
+<td align="right">:n1,n2 w [filename]</td>
+<td align="right">将n1，n2行之间的内容存储为filename</td>
+</tr>
+<tr>
+<td align="right">:! command</td>
+<td align="right">暂时离开vi/vim到指令行模式下执行command的显示结果。如：<br />:! ls /home <br />即可在vi/vim中查看/home下的ls的输出</td>
+</tr>
+<tr>
+<td align="right">:set nu</td>
+<td align="right">显示每一行的行号</td>
+</tr>
+<tr>
+<td align="right">:set nonu</td>
+<td align="right">与set nu相反，取消行号</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>vim</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+</search>
