@@ -1,195 +1,2014 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search> 
-  
-  
-    
-    <entry>
-      <title>python学习随笔</title>
-      <link href="2021/07/30/python%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94/"/>
-      <url>2021/07/30/python%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94/</url>
-      
-        <content type="html"><![CDATA[<h1 id="python学习随笔"><a href="#python学习随笔" class="headerlink" title="python学习随笔"></a>python学习随笔</h1><blockquote><p>背景知识：</p><ul><li>了解python的基础语法</li><li>了解面向对象编程</li><li>……</li></ul></blockquote><p>本文章旨在记录学习python时的一些想法，以及一些较为琐碎，暂时用不上以至于容易遗忘的各种模块等……</p><p>包含一些知识要点，一些模块用法，一些尝试……</p><h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><p><em>记录一些模块的各种类、方法</em></p><h3 id="sys"><a href="#sys" class="headerlink" title="sys"></a>sys</h3><p><em>系统模块，大抵是针对系统的一系列设置？</em></p><h4 id="修改本次运行默认编码"><a href="#修改本次运行默认编码" class="headerlink" title="修改本次运行默认编码"></a>修改本次运行默认编码</h4><p><strong>如下，将本次运行时的默认编码修改为utf-8</strong></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">&#x27;utf8&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Hello world&#x27;</span>.encode())  <span class="comment"># 此时encode方法即为utf-8编码</span></span><br><span class="line"></span><br></pre></td></tr></table></figure><h3 id="os"><a href="#os" class="headerlink" title="os"></a>os</h3><p><em>操作系统模块（operate system）？大抵是针对操作系统层面的操作</em></p><h4 id="遍历目录及文件"><a href="#遍历目录及文件" class="headerlink" title="遍历目录及文件"></a>遍历目录及文件</h4><p><code>os.walk(top[, topdown=True[, onerror=None[, followlinks=False]]])</code></p><p>该方法返回一个生成器，以供遍历目录</p><ul><li>top— 所要遍历的目录的地址,返回一个三元组(root, dirs, files),<ul><li>root: 当前正在遍历的这个文件夹的地址<ul><li>例如,当前正在遍历当前目录下的dir文件夹,则root为r’.\dir’ (window系统下)</li></ul></li><li>dirs: 一个list, 内容为当前文件夹(root)中的所有目录(即文件夹)</li><li>files: 一个list, 内容为当前文件夹(root)中的所有文件(不包括root下的文件夹)</li></ul></li><li>topdown— 可选, 默认为True, 为True则优先遍历top目录, 否则优先遍历top的子目录</li><li>onerror— 可选, 传入一个callable对象, 供出现异常时调用</li><li>followlinks— 可选, 如果为True, 则遍历目录下的快捷方式(Linux下为软连接 symbolic link)实际所指的目录, False则优先遍历top的子目录</li></ul><blockquote><p>“旁门左道”:</p><p>可通过该方法读取当前目录下的所有文件, 即<code>files = os.walk(&#39;.&#39;).__next__()[2]</code></p><p>该files即为一个lists, 存储当前目录下的所有文件(不包括文件夹)</p><p>(为何使用<code>__next__()</code>方法,参考”生成器”对象的描述)</p></blockquote><h4 id="获取文件属性"><a href="#获取文件属性" class="headerlink" title="获取文件属性"></a>获取文件属性</h4><p><code>os.path</code>模块, 主要用于获取文件的属性</p><p>以下仅记录一些常用的:</p><p>(来自菜鸟教程)</p><div class="table-container"><table><thead><tr><th>方法</th><th>说明</th></tr></thead><tbody><tr><td>os.path.abspath(path)</td><td>返回绝对路径</td></tr><tr><td>os.path.basename(path)</td><td>返回文件名</td></tr><tr><td>os.path.commonprefix(list)</td><td>返回list(多个路径)中，所有path共有的最长的路径</td></tr><tr><td>os.path.dirname(path)</td><td>返回文件路径</td></tr><tr><td>os.path.exists(path)</td><td>如果路径 path 存在，返回 True；如果路径 path 不存在，返回 False。</td></tr><tr><td>os.path.lexists</td><td>路径存在则返回True,路径损坏也返回True</td></tr><tr><td>os.path.expanduser(path)</td><td>把path中包含的”~”和”~user”转换成用户目录</td></tr><tr><td>os.path.expandvars(path)</td><td>根据环境变量的值替换path中包含的”$name”和”${name}”</td></tr><tr><td>os.path.getatime(path)</td><td>返回最近访问时间（浮点型秒数）</td></tr><tr><td>os.path.getmtime(path)</td><td>返回最近文件修改时间</td></tr><tr><td>os.path.getctime(path)</td><td>返回文件 path 创建时间</td></tr><tr><td>os.path.getsize(path)</td><td>返回文件大小，如果文件不存在就返回错误</td></tr><tr><td>os.path.isabs(path)</td><td>判断是否为绝对路径</td></tr><tr><td>os.path.isfile(path)</td><td>判断路径是否为文件</td></tr><tr><td>os.path.isdir(path)</td><td>判断路径是否为目录</td></tr><tr><td>os.path.islink(path)</td><td>判断路径是否为链接</td></tr><tr><td>os.path.ismount(path)</td><td>判断路径是否为挂载点</td></tr><tr><td>os.path.join(path1[, path2[, …]])</td><td>把目录和文件名合成一个路径</td></tr><tr><td>os.path.normcase(path)</td><td>转换path的大小写和斜杠</td></tr><tr><td>os.path.normpath(path)</td><td>规范path字符串形式</td></tr><tr><td>os.path.realpath(path)</td><td>返回path的真实路径</td></tr><tr><td>os.path.relpath(path[, start])</td><td>从start开始计算相对路径</td></tr><tr><td>os.path.samefile(path1, path2)</td><td>判断目录或文件是否相同</td></tr><tr><td>os.path.sameopenfile(fp1, fp2)</td><td>判断fp1和fp2是否指向同一文件</td></tr><tr><td>os.path.samestat(stat1, stat2)</td><td>判断stat tuple stat1和stat2是否指向同一个文件</td></tr><tr><td>os.path.split(path)</td><td>把路径分割成 dirname 和 basename，返回一个元组</td></tr><tr><td>os.path.splitdrive(path)</td><td>一般用在 windows 下，返回驱动器名和路径组成的元组</td></tr><tr><td>os.path.splitext(path)</td><td>分割路径，返回路径名和文件扩展名的元组</td></tr><tr><td>os.path.splitunc(path)</td><td>把路径分割为加载点与文件</td></tr><tr><td>os.path.walk(path, visit, arg)</td><td>遍历path，进入每个目录都调用visit函数，visit函数必须有3个参数(arg, dirname, names)，dirname表示当前目录的目录名，names代表当前目录下的所有文件名，args则为walk的第三个参数</td></tr><tr><td>os.path.supports_unicode_filenames</td><td>设置是否支持unicode路径名</td></tr></tbody></table></div><blockquote><p>注:</p><p>其中,有<code>os.path.getmtime(path)</code>获取最近文件修改时间</p><p>以及<code>os.path.getctime(path)</code>获取文件创建时间</p><p>以及<code>os.path.getatime(path)</code>获取文件最近访问时间</p><p>返回的均为时间戳(timestamp),可使用datetime模块转换</p><p>其中atime, ctime, mtime 的说法,在《鸟哥的Linux私房菜》内有提及,似乎含义相同(忘了)</p></blockquote>]]></content>
-      
-      
+<search>
+  <entry>
+    <title>MySQL使用与检索数据</title>
+    <url>/2021/06/15/MySQL%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%A3%80%E7%B4%A2%E6%95%B0%E6%8D%AE/</url>
+    <content><![CDATA[<h1 id="MySQL使用与检索数据"><a href="#MySQL使用与检索数据" class="headerlink" title="MySQL使用与检索数据"></a>MySQL使用与检索数据</h1><h2 id="使用MySQL"><a href="#使用MySQL" class="headerlink" title="使用MySQL"></a>使用MySQL</h2><p>使用<code>mysql -u root</code>以管理员账号登录</p>
+<p>这里是使用本地部署，因此命令较简单，未尝试远程登录。</p>
+<h3 id="3-2-选择数据库"><a href="#3-2-选择数据库" class="headerlink" title="3.2 选择数据库"></a>3.2 选择数据库</h3><p><strong>关键字（key word）</strong> 作为MySQL语言组成部分的保留字。<br>不要用关键字命名一个表或列。</p>
+<p>最初链接到MySQL时，没有打开任何数据库，<br>因此应该先打开某个数据库以进行操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">USE crashcourse;</span><br></pre></td></tr></table></figure>
+<p>在导入样例表时，已经创建一个数据库名为crashcourse，<br>使用USE语句打开该数据库。一般会输出<code>Database changed</code></p>
+<h3 id="3-3-了解数据库和表"><a href="#3-3-了解数据库和表" class="headerlink" title="3.3 了解数据库和表"></a>3.3 了解数据库和表</h3><p>数据库、表、列、用户、权限等信息被存储在数据库和表中。<br>可用MySQL的SHOW命令显示这些信息。</p>
+<p>如<code>SHOW DATABASES;</code>可返回可用数据库的一个列表。</p>
+<p><code>SHOW TABLES;</code>返回当前打开的数据库内的表的列表。</p>
+<p><code>SHOW COLUMNS FROM customers；</code>返回表customers中的所有列组成的列表。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SHOW STATUS  # 显示广泛的服务器状态信息（不清楚）</span><br><span class="line">SHOW CREATE DATABASE  # （显示创建特定数据库的语句）</span><br><span class="line">SHOW CREATE TABLE  # 显示创建特定表的语句</span><br></pre></td></tr></table></figure>
+<h2 id="检索数据"><a href="#检索数据" class="headerlink" title="检索数据"></a>检索数据</h2><p>SELECT语句，从一个或多个表中检索信息。</p>
+<h3 id="4-2-检索单个列"><a href="#4-2-检索单个列" class="headerlink" title="4.2 检索单个列"></a>4.2 检索单个列</h3><p><em>当前已进入数据库crashcourse</em></p>
+<p><code>SELECT prod_name FROM products</code><br>利用SELECT语句从products表中检索一个名为prod_name的列。<br>会返回该列的所有内容。</p>
+<p><em>注：SQL对大小写不敏感，因此，SELECT可写成select</em></p>
+<h3 id="4-3-检索多个列"><a href="#4-3-检索多个列" class="headerlink" title="4.3 检索多个列"></a>4.3 检索多个列</h3><p>从一个表中检索多个列，则在使用SELECT关键字后给出多个列名，<br>每两个列名之间使用逗号分隔。</p>
+<p>如：<br><code>SELECT prod_id, prod_name, prod_price FROM products;</code></p>
+<p>该句则是从表products中检索三个列的内容。</p>
+<h3 id="4-4-检索所有列"><a href="#4-4-检索所有列" class="headerlink" title="4.4 检索所有列"></a>4.4 检索所有列</h3><p>SELECT语句可以使用通配符（*）指检索所有列，如：</p>
+<p><code>SELECT * FROM products;</code></p>
+<p>则会返回该表的所有列。</p>
+<h3 id="4-5-检索不同的行"><a href="#4-5-检索不同的行" class="headerlink" title="4.5 检索不同的行"></a>4.5 检索不同的行</h3><p>如上，SELECT语句返回检索列的所有内容，如果对于列中重复的内容，<br>只需要出现一次，则使用DISTINCT关键字。<br>该关键字令MySQL对于重复的项只返回一个。</p>
+<p><code>SELECT DISTINCT vend_id FROM products;</code><br>则是只返回4个不重复的项。</p>
+<blockquote>
+<p>DISTINCT关键字修饰所有列，即若检索多个列，<br>则这些列的不同组合都会被返回，除非每一列都重复才会返回一个。</p>
+</blockquote>
+<h3 id="4-6-限制结果"><a href="#4-6-限制结果" class="headerlink" title="4.6 限制结果"></a>4.6 限制结果</h3><p>SELECT语句返回所有匹配的行，可使用LIMIT子句限制返回的行数。</p>
+<p><code>SELECT prod_name FROM products LIMIT 5;</code><br>返回5项记录。</p>
+<p><code>SELECT prod_name FROM products LIMIT 1,5;</code><br>指返回从第二行开始的5条记录。</p>
+<p>行数下标从0开始，所以上述语句LIMIT后的第一个数字1指的是第二行。</p>
+<p>MySQL 5 另有LIMIT 4 OFFSET 3 语句等同于 LIMIT 3，4；<br>即从行3开始取4行。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>自此，已了解如何使用SELECT语句检索单表列，多个表列及所有表列。</p>
+]]></content>
       <categories>
-          
-          <category> python </category>
-          
-          <category> 笔记 </category>
-          
-          <category> 笔记 </category>
-          
+        <category>SQL</category>
+        <category>笔记</category>
+        <category>MySQL</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> python </tag>
-            
-            <tag> 随笔 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>网络空间安全案例分析记录汇总</title>
-      <link href="2021/06/18/%E7%BD%91%E7%BB%9C%E7%A9%BA%E9%97%B4%E5%AE%89%E5%85%A8%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E8%AE%B0%E5%BD%95%E6%B1%87%E6%80%BB/"/>
-      <url>2021/06/18/%E7%BD%91%E7%BB%9C%E7%A9%BA%E9%97%B4%E5%AE%89%E5%85%A8%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E8%AE%B0%E5%BD%95%E6%B1%87%E6%80%BB/</url>
-      
-        <content type="html"><![CDATA[<h1 id="网络空间安全案例分析记录汇总"><a href="#网络空间安全案例分析记录汇总" class="headerlink" title="网络空间安全案例分析记录汇总"></a>网络空间安全案例分析记录汇总</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p><strong>暂无</strong></p><h2 id="DDoS攻击与防御"><a href="#DDoS攻击与防御" class="headerlink" title="DDoS攻击与防御"></a>DDoS攻击与防御</h2><h3 id="基本概念与原理"><a href="#基本概念与原理" class="headerlink" title="基本概念与原理"></a>基本概念与原理</h3><p>（DDoS/DoS攻击）</p><blockquote><p>DoS（Denial of Service） 攻击，利用系统网络服务功能缺陷或直接消耗其系统资源，使得该目标系统？？</p><p>单一DoS攻击：当攻击目标各项性能指标不高，它的效果是显著的。</p><p>DDoS攻击：利用更多的傀儡机来发起攻击。</p><p>DDoS 分布式拒绝服务攻击</p><ul><li>在传统的DoS攻击基础产生的一类攻击方式</li><li>借助于客户/服务器技术</li></ul><blockquote><p>信息安全三要素：</p><ul><li>保密性：要求保护数据内容不被泄露</li><li>完整性：要求保护的数据是完整的、没有被篡改的</li><li>可用性：要求保护的资源是“随需所得”的</li></ul></blockquote></blockquote><h3 id="攻击历史"><a href="#攻击历史" class="headerlink" title="攻击历史"></a>攻击历史</h3><div class="table-container"><table><thead><tr><th>时期</th><th>使用者</th><th>目的</th><th>时机</th><th>目标</th></tr></thead><tbody><tr><td>探索期</td><td>黑客个体</td><td>兴趣、炫耀</td><td>随意</td><td>随意</td></tr><tr><td>工具化</td><td>政治、宗教、商业组织</td><td>勒索、竞争、报复</td><td>精确</td><td>精确</td></tr><tr><td>武器化</td><td>国家</td><td>网络战</td><td>精确</td><td>精确</td></tr><tr><td>普及化</td><td>群体组织</td><td>表达主张</td><td></td></tr></tbody></table></div><h6 id="探索期：个人黑客的攻击"><a href="#探索期：个人黑客的攻击" class="headerlink" title="探索期：个人黑客的攻击"></a>探索期：个人黑客的攻击</h6><ul><li>早期的“黑客”都是一些技术爱好者</li><li>缺乏明确的目的性</li><li>这些行为基本不会给攻击者带来经济上的收益，影响范围大，具有轰动效果，但对具体个人和组织损害可以接受</li></ul><p><em>案例：</em></p><blockquote><p>1996年9月6日下午5：30</p><p>受害者：Panix</p><p>损失：至少6000名用户因此而无法收取邮件。</p><p>方法：不断向服务器发送链接请求（TCP SYN请求），后被称为“SYN FLOOD攻击”。</p></blockquote><h6 id="工具化：有组织的攻击"><a href="#工具化：有组织的攻击" class="headerlink" title="工具化：有组织的攻击"></a>工具化：有组织的攻击</h6><h6 id="武器化：网络战"><a href="#武器化：网络战" class="headerlink" title="武器化：网络战"></a>武器化：网络战</h6><h6 id="普及化：黑客行动主义"><a href="#普及化：黑客行动主义" class="headerlink" title="普及化：黑客行动主义"></a>普及化：黑客行动主义</h6><blockquote><p>维基解密事件</p><p>Anonymous组织（匿名者组织） 前身是恶作剧论坛，最早活跃于美国贴图讨论版4chan（4chan.com)</p></blockquote><h3 id="常见攻击手段"><a href="#常见攻击手段" class="headerlink" title="常见攻击手段"></a>常见攻击手段</h3><p><strong>以力取胜</strong></p><blockquote><p>ICMP Flood </p><ul><li>ICMP（Internet控制报文协议）</li><li>通过对目标系统发送海量数据包，就可以令目标主机瘫痪</li></ul><p>UDP Flood</p><ul><li>UDP协议是一种无连接的服务</li></ul><p>NTP Flood</p><ul><li>NTP：标准的基于UDP协议传输的网络时间同步协议，由于UDP协议的无连接性，方便伪造源地址。</li><li></li><li></li></ul><blockquote><p>”问-答“方式的协议都可以被反射型攻击利用</p></blockquote><p>反射攻击</p><p>反射攻击（DRDoS）也叫放大攻击，该类攻击以UDP协议为主，一般请求回应的流量远远大于请求本身流量的大小</p></blockquote><p><strong>攻击系统/应用：以巧取胜</strong></p><blockquote><p>SYN Flood</p><ul><li>这是一种利用TCP协议缺陷，发送大量伪造的TCP连接请求，从而使得被攻击方资源耗尽的攻击方法。</li><li></li><li>SYN Flood 就是用户向服务器发送报文后突然死机或掉线，那么服务器在发出应答报文后就无法收到客户端的确认报文（第三次握手无法完成），这时服务器一般会重试并等待一段时间后再丢弃这个未完成的连接。</li><li>恶意攻击者大量模拟上述情况，</li></ul><blockquote><p>SYN洪水攻击发动简单，效果明显，至今仍然是攻击者的最爱好的攻击方式之一。</p></blockquote><p>CC攻击</p><ul><li>CC（ChallengeCollapsar）攻击是目前应用层攻击的主要手段之一，借助代理服务器生成指向目标系统的合法请求，实现伪装和DDoS。</li><li>攻击者使用CC攻击软件控制大量肉鸡发动攻击，模拟多个正常用户不停地访问如论坛这些需要大量数据操作的页面，造成服务器资源的浪费。</li><li>CPU长时间处于100%，永远都有处理不完的请求，网络拥塞，正常访问被中止。</li><li>这种攻击技术性高，见不到真实源IP，见不到特别大的异常流量，但服务器就是无法进行正常连接。</li><li>由于CC攻击成本低、威力大，80%的DDoS攻击都是CC攻击。</li></ul><p>DNS Query Flood</p><ul><li>~采用的方法是操纵大量傀儡机器，向目标服务器发送大量的域名解析请求。</li></ul></blockquote><p><strong>三、混合攻击：流量与技巧的比拼</strong></p><h3 id="常见防御手段"><a href="#常见防御手段" class="headerlink" title="常见防御手段"></a>常见防御手段</h3><h6 id="网络设备设施"><a href="#网络设备设施" class="headerlink" title="网络设备设施"></a>网络设备设施</h6><ul><li>用足够的机器、容量去承受攻击。</li></ul><p><strong>扩充带宽硬抗</strong></p><ul><li>网络带宽直接决定了承受攻击的能力</li><li>成本极高……</li></ul><p><strong>使用硬件防火墙</strong></p><ul><li>针对DDoS攻击和黑客入侵而设计的专业级防火墙通过对异常流量的清洗过滤，可对抗多种流量型DDoS攻击。</li><li>若DDoS攻击上升到应用层，防御能力较弱</li></ul><p><strong>选用高性能设备</strong></p><ul><li>应尽量提升硬件配置</li></ul><h6 id="有效的抗D思想方案"><a href="#有效的抗D思想方案" class="headerlink" title="有效的抗D思想方案"></a>有效的抗D思想方案</h6><p><strong>负载均衡</strong></p><ul><li>负载均衡建立在现有的网络结构之上</li><li>对DDoS流量攻击和CC攻击都很见效</li></ul><p><strong>CDN流量清洗</strong></p><p><strong>分布式集群防御</strong></p><ul><li>在每个节点服务器配置多个IP地址</li><li>如一个节点受攻击……</li></ul><h6 id="预防为主保安全"><a href="#预防为主保安全" class="headerlink" title="预防为主保安全"></a>预防为主保安全</h6><ul><li>通过日常惯性的运维操作</li></ul><p><strong>筛查系统漏洞</strong></p><ul><li>及早发现系统存在的攻击漏洞，及时安装系统补丁</li><li>对重要信息建立和完善备份机制</li><li>对一些特权账号的密码谨慎设置</li></ul><p><strong>系统资源优化</strong></p><ul><li>合理优化系统，避免系统资源的浪费。</li><li>更改工作模式，删除不必要的中断让机器运行更有效。</li></ul><p><strong>过滤不必要的服务和端口</strong></p><p><strong>限制特定的流量</strong></p><h3 id="DDoS产业化"><a href="#DDoS产业化" class="headerlink" title="DDoS产业化"></a>DDoS产业化</h3><p><strong>“肉鸡”的来源</strong></p><ul><li>DDoS的肉鸡可以来自各种联网的设备</li></ul><p><strong><em>DDoS攻击态势报告：</em></strong></p><blockquote><p>百度……</p></blockquote><h2 id="Wi-Fi攻防案例"><a href="#Wi-Fi攻防案例" class="headerlink" title="Wi-Fi攻防案例"></a>Wi-Fi攻防案例</h2><h3 id="警惕公共WIFI"><a href="#警惕公共WIFI" class="headerlink" title="警惕公共WIFI"></a>警惕公共WIFI</h3><p>2015、2016年 315晚会</p><h3 id="WIFI安全初探"><a href="#WIFI安全初探" class="headerlink" title="WIFI安全初探"></a>WIFI安全初探</h3><h4 id="谁动了我的WIFI"><a href="#谁动了我的WIFI" class="headerlink" title="谁动了我的WIFI"></a>谁动了我的WIFI</h4><blockquote><p>无线路由器 = 单纯性无线AP（无线访问点） + 宽带路由器</p></blockquote><ul><li>判断网络是否被蹭的两种方法<ol><li>使用无线路由器后台查看接入用户</li><li></li></ol></li><li>防蹭网<ul><li>修改无线路由器默认管理IP地址及账号</li><li>用安全的认证和加密方式（WPA-PSK/WPA2-PSK认证，AES加密算法）</li><li>设置MAC地址过滤<ul><li>无线MAC地址过滤</li></ul></li><li>关闭路由器QSS功能</li><li>隐藏路由器SSID<ul><li>终端要连接，要手动输入SSID</li></ul></li></ul></li></ul><h4 id="防范无线路由器被入侵"><a href="#防范无线路由器被入侵" class="headerlink" title="防范无线路由器被入侵"></a>防范无线路由器被入侵</h4><p><strong>网络安全事件——账号被盗、银行卡被网上消费</strong></p><p>DNS钓鱼攻击</p><ul><li><p>入侵到无线路由器的步骤</p><ul><li>找到目标网络</li><li>破解并登录网络</li><li>篡改DNS地址</li><li>预留后门</li></ul></li><li><p>配置无线路由器防范被钓鱼攻击入侵</p><ul><li>登录无线路由器</li><li>更改路由器默认管理地址和管理员账号</li><li>确认路由器DNS获得是否设置为“自动获得”或确认DNS是否式ISP提供的正确DNS地址</li><li>确认路由器DHCP设置中的DNS服务器设置是否为“0”？</li><li>……</li></ul></li></ul><h4 id="公共WI-FI的常见认证方法"><a href="#公共WI-FI的常见认证方法" class="headerlink" title="公共WI-FI的常见认证方法"></a>公共WI-FI的常见认证方法</h4><ul><li>家庭WIFI和公共WIFI区别<ul><li>家庭WIFI使用胖AP架构</li><li>公共WIFI两种加工都有<ul><li>胖AP：小面积区域</li><li>瘦AP：大面积区域，用户漫游问题</li></ul></li></ul></li><li>四种常用认证方法的特点<ul><li>密码认证：过于简单，WIFI容易被仿冒</li><li>短信认证：手机号会被暴露</li><li>第三方数据源认证：多用于企业、图书馆和学校等已有相关用户信息的场所。账号密码泄露后容易被冒用。</li><li>微信认证：</li></ul></li><li>公共WIFI安全使用建议<ul><li>少用“密码认证”的WIFI</li><li><strong>不用没有密码的WIFI</strong></li><li>其它认证时慎重填写个人隐私信息</li></ul></li></ul><h4 id="真假公共WIFI都要防"><a href="#真假公共WIFI都要防" class="headerlink" title="真假公共WIFI都要防"></a>真假公共WIFI都要防</h4><p><em>66%公共WI-FI不够安全</em></p><ul><li><p>公共WIFI类型</p><ul><li>通信运行商提供WIFI热点</li><li>商家自行搭建的WIFI热点</li></ul><blockquote><p>上网数据被监视，被劫持，被篡改</p></blockquote></li><li><p>WIFI攻击类型</p><ul><li><p>网关欺骗</p><ul><li>正常情况<ul><li>终端寻问网关的MAC地址</li><li>网关回复自己的MAC地址，终端建立一条对应关系</li><li>终端依据存储的网关MAC地址，通过网关询问互联网</li></ul></li><li>欺骗攻击情况<ul><li>中间人攻击</li></ul></li></ul></li><li><p>钓鱼WI-FI</p><blockquote><ul><li>关于SSID<ul><li>每个无线网络都会有一个SSID，像身份证号</li></ul></li><li>SSID的问题<ul><li>SSID没有注册机制，可取任意名字</li></ul></li></ul></blockquote><ul><li>钓鱼WIFI会仿冒知名路由器的默认WIFI热点，如：Netcore、TP-Link、Dlink等</li></ul></li></ul></li><li><p>使用公共WIFI，以下原则：</p><ul><li>绝对不用陌生的公共WIFI</li><li>……</li></ul></li></ul><h3 id="WIFI的网络基础课程"><a href="#WIFI的网络基础课程" class="headerlink" title="WIFI的网络基础课程"></a>WIFI的网络基础课程</h3><h4 id="无线网卡的6种运行模式"><a href="#无线网卡的6种运行模式" class="headerlink" title="无线网卡的6种运行模式"></a>无线网卡的6种运行模式</h4><ul><li>监控模式</li><li>主模式</li><li>……</li></ul><h4 id="IEEE-802-11及无线安全"><a href="#IEEE-802-11及无线安全" class="headerlink" title="IEEE 802.11及无线安全"></a>IEEE 802.11及无线安全</h4><ul><li>IEEE 802.11时现今无线局域网通用的标准，由国际电机电子工程学会（IEEE）所定义的无线网络通信的标准</li><li>其中定义了媒体访问控制层（MAC层）和物理层</li><li>两个设备可以自行构建临时网络，也可以在基站或者接入点的协调性通信</li><li>为了在不同的通讯环境下获取良好的通信质量，采用CSMA/CA硬件沟通方式。</li><li>……</li></ul><ul><li>无线安全“六面五层”威胁模型<ul><li>针对物理层面攻击</li><li>针对连接有效性的攻击</li><li>针对业务连续性的国际</li><li>针对连接合法性的攻击</li><li>针对私有信息的攻击</li></ul></li></ul><h4 id="媒体服务控制地址"><a href="#媒体服务控制地址" class="headerlink" title="媒体服务控制地址"></a>媒体服务控制地址</h4><ul><li>MAC地址，用来确认网上设备位置的地址</li><li>在OSI模型中，第三层网络层负责IP地址</li></ul><h4 id="WLAN三种网络拓扑结构"><a href="#WLAN三种网络拓扑结构" class="headerlink" title="WLAN三种网络拓扑结构"></a>WLAN三种网络拓扑结构</h4><ul><li>独立基本服务集 网络</li><li>基本服务集</li><li>？？</li></ul><h4 id="WIFI数据包类型"><a href="#WIFI数据包类型" class="headerlink" title="WIFI数据包类型"></a>WIFI数据包类型</h4><h3 id="安全企业的WIFI安全观"><a href="#安全企业的WIFI安全观" class="headerlink" title="安全企业的WIFI安全观"></a>安全企业的WIFI安全观</h3><h3 id="无线安全实验"><a href="#无线安全实验" class="headerlink" title="无线安全实验"></a>无线安全实验</h3><h3 id="课外扩展学习-无线电安全技术"><a href="#课外扩展学习-无线电安全技术" class="headerlink" title="课外扩展学习-无线电安全技术"></a>课外扩展学习-无线电安全技术</h3><h3 id="WIFI-中的药与毒"><a href="#WIFI-中的药与毒" class="headerlink" title="WIFI 中的药与毒"></a>WIFI 中的药与毒</h3><h4 id="WIFI安全的焦点"><a href="#WIFI安全的焦点" class="headerlink" title="WIFI安全的焦点"></a>WIFI安全的焦点</h4><p><strong>WIFI安全问题仅有这些？</strong></p><blockquote><p>加密方式、密码强度、ARP/DNS/DHCP/欺骗</p></blockquote><p><strong>第一层信息不对称</strong></p><ul><li>用户：<ul><li>被攻击了吗？</li><li>损失了什么？</li><li>怎么去判断？</li></ul></li><li>攻击者：<ul><li>能偷什么东西</li><li>哪些东西值钱</li><li>不值钱的怎么跑量？</li><li>黑产一般行为，有价值的信息拿去卖，无价值的加密勒索，无数据的成为肉鸡或挖矿</li></ul></li></ul><p><strong>第二层信息不对称</strong></p><ul><li>用户：<ul><li>运营商问题？</li><li>路由器问题？</li><li>手机问题？</li><li>APP应用问题？</li></ul></li><li>攻击者：<ul><li>……</li></ul></li></ul><p>真正的焦点是场景</p><p><strong>全场景下不存在“银弹”</strong></p><ul><li>家庭场景：WIFI已经是现在家庭必不可少的配备，并且已经成为智能家居的首选方案</li><li>公共场景</li><li>办公/工业场景</li><li>特殊/保密场景：特殊场景中有不少不允许出现WIFI信号，而绕过的方法层出不穷</li></ul><h2 id="近距离通信安全与攻击案例"><a href="#近距离通信安全与攻击案例" class="headerlink" title="近距离通信安全与攻击案例"></a>近距离通信安全与攻击案例</h2><h3 id="近距离通信概述"><a href="#近距离通信概述" class="headerlink" title="近距离通信概述"></a>近距离通信概述</h3><p><strong>什么是近距离通信</strong></p><ul><li>一种短距离<strong>高频</strong>无线通信技术，允许电子设备之间进行<strong>非接触式</strong>点对点数据传输、交换数据</li></ul><h3 id="近距离通信技术"><a href="#近距离通信技术" class="headerlink" title="近距离通信技术"></a>近距离通信技术</h3><h4 id="蓝牙技术（Bluetooth）"><a href="#蓝牙技术（Bluetooth）" class="headerlink" title="蓝牙技术（Bluetooth）"></a>蓝牙技术（Bluetooth）</h4><ul><li>由爱立信公司于1994年提出，当时是作为RS 232数据传输技术的替代</li><li>使用2.4—2.485GHz ISM波段的UHF无线电波</li><li>适用于短距离大体积信号的传输</li><li>目前由<strong>蓝牙技术联盟</strong>管理，有25000家成员公司</li><li>最初1.1版协议发展到现在5.0</li></ul><h5 id="蓝牙技术的发展"><a href="#蓝牙技术的发展" class="headerlink" title="蓝牙技术的发展"></a>蓝牙技术的发展</h5><ul><li>1.1~1.2版：速率为748—810KB/s，容易受干扰</li><li>2.0版：速率增加到1.8—2.1M/s，</li><li>3.0版：速率到24M/s</li><li>4.0版：省电，AES加密，3ms低延迟，广泛用于物联网</li><li>4.1—4.2版：支持4G和IPv6，速率比4.0版提高2.5倍</li><li>5.0版：目前最高版本，与4.0版相比传输距离远4倍，带宽提高2倍，结合WI-FI可以实现精度&lt;1m的室内定位</li></ul><h5 id="蓝牙通信的相关技术参数"><a href="#蓝牙通信的相关技术参数" class="headerlink" title="蓝牙通信的相关技术参数"></a>蓝牙通信的相关技术参数</h5><ul><li>一个蓝牙主设备可与7个其它蓝牙设备组网</li><li>功率越大，传输距离越远</li><li>有效范围变化取决于传播条件、材料覆盖、天线配置、电池状况等。</li></ul><h5 id="蓝牙的特点"><a href="#蓝牙的特点" class="headerlink" title="蓝牙的特点"></a>蓝牙的特点</h5><ul><li>全球范围适用</li><li>近距离通信</li><li>功耗低、体积小</li><li>近距离通信<ul><li>蓝牙技术通信距离可根据需要扩展至300m</li></ul></li><li>良好的抗干扰能力和安全性</li><li>可建立临时对等连接</li></ul><h5 id="蓝牙设备的通信过程"><a href="#蓝牙设备的通信过程" class="headerlink" title="蓝牙设备的通信过程"></a>蓝牙设备的通信过程</h5><ol><li>主设备查找周围蓝牙设备，即从设备</li><li>找到从设备后，主设备与其进行配对</li><li>输入从设备的PIN，完成配对</li><li>从设备记录下主设备的信任信息</li><li>主-从设备之间建立安全链路，进行双向数据/语音通讯</li><li>主-从设备可随时断开链路，中断通讯</li></ol><h5 id="蓝牙技术的应用"><a href="#蓝牙技术的应用" class="headerlink" title="蓝牙技术的应用"></a>蓝牙技术的应用</h5><ul><li><p>手提和手机</p></li><li><p>智能家电</p></li><li><p>移动应用</p></li><li><p>其它：</p><ul><li><p>蓝牙耳机</p></li><li><p>GPS接收设备</p></li><li><p>智能手环</p></li><li><p>游戏机</p></li><li><p>机顶盒</p></li><li><p>传感器</p></li><li><h6 id="……"><a href="#……" class="headerlink" title="……"></a>……</h6></li></ul></li></ul><h4 id="射频识别技术（RFID）"><a href="#射频识别技术（RFID）" class="headerlink" title="射频识别技术（RFID）"></a>射频识别技术（RFID）</h4><p><strong>Radio Frequency Identification,RFID</strong></p><ul><li>起源于英国，二战中被用于辨别敌我飞机身份</li><li>上世纪60年代开始商用</li><li>通过无线电讯号识别特定目标并读写相关数据</li><li>无需识别系统与特定目标之间进行物理接触</li><li>频率为1-100GHz，适用于短距离识别通信</li><li>读取速度快，&lt;100ms，能穿透雪、冰、尘垢、涂料等</li></ul><h5 id="RFID系统的构成"><a href="#RFID系统的构成" class="headerlink" title="RFID系统的构成"></a>RFID系统的构成</h5><ul><li>RFID阅读器（reader）、RFID标签（tag）、应用软件</li><li>阅读器：耦合模块（线圈、天线）</li><li>RFID标签：耦合模块，微芯片<ul><li>有源（有电池供电）</li><li>无源（无电池供电，通过感应电流供电）</li></ul></li></ul><h5 id="RFID的技术原理"><a href="#RFID的技术原理" class="headerlink" title="RFID的技术原理"></a>RFID的技术原理</h5><ul><li>Reader通过天线产生电磁场</li><li>Tag进入电磁范围后，接收Reader发出的RF信号</li><li>Tag的天线通过感应获得电流，将存储芯片中的信息发送给Reader</li></ul><h5 id="RFID技术的特点"><a href="#RFID技术的特点" class="headerlink" title="RFID技术的特点"></a>RFID技术的特点</h5><ol><li>扫描速度快，可同时识别读取多个RFID标签</li><li>体积小、形状多样化</li><li>抗污染能力强，耐久性</li><li>可重复使用：增加、修改、删除Tag芯片中的数据</li><li>穿透性强：纸张、木材、塑料、非金属材质</li><li>Tag存储容量大：将近1MB（相比，条形码50字符，二维码3K字符）</li><li>较安全：数据由密码系统保护</li></ol><h5 id="RFID产品的种类"><a href="#RFID产品的种类" class="headerlink" title="RFID产品的种类"></a>RFID产品的种类</h5><ul><li>无源<ul><li>Tag中无供电单元：发展最早，应用最广</li></ul></li><li>有源<ul><li>Tag有供电单元：用于远距离自动识别，如：智能监狱、智能医院、智能交通、物联网</li></ul></li><li>半有源<ul><li>平时处于休眠，只有近距进入低频激活器信号范围才激活工作，远距离识别及上传数据</li></ul></li></ul><h5 id="RFID技术的应用"><a href="#RFID技术的应用" class="headerlink" title="RFID技术的应用"></a>RFID技术的应用</h5><ul><li>物流和供应链管理<ul><li>美军需物资管理、FDA药品追踪，Walmart、Metro、Amazon等Walmart采用RFID后每年可节省83.5亿美元（劳动力、商品被盗）</li></ul></li><li>文档追踪、图书馆管理</li><li>航空行李处理</li><li>邮件/快递包裹处理</li><li>动/植物身份标识</li><li>食品安全和溯源</li><li>道路交通和收费</li><li>门禁和物业管理</li><li>……</li></ul><h4 id="近场通信技术（NFC）"><a href="#近场通信技术（NFC）" class="headerlink" title="近场通信技术（NFC）"></a>近场通信技术（NFC）</h4><p>Near Field Communication，NFC</p><ul><li>由飞利浦和索尼与2003年共同研发，基于RFID及互连技术</li><li>短距高频无线通信技术，实现设备非接触式点对点数据传输</li><li>NFC在单一芯片上结合感应式Reader、Tag和点对点传输功能</li><li>在手机支付、电子票务、门禁系统等领域有很大应用前景</li><li>工作频率为13.56MHz</li></ul><h5 id="NFC的特点"><a href="#NFC的特点" class="headerlink" title="NFC的特点"></a>NFC的特点</h5><ul><li>与蓝牙相比，NFC使用更方便，成本更低，能耗更低</li><li>连接速度更快，~0.1s</li><li>使用距离比蓝牙短得多，约10cm~几十cm</li></ul><h5 id="NFC工作原理"><a href="#NFC工作原理" class="headerlink" title="NFC工作原理"></a>NFC工作原理</h5><ul><li>点对点通信模式<ul><li>每台设备要向另一台设备发送数据时3必须产生RF，以便进行通信；以ASK/FSK载波调制方式传输数据信号</li></ul></li><li>读卡器模式(Reader/writer mode)<ul><li>NFC设备能够从电子标签上读取数据</li></ul></li><li>卡模式<ul><li>此模式下，NFC设备为RFID智能卡，用于小额支付、车票、门禁等</li></ul></li></ul><h5 id="NFC的应用范围"><a href="#NFC的应用范围" class="headerlink" title="NFC的应用范围"></a>NFC的应用范围</h5><ul><li>身份识别</li><li>打卡</li><li>门禁</li><li>安全登录</li><li>物流</li><li>支付</li><li>票据</li><li>……</li></ul><h5 id="NFC的使用途径"><a href="#NFC的使用途径" class="headerlink" title="NFC的使用途径"></a>NFC的使用途径</h5><ul><li>与手机完全整合<ul><li>将NFC通信控制器、安全部件整合进手机</li></ul></li><li>整合到SIM卡上<ul><li>可以在运营商的蜂窝网络上识别手机卡</li></ul></li><li>整合进microSD卡上<ul><li>NFC部件整合进移动存储卡</li></ul></li></ul><h5 id="支持NFC的支付系统"><a href="#支持NFC的支付系统" class="headerlink" title="支持NFC的支付系统"></a>支持NFC的支付系统</h5><ul><li>苹果公司的Apple Pay</li><li>国内各大银行的云闪付功能</li><li>……</li></ul><h3 id="近距离通信攻击案例"><a href="#近距离通信攻击案例" class="headerlink" title="近距离通信攻击案例"></a>近距离通信攻击案例</h3><h4 id="近距离通信技术的安全问题"><a href="#近距离通信技术的安全问题" class="headerlink" title="近距离通信技术的安全问题"></a>近距离通信技术的安全问题</h4><ul><li>任何技术都有可能存在设计缺陷和漏洞</li><li>实现技术的过程中可能引入错误和漏洞</li><li>部署和运营技术的时候可能存在管理漏洞</li><li>So，安全性是非常重要的</li></ul><h4 id="蓝牙技术的安全性"><a href="#蓝牙技术的安全性" class="headerlink" title="蓝牙技术的安全性"></a>蓝牙技术的安全性</h4><ul><li><p>与任何无线技术一样，蓝牙易受各种安全威胁</p></li><li><p>安全公司Armis发现了蓝牙技术的大量漏洞</p></li></ul><h5 id="蓝牙技术易受到的攻击"><a href="#蓝牙技术易受到的攻击" class="headerlink" title="蓝牙技术易受到的攻击"></a>蓝牙技术易受到的攻击</h5><ul><li>漏洞攻击<ul><li>利用旧蓝牙设备的硬件漏洞去连接其它蓝牙设备</li></ul></li><li>劫持<ul><li>攻击者发送未经请求的消息到其它蓝牙设备，以发起劫持攻击</li></ul></li><li><p>控制</p><ul><li>利用早期版本设备硬件漏洞来获取访问权限使得攻击者可以访问数据……</li></ul></li><li><p>设备指纹采集攻击</p><ul><li>在用户不知情的情况下远程采集到蓝牙设备指纹</li></ul></li><li>拒绝连接服务</li><li><p>碰撞攻击</p><ul><li>允许攻击者根据蓝牙设备地址查找和识别用户</li></ul></li><li><p>模糊攻击</p><ul><li>发送格式错误或者非标准的数据，观察蓝牙设备RF接口及如何反应；如果该设备反应减慢或者停止，则该设备可能有严重的协议漏洞</li></ul></li><li>PIN码穷尽攻击<ul><li>蓝牙用户倾向于使用短的PIN码：短的PIN码容易被穷举攻击</li></ul></li><li>在链接超过23.3小时后，加密密钥流会发生重复<ul><li>从而产生一个与之前连接使用的相同的密钥流，使得攻击者容易确定原始明文</li></ul></li><li>不同级别安全模式的设备链接时，允许回退到下级安全模式<ul><li>最坏的场景是1个设备回退到安全模式1，即该模式不提供任何安全性</li></ul></li></ul><h5 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h5><ul><li><p>BlueBorne Attack</p><ul><li>2017年9月由Armis公司公布的新型物联网攻击手段</li><li>几乎所有联网设备都受这种攻击的威胁</li><li>后果<ul><li>攻击者获取物联网设备绝对控制权</li><li>非法访问和窃取企业数据</li><li>……</li></ul></li></ul></li></ul><h4 id="RFID技术的安全问题"><a href="#RFID技术的安全问题" class="headerlink" title="RFID技术的安全问题"></a>RFID技术的安全问题</h4><h5 id="RFID系统的安全需求"><a href="#RFID系统的安全需求" class="headerlink" title="RFID系统的安全需求"></a>RFID系统的安全需求</h5><ul><li>数据保密性<ul><li>RFID tag 不应泄露任何信息给非法Reader</li></ul></li><li>数据完整性<ul><li>传输过程中数据不会被篡改、删除、插入等</li></ul></li><li>数据真实性</li><li>用户隐私性</li><li>前向与后向安全性</li></ul><h5 id="RFID系统易受到的攻击"><a href="#RFID系统易受到的攻击" class="headerlink" title="RFID系统易受到的攻击"></a>RFID系统易受到的攻击</h5><ul><li><p>窃听攻击</p><ul><li>RFID reader和tag 间通过电磁波通信，容易被直接窃听</li></ul></li><li><p>中间人攻击</p><ul><li>攻击者使用非法RFID reader靠近受害者的tag；tag响应信号后发送tag里的信息；……</li></ul></li><li><p>欺骗 、重放、克隆攻击</p><ul><li>欺骗：攻击者将非法获取的tag数据发送给reader</li><li>重放：攻击者将tag的信号记录下来，然后在reader询问时播放</li><li>克隆：攻击者将合法的tag中的内容复制到一个非法tag中</li></ul></li><li><p>物理攻击</p><ul><li>Tag分三大类：基本版、对称密钥版、公钥版。基本版Tag不使用密码技术容易被欺骗和修改</li></ul><ol><li>攻击者使用工具非法修改或者擦除目标tag里面的数据</li><li>攻击者将病毒代码非法写入tag；当该tag的信息被读取然后送到后台服务器中后，病毒就有可能被注入到系统中</li><li>攻击者人为将tag撕下来或者破坏掉，使reader无法读取</li></ol></li><li><p>拒绝服务攻击</p><ul><li>攻击者使得reader与tag多次进行交互，使服务器处于忙状态，无法完成正常reader和tag间的“验证”和“通讯”</li></ul></li><li>追踪<ul><li>攻击者通过使用非法的reader来跟踪定位受害者的tag所在位置</li></ul></li><li>扫描攻击<ul><li>攻击者使用reader在受害者不知情的情况下非法读取tag</li></ul></li><li>接力、中继攻击<ul><li>攻击者将受害者的tag信号通过放大器、无线传输器传给reader，从而使得reader做出合法的响应；用于有时效要求的RFID攻击场合</li></ul></li></ul><h4 id="近场通讯NFC技术的安全问题"><a href="#近场通讯NFC技术的安全问题" class="headerlink" title="近场通讯NFC技术的安全问题"></a>近场通讯NFC技术的安全问题</h4><ul><li>NFC存在与RFID相似的问题</li></ul><h5 id="NFC系统易受到的国际"><a href="#NFC系统易受到的国际" class="headerlink" title="NFC系统易受到的国际"></a>NFC系统易受到的国际</h5><ul><li>窃听攻击</li><li>克隆攻击</li><li>中间人攻击</li><li>中继攻击</li><li>近场攻击</li></ul><h3 id="近距离通信攻击的防范措施"><a href="#近距离通信攻击的防范措施" class="headerlink" title="近距离通信攻击的防范措施"></a>近距离通信攻击的防范措施</h3><ul><li>所有近距离通信技术都有安全漏洞</li><li>绝大部分安全隐患可以在管理、使用过程中防范</li><li>通用的安全防范建议</li></ul><h4 id="蓝牙系统防范攻击的技术措施"><a href="#蓝牙系统防范攻击的技术措施" class="headerlink" title="蓝牙系统防范攻击的技术措施"></a>蓝牙系统防范攻击的技术措施</h4><ol><li>更改蓝牙设备的默认设置</li><li>将蓝牙功率设置为最低可用，减少信号范围</li><li>选择足够长、足够复杂的PIN码，密码</li><li>将蓝牙设备设为不可见</li><li>对所有蓝牙连接进行加密，保护数据的私密</li><li>确保对所有连接执行相互设备认证</li><li>将加密密钥大小设为最大值（128bit），防止暴力攻击</li><li>定期部署蓝牙软件的更新</li></ol><h4 id="蓝牙系统防范攻击的技术措施-1"><a href="#蓝牙系统防范攻击的技术措施-1" class="headerlink" title="蓝牙系统防范攻击的技术措施"></a>蓝牙系统防范攻击的技术措施</h4><ol><li>仅在必要的时候启用蓝牙，平时关闭蓝牙</li><li>当蓝牙链接处于活动状态时，尽量缩短设备间距离</li><li>最大化与其它蓝牙设备、陌生人的距离，减少窃听机会</li><li>在pairing时如发现异常，不要输入PIN、密码</li><li>从pairing设备列表中删除丢失、被盗或未使用的设备</li><li>维护所有蓝牙设备的清单及其地址，以供查验</li><li>个人及时了解蓝牙技术的安全威胁和漏洞信息</li><li>不接受任何来自未知或可疑蓝牙设备的传输</li></ol><h4 id="RFID系统防范攻击的措施"><a href="#RFID系统防范攻击的措施" class="headerlink" title="RFID系统防范攻击的措施"></a>RFID系统防范攻击的措施</h4><ol><li>有源tag不支持验证和加密，应在安全操作环境中使用</li><li>执行禁用tag的kill命令，即“灭活” 指令时要认证，并使用32位密码</li><li>默认情况下设备的NFC功能应该处于禁用状态</li><li>在服务器端建立tag的数据映射，不在tag中存储明文信息</li><li>限制无关人员靠近办公大楼、数据中心和IT房</li><li>落实RFID的安全管控措施和安全检查制度</li><li>使用法拉第网罩，或金属网箔，来屏蔽电磁波，保护RFID tag</li><li>主动干扰，发送电磁波来阻止、破坏非法reader的读取</li></ol><h4 id="近场通信NFC系统防范攻击的措施"><a href="#近场通信NFC系统防范攻击的措施" class="headerlink" title="近场通信NFC系统防范攻击的措施"></a>近场通信NFC系统防范攻击的措施</h4><ol><li>大部分措施和RFID系统安全措施类似</li><li>远离陌生人，远离陌生环境</li><li>默认情况下禁用NFC功能</li><li>执行Paysafe近距离检查，防止Relay攻击</li></ol><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul><li>近距离通信技术都存在安全漏洞</li><li>任何安全漏洞都有可能遭受到黑客的攻击</li><li>近距离通信系统被攻击后的负面影响巨大</li><li>安全防范措施主要在日常管理和使用方面</li><li>正常的防范措施能够有效地阻止黑客攻击</li></ul><h2 id="存储设备上的数据安全及案例分析"><a href="#存储设备上的数据安全及案例分析" class="headerlink" title="存储设备上的数据安全及案例分析"></a>存储设备上的数据安全及案例分析</h2><p><strong>存储设备数据安全事件</strong></p><blockquote><p>2019年11月</p><p>Facebook公司硬盘失窃，数万名在美员工个人信息泄露</p></blockquote><hr><blockquote><p>2019年初，湖北武汉某科技公司41台笔记本电脑失窃，涉及正在研发的估值达8000余万元的某项目核心机密内容。</p></blockquote><hr><blockquote><p>2020年5月，Greentheonly在社交媒体上指出特斯拉存在数据泄露的问题。</p><p>媒体控制单元（MCU）：手机通讯录、通话记录、日历项目、Wi-Fi密码、家庭住址、导航去过的地点等</p><p><em>销毁不彻底，固件内存在相关信息</em></p><p>SQLite数据库：恢复出厂设置只意味着操作系统将释放该特定模块上的空间，但已经写入的数据仍保留在原处。只有当硬盘驱动器上的特定模块被新消息覆盖重新写入，原有信息才会被真正消除。</p></blockquote><hr><h3 id="存储设备发展历程"><a href="#存储设备发展历程" class="headerlink" title="存储设备发展历程"></a>存储设备发展历程</h3><ul><li>穿孔卡片&amp;穿孔纸带<ul><li>穿孔卡片是最早的数据存储媒介</li></ul></li><li>磁鼓存储器<ul><li>1932年发明</li><li>被认为是硬盘驱动器(HDD）的前身</li></ul></li><li>磁带存储器：一种经久不灭的介质<ul><li>1928年 录音磁带</li><li>1952年 第一台IBM磁带机</li><li>是所有存储媒体中单位存储成本最低</li></ul></li><li>软盘（Floppy Disk）存储器<ul><li>是个人计算机中最早使用的可移介质，软盘的读写是通过软盘驱动器完成的</li></ul></li><li>硬盘（hard-disk drive，HDD）存储器<ul><li>1956年，IBM第一块硬盘，5MB</li><li>防震抗摔性差</li><li>标准IDE硬盘</li><li>移动硬盘：便捷性，多采用USB2.0、USB3.0、IEEE 1394等传输接口</li><li>磁盘阵列</li></ul></li><li>Flash存储器：SLC、MLC、TLC、QLC、3D-NAND、……<ul><li>闪存类的产品一般有：U盘、CF卡、SM卡、SD/MMC卡、记忆棒、XD卡……</li><li>基于Flash存储器的固态硬盘简称固盘或SSD：高速、大容量、可移动</li><li>SSD目前最大容量为100TB4</li></ul></li></ul><h4 id="常用数据存储设备"><a href="#常用数据存储设备" class="headerlink" title="常用数据存储设备"></a>常用数据存储设备</h4><p>个人数据存储载体</p><ul><li>HDD</li><li>Flash</li><li>SSD</li></ul><p>企业：</p><ul><li>HDD和SSD</li><li>磁盘阵列、闪存阵列</li><li>网络存储：DAS、NAS……</li></ul><h3 id="数据存储、删除和恢复"><a href="#数据存储、删除和恢复" class="headerlink" title="数据存储、删除和恢复"></a>数据存储、删除和恢复</h3><p><strong>软件DiskGenius恢复 shred粉碎软件</strong></p><p>不同存储介质，存储、读取、删除数据的方式各不相同</p><h3 id="存储设备上的数据安全"><a href="#存储设备上的数据安全" class="headerlink" title="存储设备上的数据安全"></a>存储设备上的数据安全</h3><h4 id="数据生命周期"><a href="#数据生命周期" class="headerlink" title="数据生命周期"></a>数据生命周期</h4><ul><li>数据产生与初存储</li><li>数据传输</li><li>数据处理与再处理</li><li>数据消亡</li></ul><hr><ul><li>采集<ul><li>非用户授权采集<ul><li>授权采集</li></ul></li></ul></li><li>分析加工<ul><li>分类分级不当<ul><li>合理分级、分类</li></ul></li><li>恶意篡改、误操作<ul><li>脱敏加密</li></ul></li></ul></li><li>存储<ul><li>明文存储</li><li>非法访问</li><li>脱库</li><li>数据遗失</li><li>防护手段<ul><li>数据库审计</li><li>数据库防火墙</li><li>加密脱敏存储</li><li>容灾备震</li><li>文件DLP</li></ul></li></ul></li><li>内部消费<ul><li>授权不当</li><li>数据滥用</li><li>防护<ul><li>企业人员访问授权</li><li>应用授权管理</li></ul></li></ul></li><li>外部共享<ul><li>非法数据交换</li><li>合作伙伴数据授权不当</li><li>API非法访问</li><li>用户无法获取自身隐私数据</li></ul></li></ul><hr><p><strong>数据产生、初存储时的安全保障</strong></p><ul><li>涉及隐私或密级的信息：密码手段加密、数据库正确使用<ul><li>本地存储：密码设置、密码手段加密</li><li>云端存储：<ul><li>数据库正确配置，防脱库等攻击</li><li>访问控制、权限控制等</li></ul></li></ul></li></ul><h3 id="存储设备数据安全解决方案的思考"><a href="#存储设备数据安全解决方案的思考" class="headerlink" title="存储设备数据安全解决方案的思考"></a>存储设备数据安全解决方案的思考</h3><ul><li>国家层面：加强相关标准建立和立法</li><li>企业层面：<ul><li>安全管理：安全培训、员工管理、安全预警</li><li>企业级数据安全保护技术及其更新<ul><li>数据管理与数据备份：文档加密，存储介质的管理与维护</li></ul></li></ul></li><li>个人层面：善于利用各种安全手段<ul><li>安全使用存储设备</li><li>保护重要文档：密码技术</li></ul></li></ul><hr><h3 id="推荐阅读资料"><a href="#推荐阅读资料" class="headerlink" title="推荐阅读资料"></a>推荐阅读资料</h3><ol><li></li><li>……</li></ol><h3 id="课后实践与思考"><a href="#课后实践与思考" class="headerlink" title="课后实践与思考"></a>课后实践与思考</h3><ol><li>探讨个人设备数据安全保护方案</li><li>区块链分布式安全存储技术研究</li><li>调研目前国内外关于数据安全的法律法规</li></ol><h2 id="无线通信网络安全案例分析"><a href="#无线通信网络安全案例分析" class="headerlink" title="无线通信网络安全案例分析"></a>无线通信网络安全案例分析</h2><h3 id="无线通信安全概述"><a href="#无线通信安全概述" class="headerlink" title="无线通信安全概述"></a>无线通信安全概述</h3><h4 id="无线通信的发展史"><a href="#无线通信的发展史" class="headerlink" title="无线通信的发展史"></a>无线通信的发展史</h4><ul><li><p>移动通信（蜂窝网）</p><ul><li>第一代（1G）：模拟通信（大哥大）</li><li>第二代（2G）：GSM（FDMA频分多址），数字通信的开始</li><li>第三代（3G）：CDMA2000（电信），WCDMA（联通），TD-SCDMA（移动，我国自主研发）<ul><li>CDMA：码分多址</li></ul></li><li>第四代（4G）：LTE（TD-LTE，FD-LTE），OFDM+MIMO<ul><li>OFMA：频分重合，加码分</li><li>MIMO：空分，通过空间区分用户信息，</li></ul></li><li>第五代（5G）：NR（New Radio），三大场景（eMBB，mMTC，URLLC）<ul><li>eMBB：超宽带？</li><li>mMTC：海量接入(Massive Machine Type Communication)</li><li>URLLC：高速率，低时延，<em>针对物联网</em></li></ul></li><li>第六代（6G：AI+无线）？？？</li></ul></li></ul><blockquote><p>天线长度为波长四分之一，即$\frac{\lambda}{4}$</p></blockquote><ul><li>局域网：WLAN（WiFi）<ul><li>1997年第一个无线局域网标准</li><li>……</li></ul></li></ul><h4 id="无线通信安全简史"><a href="#无线通信安全简史" class="headerlink" title="无线通信安全简史"></a>无线通信安全简史</h4><p>移动通信方面</p><ol><li>第一代<ul><li>几乎没有安全措施，用户（手机）把自己的序列号发送至网络（例如基站），网络查一下有这个序列号就允许其连接<ul><li>一旦手机序列号被克隆，别人就可以使用相应的网络服务</li></ul></li></ul></li><li>第二代（GSM）：<ul><li>特点：<ul><li>采用基于私钥密码体制的安全机制</li><li>通过鉴权（认证）来防止非法用户使用网络</li><li>通过加密技术防止无线信道的窃听</li><li>缺点：</li><li>所使用的身份认证和加密算法存在许多安全隐患</li><li>安全密钥太短可能被短时间破译</li><li>SIM卡可能被克隆</li><li>没有考虑数据完整性保护，难以发现数据被篡改</li></ul></li></ul></li><li>3G，4G，5G：</li></ol><ul><li><p>特点：</p><ul><li><p>重新设计安全算法</p><ul><li>增加密钥长度</li><li>提供双向认证（用户与网络）</li><li>保证数据的完整性</li><li>安全体系趋于稳定</li></ul></li><li><p>挑战：</p><ul><li>超级计算机</li></ul></li></ul></li><li>密钥分发和管理</li></ul><ul><li>WLAN<ul><li>非商用，不盈利，所以研究人员只关注速率、时延等性能，安全性考虑较少</li><li>目前常用的是RC4和AES算法</li></ul></li></ul><h4 id="无线通信网面临的主要安全威胁"><a href="#无线通信网面临的主要安全威胁" class="headerlink" title="无线通信网面临的主要安全威胁"></a>无线通信网面临的主要安全威胁</h4><ul><li>概念<ul><li>无线终端：手机，pad，笔记本电脑</li><li>无线接入点：小基站、路由器等</li><li>网络基础设施：大基站、交换机</li><li>空中接口：无线终端与无线接入点之间的接口</li></ul></li></ul><ul><li>威胁<ul><li>对传递信息的威胁<ul><li>针对系统中传输的个人信息</li><li>侦听<ul><li>非法窃听</li><li>无线通信的广播特性使得任何具有天线的设备都能收到其他用户的数据</li></ul></li><li>篡改<ul><li>非授权方更改系统中的各种信息</li><li>伪装成合法用户进行信息的修改</li></ul></li><li>抵赖<ul><li>通信一方否认自己的行为</li></ul></li></ul></li><li>对用户的威胁<ul><li>针对用户的行为</li><li>流量分析<ul><li>分析信息速率，消息长度，接收者或者发送者标识等</li></ul></li><li>监视<ul><li>了解用户在何时何地进行通信</li></ul></li></ul></li><li>对通信系统的威胁<ul><li>对系统的功能的威胁？</li><li>拒绝服务<ul><li>非法攻击使系统无法提供服务</li><li>例如发送大量垃圾信息造成网络拥堵，阻止系统对正常用户的服务</li></ul></li><li>资源的非授权访问<ul><li>越权使用超过其职权范围的资源</li><li>例如学信网学生注册信息丢失</li><li>强行占用不属于自己的信道</li></ul></li></ul></li></ul></li></ul><h4 id="移动通信系统的安全要求"><a href="#移动通信系统的安全要求" class="headerlink" title="移动通信系统的安全要求"></a>移动通信系统的安全要求</h4><ol><li>能唯一地标识用户</li><li>冒充合法用户是困难的</li><li>双向认证，用户和服务器之间相互信任</li><li>机密性，保证传输数据的安全</li><li>用户身份的匿名性，不向第三方暴露自己的身份</li><li>不可否认性，防止抵赖</li><li>完整性</li></ol><h4 id="移动通信系统的安全体系"><a href="#移动通信系统的安全体系" class="headerlink" title="移动通信系统的安全体系"></a>移动通信系统的安全体系</h4><ul><li>移动通信系统安全体系定义了5种安全服务：认证，访问控制，数据完整，保密，不可否认。各种服务相互依赖</li><li>协议层简介：<ul><li>管理层：负责安全威胁的管理以及制定合理的管理目标</li><li>用户层：提供端到端的安全（例如，密钥协商）</li><li>控制层：负责鉴权和用户管理</li><li>链路层：空中接口加密</li><li>物理层：防止对信道的窃听（跳频）</li></ul></li></ul><p><strong>安全域</strong></p><ul><li>网络接入域安全<ul><li>提供安全接入服务，防止被窃听，串改等。</li></ul></li><li>网络域安全<ul><li>保证核心网</li></ul></li><li>用户域安全</li></ul><h3 id="个人移动通信系统安全"><a href="#个人移动通信系统安全" class="headerlink" title="个人移动通信系统安全"></a>个人移动通信系统安全</h3><ol><li><p>第二代（2G）移动通信系统安全技术</p><ul><li><p>第二代的代表性系统为GSM</p></li><li><p>为何GSM如此重要</p><ul><li>3G、4G、5G依然是在GSM的大框架下进行性能优化和提升</li><li>偏远地区依然使用</li></ul></li><li><p>GSM系统的基本构成</p><ul><li><p>基站收发器：BTS</p></li><li><p>基站控制器：BSC</p></li><li><p>移动业务中心：MSC</p><ul><li>VLR：访问者位置寄存器</li><li>HLR：归属用户位置寄存器</li><li>AuC：鉴权中心</li><li>EIR：移动设备标识寄存器</li></ul></li><li><pre><code class="lang-mermaid">graph LRu(user)--&gt;au1(user)--&gt;au2(user)--&gt;aa(BTS:基站收发器)--&gt;b(BSC:基站控制器)b--&gt;c(MSL:移动业务中心)c--&gt;VLR:访问者位置寄存器c--&gt;HLR:归属用户位置寄存器c--&gt;AuC:鉴权中心c--&gt;EIR:移动设备寄存器</code></pre></li></ul></li><li><p>GSM的安全目标</p><ol><li>防止未经授权的用户进入网络</li><li>保护用户的隐私（信息，语音等）</li></ol></li><li><p>三大安全特征</p><ul><li>用户身份认证（网络不被未授权用户使用）</li><li>数据机密性（不泄露信息）</li><li>用户身份（IMSI）保密（攻击者无法识别是哪个用户在使用信息）</li></ul></li><li><p>GSM系统中实现安全的主要模块是：SIM卡，手机和基站，网络子系统：</p><ol><li>SIM卡（俗称手机卡）<ul><li>卡内有专门的操作系统，以便控制外部设备（手机）对卡上存储的数据进行访问</li><li>SIM卡存储了用户密钥（只有卡和基站有密钥的具体信息，Ki）、IMSI（用户唯一身份号，不是手机号）、移动用户临时标志（TMSI）、鉴权算法A3、加密密钥生成算法（A8）等私密信息</li><li>其中，密钥Ki和IMSI是在用户入网时获得的全球唯一的一组数据，这组数据在用户使用期间保持不变</li></ul></li><li>手机和基站：<ul><li>手机从SIM卡中获得会话密钥Kc（由Ki，A3算法，A8算法产生），然后用A5算法产生密钥流，用于数据加密</li><li>基站从网络子系统中（例如AuC：鉴权中心）获得会话密钥Kc，同样用A5算法产生加密密钥流</li></ul></li><li>网络子系统：<ul><li>网络子系统中的AuC（鉴权中心）包含A3，A8算法。A3，A8算法产生会话密钥Kc，随机数（RAND），预期相应（RES）。将AuC产生的（RAND，RES，</li></ul></li></ol></li><li><p>GSM的鉴权机制</p><ul><li>所谓鉴权，就是指认证，证明自己是合法用户</li><li>GSM标识码<ul><li>要想对系统中的用户进行鉴别，首先需要标志用户（相当于给用户起一个名字）</li><li>名字1：IMEI（国际移动设备标识）<ul><li>手机唯一编码（是手机不是SIM卡）</li></ul></li><li>名字2：MSISDN（……</li></ul></li></ul></li><li>GSM鉴权过程<ul><li>GSM网络需要通过用户鉴权机制来识别SIM是否合法，防止非法用户接入网络……</li></ul></li><li>GSM系统的安全隐患<ol><li>GSM的认证是单向的，只有网络对用户的认证，没有用户对网络的认证。因此，可能存在非法的设备伪装成基站欺骗用户</li><li>GSM的加密只有无线信道部分，即手机到基站的传输。在网络子系统中是明文传输。因此，如果窃听者能够在子系统中窃取认证向量三元组，就可以对用户发起攻击（如窃听）</li><li>没有考虑数据完整性保护，如果数据被篡改，难以发现</li><li>……</li></ol></li></ul></li></ol><ul><li>第三代移动通信系统安全技术<ul><li>系统构架<ul><li>3G-SGSN：GPRS服务支持节点</li><li>GGSN：GPRS网管支持节点</li></ul></li><li>3G系统的认证与密钥协商<ul><li>GSM系统采用了3元参数值</li><li>3G系统产生5个参数的认证向量：RAND，XRES，CK，IK，AUTN</li><li>XRES表示应答信号</li><li>CK，IK分别表示……</li></ul></li><li>认证过程<ol><li>AuC产生n个认证向量给VLR，每个向量都是由5个参数构成</li><li>VLR在n个向量中选中一个向量Vector（i）并将其中的RAND（i）和AUTN（i）发给用户。其中AUTN（i）中含有一个叫做MAC的值</li><li>用户收到RAND（i）和AUTN（i）后计算XMAC值，并与AUTN（i）中携带的MAC值比较。如果不同，则向VLR发送鉴权失败的信号。如果相同，用户产生一个响应RES（i）发送给VLR。这里完成了对网络的认证。</li><li>VLR对比RES（i）……</li></ol></li></ul></li></ul><h2 id="WannaCry勒索病毒案例分析"><a href="#WannaCry勒索病毒案例分析" class="headerlink" title="WannaCry勒索病毒案例分析"></a>WannaCry勒索病毒案例分析</h2><h3 id="什么是WannaCry勒索病毒"><a href="#什么是WannaCry勒索病毒" class="headerlink" title="什么是WannaCry勒索病毒"></a>什么是WannaCry勒索病毒</h3><blockquote><p>2017年5月12日，一款新型病毒攻击了包括西班牙、英国、意大利、俄罗斯、中国在内的众多国家</p><p>这场网络攻击的罪魁祸首就是一种叫WannaCry的勒索病毒</p></blockquote><h3 id="的前世今生"><a href="#的前世今生" class="headerlink" title="~的前世今生"></a>~的前世今生</h3><p>WannaCry病毒分为两部分：</p><ol><li>蠕虫部分—用于传播和释放病毒</li><li>勒索病毒部分—攻击用户加密文件</li></ol><ul><li>蠕虫病毒<ul><li>蠕虫是一种可以主动地寻找更多目标机器进行感染，而每台被感染的机器又变成对其他机器实施攻击的源头的程序</li><li>蠕虫可以借助网络连接在系统间传播，也可以借助共享媒体……</li></ul></li><li>为了实现自身的复制，蠕虫病毒需要使用一些方法来访问远程系统，如：<ul><li>电子邮件或即时通讯设施<ul><li>借助电子邮件将自身的副本邮寄给其它系统</li></ul></li><li>文件共享</li><li>远程执行功能<ul><li>使用直接的远程可执行攻击或利用一个网络服务中的程序缺陷去破坏该系统的操作</li></ul></li><li>远程文件访问或传输能力</li><li>远程登录能力</li></ul></li><li>典型的蠕虫运行周期：<ul><li>休眠</li><li>传播</li><li>触发</li><li>执行</li></ul></li><li>传播阶段通常执行以下功能<ul><li>检查已感染的主机的宿主表、地址簿、好友列表、信任同伴或其它类似的存放远程系统访问细节的相应文件</li><li>通过扫描可能的目标宿主地址，得到感染其它系统的合适访问机制</li><li>使用找到的访问机制传送自身副本</li></ul></li><li>搜索其它可感染系统的过程称为扫描或指纹识别，网络地址扫描使用如下策略：<ul><li>随机<ul><li>每一台受影响的主机都会借助不同的种子探测其ip地址空间中的随机地址</li></ul></li><li>预先生成的目标列表<ul><li>攻击者预先编制一张潜在的可攻击计算机列表</li></ul></li><li>内部目标列表<ul><li>使用被感染的计算机中包含的信息去寻找更多可以扫描的主机</li></ul></li><li>本地子网<ul><li>如果一台主机在防火墙的保护下被感染，那么之后该主机就会在其自身的本地网络中寻找攻击目标</li></ul></li></ul></li></ul><p><strong>蠕虫病毒技术的现状：</strong></p><ul><li>多平台<ul><li>不再局限于Windows操作系统</li></ul></li><li>多攻击点<ul><li>多种方式入侵系统</li></ul></li><li>超速传播<ul><li>利用各种技术优化蠕虫传播速度</li></ul></li><li>多态<ul><li>为逃避检测，利用功能上等价的指令以及加密技术</li></ul></li><li>变形</li><li>传输工具</li><li>零天攻击（0day）</li></ul><p><strong>历史上的蠕虫病毒：</strong></p><ul><li>莫里斯蠕虫病毒</li><li>美丽杀手1999年</li><li>爱虫病毒2000年</li><li>熊猫烧香2007年</li></ul><p>此次WannaCry病毒制造者正是利用前段时间美国国家安全局泄露的Windows SMB远程漏洞利用工具“永恒之蓝”来进行传播的。</p><p><strong>勒索病毒：</strong></p><ul><li>勒索软件最早出现在1989年，名为“AIDS Trojan”</li><li>1996年，明确勒索病毒的概念：利用恶意代码干扰中毒者的正常使用，只有交钱才能恢复正常</li></ul><h3 id="的攻击方式及分析"><a href="#的攻击方式及分析" class="headerlink" title="~的攻击方式及分析"></a>~的攻击方式及分析</h3><h3 id="的应对分析"><a href="#的应对分析" class="headerlink" title="~的应对分析"></a>~的应对分析</h3>]]></content>
-      
-      
+      <tags>
+        <tag>笔记</tag>
+        <tag>MySQL</tag>
+        <tag>SQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL必知必会样例表笔记</title>
+    <url>/2021/06/15/MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E6%A0%B7%E4%BE%8B%E8%A1%A8%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="MySQL必知必会-附录B-样例表"><a href="#MySQL必知必会-附录B-样例表" class="headerlink" title="MySQL必知必会-附录B-样例表"></a>MySQL必知必会-附录B-样例表</h1><p>书中举例使用的数据均为该样例表。</p>
+<p>样例在：<a href="http://www.forta.com/books/0672327120/">http://www.forta.com/books/0672327120/</a></p>
+<p>该网页包含两个可下载的SQL脚本文件</p>
+<ul>
+<li>create.sql 包含创建6个数据库表的MySQL语句</li>
+<li>populate.sql 包含用来填充这些表的INSERT语句</li>
+</ul>
+<p>首先要在主机部署MySQL，<br>下载安装MySQL，以及Xampp。</p>
+<p>在Xampp启动Mysql，再在终端启动安装的MySQL。<br>（可把安装的MySQL的路径设置为Path环境变量）</p>
+<p>先启动mysql<code>mysql -u root</code></p>
+<p>一般没有密码，（这个启动是需要xampp上启动mysql的，否则会无法启动）</p>
+<p>然后创建一个新的数据库：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE DATABASE crashcourse;</span><br><span class="line">USE crashcourse</span><br></pre></td></tr></table></figure>
+<p><em>该语句创建名为crashcourse的数据库，然后进入该数据库，SQL对大小写不敏感，</em><br><em>因此前面大写的CREATE等词也可以转为小写</em></p>
+<p>随后导入下载的SQL脚本文件把数据导入：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">source &lt;SQL脚本create.sql的绝对路径&gt;</span><br><span class="line">source &lt;SQL脚本populate.sql的绝对路径&gt;</span><br></pre></td></tr></table></figure>
+<p>先导入create.sql，写入表，<br>再导入populate.sql，填充表。</p>
+<p>自此样例表导入完毕。</p>
+]]></content>
       <categories>
-          
-          <category> 记录 </category>
-          
-          <category> 案例分析 </category>
-          
+        <category>SQL</category>
+        <category>笔记</category>
+        <category>MySQL</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> 记录 </tag>
-            
-            <tag> 案例分析 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>MySQL使用与检索数据</title>
-      <link href="2021/06/15/MySQL%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%A3%80%E7%B4%A2%E6%95%B0%E6%8D%AE/"/>
-      <url>2021/06/15/MySQL%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%A3%80%E7%B4%A2%E6%95%B0%E6%8D%AE/</url>
-      
-        <content type="html"><![CDATA[<h1 id="MySQL使用与检索数据"><a href="#MySQL使用与检索数据" class="headerlink" title="MySQL使用与检索数据"></a>MySQL使用与检索数据</h1><h2 id="使用MySQL"><a href="#使用MySQL" class="headerlink" title="使用MySQL"></a>使用MySQL</h2><p>使用<code>mysql -u root</code>以管理员账号登录</p><p>这里是使用本地部署，因此命令较简单，未尝试远程登录。</p><h3 id="3-2-选择数据库"><a href="#3-2-选择数据库" class="headerlink" title="3.2 选择数据库"></a>3.2 选择数据库</h3><p><strong>关键字（key word）</strong> 作为MySQL语言组成部分的保留字。<br>不要用关键字命名一个表或列。</p><p>最初链接到MySQL时，没有打开任何数据库，<br>因此应该先打开某个数据库以进行操作。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">USE crashcourse;</span><br></pre></td></tr></table></figure><p>在导入样例表时，已经创建一个数据库名为crashcourse，<br>使用USE语句打开该数据库。一般会输出<code>Database changed</code></p><h3 id="3-3-了解数据库和表"><a href="#3-3-了解数据库和表" class="headerlink" title="3.3 了解数据库和表"></a>3.3 了解数据库和表</h3><p>数据库、表、列、用户、权限等信息被存储在数据库和表中。<br>可用MySQL的SHOW命令显示这些信息。</p><p>如<code>SHOW DATABASES;</code>可返回可用数据库的一个列表。</p><p><code>SHOW TABLES;</code>返回当前打开的数据库内的表的列表。</p><p><code>SHOW COLUMNS FROM customers；</code>返回表customers中的所有列组成的列表。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SHOW STATUS  # 显示广泛的服务器状态信息（不清楚）</span><br><span class="line">SHOW CREATE DATABASE  # （显示创建特定数据库的语句）</span><br><span class="line">SHOW CREATE TABLE  # 显示创建特定表的语句</span><br></pre></td></tr></table></figure><h2 id="检索数据"><a href="#检索数据" class="headerlink" title="检索数据"></a>检索数据</h2><p>SELECT语句，从一个或多个表中检索信息。</p><h3 id="4-2-检索单个列"><a href="#4-2-检索单个列" class="headerlink" title="4.2 检索单个列"></a>4.2 检索单个列</h3><p><em>当前已进入数据库crashcourse</em></p><p><code>SELECT prod_name FROM products</code><br>利用SELECT语句从products表中检索一个名为prod_name的列。<br>会返回该列的所有内容。</p><p><em>注：SQL对大小写不敏感，因此，SELECT可写成select</em></p><h3 id="4-3-检索多个列"><a href="#4-3-检索多个列" class="headerlink" title="4.3 检索多个列"></a>4.3 检索多个列</h3><p>从一个表中检索多个列，则在使用SELECT关键字后给出多个列名，<br>每两个列名之间使用逗号分隔。</p><p>如：<br><code>SELECT prod_id, prod_name, prod_price FROM products;</code></p><p>该句则是从表products中检索三个列的内容。</p><h3 id="4-4-检索所有列"><a href="#4-4-检索所有列" class="headerlink" title="4.4 检索所有列"></a>4.4 检索所有列</h3><p>SELECT语句可以使用通配符（*）指检索所有列，如：</p><p><code>SELECT * FROM products;</code></p><p>则会返回该表的所有列。</p><h3 id="4-5-检索不同的行"><a href="#4-5-检索不同的行" class="headerlink" title="4.5 检索不同的行"></a>4.5 检索不同的行</h3><p>如上，SELECT语句返回检索列的所有内容，如果对于列中重复的内容，<br>只需要出现一次，则使用DISTINCT关键字。<br>该关键字令MySQL对于重复的项只返回一个。</p><p><code>SELECT DISTINCT vend_id FROM products;</code><br>则是只返回4个不重复的项。</p><blockquote><p>DISTINCT关键字修饰所有列，即若检索多个列，<br>则这些列的不同组合都会被返回，除非每一列都重复才会返回一个。</p></blockquote><h3 id="4-6-限制结果"><a href="#4-6-限制结果" class="headerlink" title="4.6 限制结果"></a>4.6 限制结果</h3><p>SELECT语句返回所有匹配的行，可使用LIMIT子句限制返回的行数。</p><p><code>SELECT prod_name FROM products LIMIT 5;</code><br>返回5项记录。</p><p><code>SELECT prod_name FROM products LIMIT 1,5;</code><br>指返回从第二行开始的5条记录。</p><p>行数下标从0开始，所以上述语句LIMIT后的第一个数字1指的是第二行。</p><p>MySQL 5 另有LIMIT 4 OFFSET 3 语句等同于 LIMIT 3，4；<br>即从行3开始取4行。</p><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>自此，已了解如何使用SELECT语句检索单表列，多个表列及所有表列。</p>]]></content>
-      
-      
+      <tags>
+        <tag>笔记</tag>
+        <tag>MySQL</tag>
+        <tag>SQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python学习随笔</title>
+    <url>/2021/07/30/python%E5%AD%A6%E4%B9%A0%E9%9A%8F%E7%AC%94/</url>
+    <content><![CDATA[<h1 id="python学习随笔"><a href="#python学习随笔" class="headerlink" title="python学习随笔"></a>python学习随笔</h1><blockquote>
+<p>背景知识：</p>
+<ul>
+<li>了解python的基础语法</li>
+<li>了解面向对象编程</li>
+<li>……</li>
+</ul>
+</blockquote>
+<p>本文章旨在记录学习python时的一些想法，以及一些较为琐碎，暂时用不上以至于容易遗忘的各种模块等……</p>
+<p>包含一些知识要点，一些模块用法，一些尝试……</p>
+<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><p><em>记录一些模块的各种类、方法</em></p>
+<h3 id="sys"><a href="#sys" class="headerlink" title="sys"></a>sys</h3><p><em>系统模块，大抵是针对系统的一系列设置？</em></p>
+<h4 id="修改本次运行默认编码"><a href="#修改本次运行默认编码" class="headerlink" title="修改本次运行默认编码"></a>修改本次运行默认编码</h4><p><strong>如下，将本次运行时的默认编码修改为utf-8</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">&#x27;utf8&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Hello world&#x27;</span>.encode())  <span class="comment"># 此时encode方法即为utf-8编码</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="os"><a href="#os" class="headerlink" title="os"></a>os</h3><p><em>操作系统模块（operate system）？大抵是针对操作系统层面的操作</em></p>
+<h4 id="遍历目录及文件"><a href="#遍历目录及文件" class="headerlink" title="遍历目录及文件"></a>遍历目录及文件</h4><p><code>os.walk(top[, topdown=True[, onerror=None[, followlinks=False]]])</code></p>
+<p>该方法返回一个生成器，以供遍历目录</p>
+<ul>
+<li>top— 所要遍历的目录的地址,返回一个三元组(root, dirs, files),<ul>
+<li>root: 当前正在遍历的这个文件夹的地址<ul>
+<li>例如,当前正在遍历当前目录下的dir文件夹,则root为r’.\dir’ (window系统下)</li>
+</ul>
+</li>
+<li>dirs: 一个list, 内容为当前文件夹(root)中的所有目录(即文件夹)</li>
+<li>files: 一个list, 内容为当前文件夹(root)中的所有文件(不包括root下的文件夹)</li>
+</ul>
+</li>
+<li>topdown— 可选, 默认为True, 为True则优先遍历top目录, 否则优先遍历top的子目录</li>
+<li>onerror— 可选, 传入一个callable对象, 供出现异常时调用</li>
+<li>followlinks— 可选, 如果为True, 则遍历目录下的快捷方式(Linux下为软连接 symbolic link)实际所指的目录, False则优先遍历top的子目录</li>
+</ul>
+<blockquote>
+<p>“旁门左道”:</p>
+<p>可通过该方法读取当前目录下的所有文件, 即<code>files = os.walk(&#39;.&#39;).__next__()[2]</code></p>
+<p>该files即为一个lists, 存储当前目录下的所有文件(不包括文件夹)</p>
+<p>(为何使用<code>__next__()</code>方法,参考”生成器”对象的描述)</p>
+</blockquote>
+<h4 id="获取文件属性"><a href="#获取文件属性" class="headerlink" title="获取文件属性"></a>获取文件属性</h4><p><code>os.path</code>模块, 主要用于获取文件的属性</p>
+<p>以下仅记录一些常用的:</p>
+<p>(来自菜鸟教程)</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>os.path.abspath(path)</td>
+<td>返回绝对路径</td>
+</tr>
+<tr>
+<td>os.path.basename(path)</td>
+<td>返回文件名</td>
+</tr>
+<tr>
+<td>os.path.commonprefix(list)</td>
+<td>返回list(多个路径)中，所有path共有的最长的路径</td>
+</tr>
+<tr>
+<td>os.path.dirname(path)</td>
+<td>返回文件路径</td>
+</tr>
+<tr>
+<td>os.path.exists(path)</td>
+<td>如果路径 path 存在，返回 True；如果路径 path 不存在，返回 False。</td>
+</tr>
+<tr>
+<td>os.path.lexists</td>
+<td>路径存在则返回True,路径损坏也返回True</td>
+</tr>
+<tr>
+<td>os.path.expanduser(path)</td>
+<td>把path中包含的”~”和”~user”转换成用户目录</td>
+</tr>
+<tr>
+<td>os.path.expandvars(path)</td>
+<td>根据环境变量的值替换path中包含的”$name”和”${name}”</td>
+</tr>
+<tr>
+<td>os.path.getatime(path)</td>
+<td>返回最近访问时间（浮点型秒数）</td>
+</tr>
+<tr>
+<td>os.path.getmtime(path)</td>
+<td>返回最近文件修改时间</td>
+</tr>
+<tr>
+<td>os.path.getctime(path)</td>
+<td>返回文件 path 创建时间</td>
+</tr>
+<tr>
+<td>os.path.getsize(path)</td>
+<td>返回文件大小，如果文件不存在就返回错误</td>
+</tr>
+<tr>
+<td>os.path.isabs(path)</td>
+<td>判断是否为绝对路径</td>
+</tr>
+<tr>
+<td>os.path.isfile(path)</td>
+<td>判断路径是否为文件</td>
+</tr>
+<tr>
+<td>os.path.isdir(path)</td>
+<td>判断路径是否为目录</td>
+</tr>
+<tr>
+<td>os.path.islink(path)</td>
+<td>判断路径是否为链接</td>
+</tr>
+<tr>
+<td>os.path.ismount(path)</td>
+<td>判断路径是否为挂载点</td>
+</tr>
+<tr>
+<td>os.path.join(path1[, path2[, …]])</td>
+<td>把目录和文件名合成一个路径</td>
+</tr>
+<tr>
+<td>os.path.normcase(path)</td>
+<td>转换path的大小写和斜杠</td>
+</tr>
+<tr>
+<td>os.path.normpath(path)</td>
+<td>规范path字符串形式</td>
+</tr>
+<tr>
+<td>os.path.realpath(path)</td>
+<td>返回path的真实路径</td>
+</tr>
+<tr>
+<td>os.path.relpath(path[, start])</td>
+<td>从start开始计算相对路径</td>
+</tr>
+<tr>
+<td>os.path.samefile(path1, path2)</td>
+<td>判断目录或文件是否相同</td>
+</tr>
+<tr>
+<td>os.path.sameopenfile(fp1, fp2)</td>
+<td>判断fp1和fp2是否指向同一文件</td>
+</tr>
+<tr>
+<td>os.path.samestat(stat1, stat2)</td>
+<td>判断stat tuple stat1和stat2是否指向同一个文件</td>
+</tr>
+<tr>
+<td>os.path.split(path)</td>
+<td>把路径分割成 dirname 和 basename，返回一个元组</td>
+</tr>
+<tr>
+<td>os.path.splitdrive(path)</td>
+<td>一般用在 windows 下，返回驱动器名和路径组成的元组</td>
+</tr>
+<tr>
+<td>os.path.splitext(path)</td>
+<td>分割路径，返回路径名和文件扩展名的元组</td>
+</tr>
+<tr>
+<td>os.path.splitunc(path)</td>
+<td>把路径分割为加载点与文件</td>
+</tr>
+<tr>
+<td>os.path.walk(path, visit, arg)</td>
+<td>遍历path，进入每个目录都调用visit函数，visit函数必须有3个参数(arg, dirname, names)，dirname表示当前目录的目录名，names代表当前目录下的所有文件名，args则为walk的第三个参数</td>
+</tr>
+<tr>
+<td>os.path.supports_unicode_filenames</td>
+<td>设置是否支持unicode路径名</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>注:</p>
+<p>其中,有<code>os.path.getmtime(path)</code>获取最近文件修改时间</p>
+<p>以及<code>os.path.getctime(path)</code>获取文件创建时间</p>
+<p>以及<code>os.path.getatime(path)</code>获取文件最近访问时间</p>
+<p>返回的均为时间戳(timestamp),可使用datetime模块转换</p>
+<p>其中atime, ctime, mtime 的说法,在《鸟哥的Linux私房菜》内有提及,似乎含义相同(忘了)</p>
+</blockquote>
+]]></content>
       <categories>
-          
-          <category> SQL </category>
-          
-          <category> 笔记 </category>
-          
-          <category> MySQL </category>
-          
+        <category>python</category>
+        <category>笔记</category>
+        <category>笔记</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> MySQL </tag>
-            
-            <tag> SQL </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>MySQL必知必会样例表笔记</title>
-      <link href="2021/06/15/MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E6%A0%B7%E4%BE%8B%E8%A1%A8%E7%AC%94%E8%AE%B0/"/>
-      <url>2021/06/15/MySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E6%A0%B7%E4%BE%8B%E8%A1%A8%E7%AC%94%E8%AE%B0/</url>
-      
-        <content type="html"><![CDATA[<h1 id="MySQL必知必会-附录B-样例表"><a href="#MySQL必知必会-附录B-样例表" class="headerlink" title="MySQL必知必会-附录B-样例表"></a>MySQL必知必会-附录B-样例表</h1><p>书中举例使用的数据均为该样例表。</p><p>样例在：<a href="http://www.forta.com/books/0672327120/">http://www.forta.com/books/0672327120/</a></p><p>该网页包含两个可下载的SQL脚本文件</p><ul><li>create.sql 包含创建6个数据库表的MySQL语句</li><li>populate.sql 包含用来填充这些表的INSERT语句</li></ul><p>首先要在主机部署MySQL，<br>下载安装MySQL，以及Xampp。</p><p>在Xampp启动Mysql，再在终端启动安装的MySQL。<br>（可把安装的MySQL的路径设置为Path环境变量）</p><p>先启动mysql<code>mysql -u root</code></p><p>一般没有密码，（这个启动是需要xampp上启动mysql的，否则会无法启动）</p><p>然后创建一个新的数据库：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE crashcourse;</span><br><span class="line">USE crashcourse</span><br></pre></td></tr></table></figure><p><em>该语句创建名为crashcourse的数据库，然后进入该数据库，SQL对大小写不敏感，</em><br><em>因此前面大写的CREATE等词也可以转为小写</em></p><p>随后导入下载的SQL脚本文件把数据导入：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source &lt;SQL脚本create.sql的绝对路径&gt;</span><br><span class="line">source &lt;SQL脚本populate.sql的绝对路径&gt;</span><br></pre></td></tr></table></figure><p>先导入create.sql，写入表，<br>再导入populate.sql，填充表。</p><p>自此样例表导入完毕。</p>]]></content>
-      
-      
+      <tags>
+        <tag>笔记</tag>
+        <tag>python</tag>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vim 相关笔记</title>
+    <url>/2021/06/02/vimUsage/</url>
+    <content><![CDATA[<h1 id="the-usage-of-vim"><a href="#the-usage-of-vim" class="headerlink" title="the usage of vim"></a>the usage of vim</h1><h2 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h2><p>vim共分三种模式：</p>
+<ul>
+<li>命令模式(Command mode)</li>
+<li>输入模式(Insert mode)</li>
+<li>“底线命令模式”(Last line mode)</li>
+</ul>
+<h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><ul>
+<li>i 切换到输入模式，以输入字符</li>
+<li>x删除当前光标所在字符</li>
+<li>：切换到底线命令模式，在最后一行输入命令</li>
+</ul>
+<h3 id="输入模式"><a href="#输入模式" class="headerlink" title="输入模式"></a>输入模式</h3><ul>
+<li>字符及<kbd>Shift</kbd>键组合，输入字符</li>
+<li><kbd>ENTER</kbd>，回车键，换行</li>
+<li><kbd>BACK SPACE</kbd>退格键，删除光标前一个字符</li>
+<li><kbd>DEL</kbd>删除键，删除光标后一个字符</li>
+<li>方向键，在文本中移动光标</li>
+<li><kbd>HOME/END</kbd>移动光标到行首/行尾</li>
+<li><kbd>Page Up/Page Down</kbd>上下翻页</li>
+<li><kbd>Insert</kbd>切换光标尾输入/替换模式，光标将变成竖线/下划线  <sup><a href="#fn_tag1" id="reffn_tag1">tag1</a></sup></li>
+<li><kbd>ESC</kbd>退出输入模式，切换到命令模式</li>
+</ul>
+<blockquote id="fn_tag1">
+<sup>tag1</sup>. 具体实现效果因系统而异<a href="#reffn_tag1" title="Jump back to footnote [tag1] in the text."> &#8617;</a>
+</blockquote>
+<h3 id="底线命令模式-Last-line-mode"><a href="#底线命令模式-Last-line-mode" class="headerlink" title="底线命令模式(Last line mode)"></a>底线命令模式(Last line mode)</h3><p><em>在命令模式下按下:（英文冒号）就进入了底线命令模式。</em></p>
+<ul>
+<li><kbd>q</kbd>退出程序</li>
+<li><kbd>w</kbd>保存文件</li>
+<li>……</li>
+</ul>
+<h2 id="补充其它按键命令"><a href="#补充其它按键命令" class="headerlink" title="补充其它按键命令"></a>补充其它按键命令</h2><h3 id="第一部分：一般模式使用的光标移动、复制粘贴、搜索替换等"><a href="#第一部分：一般模式使用的光标移动、复制粘贴、搜索替换等" class="headerlink" title="第一部分：一般模式使用的光标移动、复制粘贴、搜索替换等"></a>第一部分：一般模式使用的光标移动、复制粘贴、搜索替换等</h3><p><strong>移动光标的方法</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:right">按键</th>
+<th style="text-align:right">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right"><kbd>h</kbd>/<kbd>$\leftarrow$</kbd></td>
+<td style="text-align:right">光标向左移动一个字符</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>j</kbd>/<kbd>$\downarrow$</kbd></td>
+<td style="text-align:right">光标向下移动</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>k</kbd>/<kbd>$\uparrow$</kbd></td>
+<td style="text-align:right">光标向上移动</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>l</kbd>/<kbd>$\rightarrow$</kbd></td>
+<td style="text-align:right">光标向右移动一个字符</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>可以使用数字加按键的形式进行移动，如先输入“30”再按<kbd>h</kbd>，光标就会向左移动30个字符</strong> </p>
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:right">按键</th>
+<th style="text-align:right">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">数字0或<kbd>Home</kbd></td>
+<td style="text-align:right">移动到这一行的最前面字符处</td>
+</tr>
+<tr>
+<td style="text-align:right">$ 或 <kbd>End</kbd></td>
+<td style="text-align:right">移动到这一行的最后一个字符处</td>
+</tr>
+<tr>
+<td style="text-align:right">G</td>
+<td style="text-align:right">光标移动到该档案的最后一行</td>
+</tr>
+<tr>
+<td style="text-align:right">nG</td>
+<td style="text-align:right">n为数字，移动到第n行</td>
+</tr>
+<tr>
+<td style="text-align:right">gg</td>
+<td style="text-align:right">移动到这个档案的第一行，相当于1G</td>
+</tr>
+<tr>
+<td style="text-align:right">n<kbd>Enter</kbd></td>
+<td style="text-align:right">n为数字，光标向下移动n行</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>搜索替换</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:right">按键</th>
+<th style="text-align:right">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">/word</td>
+<td style="text-align:right">向光标之下寻找一个名为word的字符串，如要查找字符串 usage ，只需要输入/usage即可。</td>
+</tr>
+<tr>
+<td style="text-align:right">?word</td>
+<td style="text-align:right">向光标之上寻找字符串word</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>n</kbd></td>
+<td style="text-align:right">执行上一个搜索命令，如上一个命令是/word,则按下<kbd>n</kbd>后，会再次执行/word 。</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>N</kbd></td>
+<td style="text-align:right">“反向”执行上一个搜索命令，如上一个命令是/word , 则按下<kbd>N</kbd>后，会执行向上搜索的命令?word 。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>长命令</strong></p>
+<blockquote>
+<ul>
+<li>:n1,n2s/word1/word2/g<ul>
+<li>n1，n2为数字，在第n1与n2行之间寻找word1这个字符串，并将其改为word2 。</li>
+<li>举例：将100到200行之间的所有usage字符串修改为USAGE，则：</li>
+<li>:100,200s/usage/USAGE/g</li>
+</ul>
+</li>
+<li>:1,$s/word1/word2/g 或者 :%s/word1/word2/g<ul>
+<li>将第一行到最后一行的所有word1字符串修改为word2</li>
+</ul>
+</li>
+<li>:1,$s/word1/word2/gc 或者 :%s/word1/word2/gc<ul>
+<li>将第一行到最后一行的所有word1字符串替换为word2，每次替换时提示用户是否确认（confirm）替换。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>删除，复制与贴上（粘贴）</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:right">按键</th>
+<th style="text-align:right">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">x，X</td>
+<td style="text-align:right">在一行中，x为向后删除一个字符，X为向前删除一个字符，同时删除的字符会被复制，按p会粘贴</td>
+</tr>
+<tr>
+<td style="text-align:right">nx</td>
+<td style="text-align:right">n为数字，连续向后删除n个字符。如：要连续向后删除10个字符，则是10x</td>
+</tr>
+<tr>
+<td style="text-align:right">dd</td>
+<td style="text-align:right">删除游标所在那一整行</td>
+</tr>
+<tr>
+<td style="text-align:right">ndd</td>
+<td style="text-align:right">n为数字，删除光标所在的向下n行（包括所在那一行）。如：20dd是连续删除20行</td>
+</tr>
+<tr>
+<td style="text-align:right">d1G</td>
+<td style="text-align:right">删除光标所在行到第一行的所有数据</td>
+</tr>
+<tr>
+<td style="text-align:right">dG</td>
+<td style="text-align:right">删除光标所在行到最后一行的所有数据</td>
+</tr>
+<tr>
+<td style="text-align:right">d$</td>
+<td style="text-align:right">删除光标所在处到该行最后一个字符</td>
+</tr>
+<tr>
+<td style="text-align:right">d0</td>
+<td style="text-align:right">数字0，删除光标所在处到该行第一个字符</td>
+</tr>
+<tr>
+<td style="text-align:right">yy （常用）</td>
+<td style="text-align:right">复制光标所在行</td>
+</tr>
+<tr>
+<td style="text-align:right">nyy</td>
+<td style="text-align:right">复制光标所在行以下n行（包括该行）</td>
+</tr>
+<tr>
+<td style="text-align:right">y1G，yG，y0，y$</td>
+<td style="text-align:right">同删除命令，分别是复制光标所在行到第一行数据，复制光标所在行到最后一行数据，复制光标所在处到该行第一个字符，复制光标所在处到该行最后一个字符</td>
+</tr>
+<tr>
+<td style="text-align:right">p，P</td>
+<td style="text-align:right">p为将已复制数据粘贴在光标下一行，P则是光标上一行</td>
+</tr>
+<tr>
+<td style="text-align:right">J</td>
+<td style="text-align:right">将光标所在行与下一行的数据结合成同一行</td>
+</tr>
+<tr>
+<td style="text-align:right">c</td>
+<td style="text-align:right">重复删除多个数据，如向下删除10行，10cj 。补充解释，c即为删除指令，数字表示执行次数，最后的j表示方向，j为向下移动，则10cj是向下执行10次删除，即向下删除10行。同理，10cl是向右执行10次删除，即删除光标后的10个字符，不会超出该行。</td>
+</tr>
+<tr>
+<td style="text-align:right">u（常用）</td>
+<td style="text-align:right">撤销上一个操作</td>
+</tr>
+<tr>
+<td style="text-align:right"><kbd>Ctrl</kbd>+r</td>
+<td style="text-align:right">重复上一个操作</td>
+</tr>
+<tr>
+<td style="text-align:right">.</td>
+<td style="text-align:right">小数点，重复前一个命令</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="第二部分：一般模式切换到编辑模式的可用按键"><a href="#第二部分：一般模式切换到编辑模式的可用按键" class="headerlink" title="第二部分：一般模式切换到编辑模式的可用按键"></a>第二部分：一般模式切换到编辑模式的可用按键</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:right">按键</th>
+<th style="text-align:right">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">i,I</td>
+<td style="text-align:right">进入输入模式（Insert mode）：i为从目前光标所在处输入，I（大写i）为从所在行的第一个非空字符处输入</td>
+</tr>
+<tr>
+<td style="text-align:right">a，A</td>
+<td style="text-align:right">a为从目前光标所在的下一个字符处输入，A为所在行的最后一个字符处输入</td>
+</tr>
+<tr>
+<td style="text-align:right">o，O</td>
+<td style="text-align:right">英文字母o的大小写，小写o在所在行的下一行插入新的一行，大写O在所在行的上一行插入新一行</td>
+</tr>
+<tr>
+<td style="text-align:right">r，R</td>
+<td style="text-align:right">进入取代模式（Replace mode）：r只会取代光标所在的字符一次，R会一直取代光标所在的文字，直到按下<kbd>ESC</kbd></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="第三部分：一般模式切换到指令行模式的可用的按键及命令"><a href="#第三部分：一般模式切换到指令行模式的可用的按键及命令" class="headerlink" title="第三部分：一般模式切换到指令行模式的可用的按键及命令"></a>第三部分：一般模式切换到指令行模式的可用的按键及命令</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:right">按键</th>
+<th style="text-align:right">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">:w</td>
+<td style="text-align:right">将编辑的数据写入硬盘中（保存）</td>
+</tr>
+<tr>
+<td style="text-align:right">:w!</td>
+<td style="text-align:right">如果文件为只读，强制写入（如果有相关权限的话）</td>
+</tr>
+<tr>
+<td style="text-align:right">:q</td>
+<td style="text-align:right">退出vim</td>
+</tr>
+<tr>
+<td style="text-align:right">:q!</td>
+<td style="text-align:right">强制退出而不保存修改</td>
+</tr>
+<tr>
+<td style="text-align:right">:wq</td>
+<td style="text-align:right">保存后退出，若为:wq!则是强制保存后退出</td>
+</tr>
+<tr>
+<td style="text-align:right">ZZ</td>
+<td style="text-align:right">大写的英文字母Z，保存并退出，相当于:wq</td>
+</tr>
+<tr>
+<td style="text-align:right">ZQ</td>
+<td style="text-align:right">不保存，强制退出，相当于:q!</td>
+</tr>
+<tr>
+<td style="text-align:right">:w [filename]</td>
+<td style="text-align:right">相当于另存为filename</td>
+</tr>
+<tr>
+<td style="text-align:right">:r [filename]</td>
+<td style="text-align:right">读入一个新文件，即将filename文件中的数据从下一行开始写入</td>
+</tr>
+<tr>
+<td style="text-align:right">:n1,n2 w [filename]</td>
+<td style="text-align:right">将n1，n2行之间的内容存储为filename</td>
+</tr>
+<tr>
+<td style="text-align:right">:! command</td>
+<td style="text-align:right">暂时离开vi/vim到指令行模式下执行command的显示结果。如：<br />:! ls /home <br />即可在vi/vim中查看/home下的ls的输出</td>
+</tr>
+<tr>
+<td style="text-align:right">:set nu</td>
+<td style="text-align:right">显示每一行的行号</td>
+</tr>
+<tr>
+<td style="text-align:right">:set nonu</td>
+<td style="text-align:right">与set nu相反，取消行号</td>
+</tr>
+</tbody>
+</table>
+</div>
+]]></content>
       <categories>
-          
-          <category> SQL </category>
-          
-          <category> 笔记 </category>
-          
-          <category> MySQL </category>
-          
+        <category>笔记</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> MySQL </tag>
-            
-            <tag> SQL </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>了解SQL</title>
-      <link href="2021/06/15/%E4%BA%86%E8%A7%A3SQL/"/>
-      <url>2021/06/15/%E4%BA%86%E8%A7%A3SQL/</url>
-      
-        <content type="html"><![CDATA[<h1 id="了解SQL"><a href="#了解SQL" class="headerlink" title="了解SQL"></a>了解SQL</h1><blockquote><p>阅读《MySQL必知必会》所作笔记<br>所记概念部分仅指就该书而言</p></blockquote><h2 id="1-1-数据库基础"><a href="#1-1-数据库基础" class="headerlink" title="1.1 数据库基础"></a>1.1 数据库基础</h2><h3 id="1-1-1-什么是数据库"><a href="#1-1-1-什么是数据库" class="headerlink" title="1.1.1 什么是数据库"></a>1.1.1 什么是数据库</h3><p><strong>数据库(database)</strong>：视为以某种有组织的方式储存的数据集合。<br>书中将其比喻为文件柜，即保存数据的容器。</p><p>对于软件MySQL，实际应称为DBMS（数据库管理系统），<br>数据库是通过DBMS创建和操纵的容器。</p><p>即，用户使用的为DBMS，而非数据库本身，用户使用某数据库管理系统，<br>通过该系统创建，管理数据库，大概如计算机操作系统与硬件的关系。</p><h3 id="1-1-2-表"><a href="#1-1-2-表" class="headerlink" title="1.1.2 表"></a>1.1.2 表</h3><p>将数据库比作文件柜，则表视为文件柜中的某个文件，<br>即表保存在数据库中。</p><p><strong>表(table)</strong>：某种特定类型数据的结构化清单。<br>一种结构化文件，可抽象视为Excel表格，分为行和列。</p><p>数据库中每个表都有一个唯一的名字作为标识。</p><blockquote><p>同一个数据库不能有相同的表名，<br>但是不同数据库可以同时存在表名相同的表。</p></blockquote><p><strong>模式(schema)</strong>：关于数据库和表的布局及特性的信息。</p><p>有一些特性定义了数据在表中如何存储，比如可以存储的数据类型，<br>数据如何分解等。描述表的这些信息就是<strong>模式</strong>。模式可以用来描述数据库中特定的表以及整个数据库（和其中表的关系）。</p><blockquote><p>有时候，模式用作数据库的同义词，<br>当在该书中，模式指上述定义。</p></blockquote><h3 id="1-1-3-列（rolumn）和数据类型（datatype）"><a href="#1-1-3-列（rolumn）和数据类型（datatype）" class="headerlink" title="1.1.3 列（rolumn）和数据类型（datatype）"></a>1.1.3 列（rolumn）和数据类型（datatype）</h3><p><em>本节内容通过联想Excel表格更容易理解</em></p><p><strong>列(column)</strong>：表中的一个字段。所有表都是由一个或多个列组成的。</p><p>例如：在顾客表中，一个列存储顾客的编号，另一个列存储顾客名。</p><blockquote><p><strong>分解数据</strong> 数据应正确地分解为多个列，如省和城市分为两个列，<br>方便进行排列及过滤，若在同一列，则难以过滤。</p></blockquote><p>数据库中每个列都有相应的数据类型。数据类型定义该列可以存储的数据种类。</p><blockquote><p><strong>数据类型</strong> 每个表的每一列都有相应的数据类型。<br>正确的数据类型可以优化磁盘使用并帮助正确地排序数据。</p></blockquote><h3 id="1-1-4-行（row）"><a href="#1-1-4-行（row）" class="headerlink" title="1.1.4 行（row）"></a>1.1.4 行（row）</h3><p><em>请再次联想Excel表格</em></p><p><strong>行(row)</strong> 表中的一个记录。</p><p>表中的数据是按行存储的，即存储一个数据即添加一行，<br>每一行都包括该表格的所有列。</p><blockquote><p>有人在提到行（row）时称其为数据库记录（record）。<br>在两个术语可以相互替代，但是准确来说，行才是准确的术语。</p></blockquote><h3 id="1-1-5-主键"><a href="#1-1-5-主键" class="headerlink" title="1.1.5 主键"></a>1.1.5 主键</h3><p>在表中，每一行都应该有一个唯一的标识，以进行查找的时候不会产生歧义。<br>例如某些订单ID。</p><p><strong>主键(primary key)</strong><sup><a href="#fn_01" id="reffn_01">01</a></sup> 一列（或一组列），其值能够唯一区分表中的每个行。</p><p>能唯一标识表中每行的这个列（或这组列）称为主键。<br>主键用来唯一标识某行，并确保无歧义。</p><blockquote><p>主键可由多列共同组成，只要这些列的组合唯一。</p><p>应该总是定义主键 虽然并不总是需要主键，<br>但是应当保证创建的每个表都具有一个主键，便于以后的数据操纵和管理。</p></blockquote><ul><li>任意两行都不具有相同的主键值。</li><li>每个行都必须具有一个主键值（主键列不允许NULL值）。（即不允许留空）</li></ul><p><em>以上列出的主键规则据说是MySQL本身强制实施的</em></p><blockquote><p><strong>主键相关的习惯</strong> 除MySQL强制实施的规则外，还有一些普遍认可的习惯：</p><ul><li>不更新主键列中的值；</li><li>不重用主键列的值；</li><li>不在主键列中使用可能会更改的值（如可能会被换掉的供应商……）</li></ul></blockquote><h2 id="1-2-什么是SQL"><a href="#1-2-什么是SQL" class="headerlink" title="1.2 什么是SQL"></a>1.2 什么是SQL</h2><p>SQL（发音为字母S-Q-L或sequel）是结构化查询语言（Structured Query Language）的缩写。<br>SQL是一种专门用来与数据库通信的语言。（即，操纵数据库？）</p><p>SQL特点：</p><ul><li>几乎所有重要的DBMS都支持SQL。</li><li>SQL简单易行，语句由描述性很强的单词组成。</li></ul><blockquote><p><strong>DBMS专用的SQL</strong> SQL不是一种专利语言，<br>存在一个标准委员会，他们试图定义可供所有DBMS使用的SQL语法。<br>事实上任意两个DBMS实现的SQL都不完全相同。</p></blockquote><h2 id="1-3-动手实践"><a href="#1-3-动手实践" class="headerlink" title="1.3 动手实践"></a>1.3 动手实践</h2><p>书中包含很多例子可上机运行。应先在主机部署MySQL。</p><p>书中有附录B，用来下载相关数据库内容，作为示例数据用来操作。</p><p>附录B相关<a href="../MySQL必知必会样例表笔记">在这！</a></p><blockquote id="fn_01"><sup>01</sup>. 全国科学技术名词审定委员会审定的key在数据库中的对应名词为“键码”或“码”，本书采用了已约定俗成的“键”，请读者注意。——《MySQL必知必会》编者注<a href="#reffn_01" title="Jump back to footnote [01] in the text."> &#8617;</a></blockquote>]]></content>
-      
-      
+      <tags>
+        <tag>笔记</tag>
+        <tag>vim</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>了解SQL</title>
+    <url>/2021/06/15/%E4%BA%86%E8%A7%A3SQL/</url>
+    <content><![CDATA[<h1 id="了解SQL"><a href="#了解SQL" class="headerlink" title="了解SQL"></a>了解SQL</h1><blockquote>
+<p>阅读《MySQL必知必会》所作笔记<br>所记概念部分仅指就该书而言</p>
+</blockquote>
+<h2 id="1-1-数据库基础"><a href="#1-1-数据库基础" class="headerlink" title="1.1 数据库基础"></a>1.1 数据库基础</h2><h3 id="1-1-1-什么是数据库"><a href="#1-1-1-什么是数据库" class="headerlink" title="1.1.1 什么是数据库"></a>1.1.1 什么是数据库</h3><p><strong>数据库(database)</strong>：视为以某种有组织的方式储存的数据集合。<br>书中将其比喻为文件柜，即保存数据的容器。</p>
+<p>对于软件MySQL，实际应称为DBMS（数据库管理系统），<br>数据库是通过DBMS创建和操纵的容器。</p>
+<p>即，用户使用的为DBMS，而非数据库本身，用户使用某数据库管理系统，<br>通过该系统创建，管理数据库，大概如计算机操作系统与硬件的关系。</p>
+<h3 id="1-1-2-表"><a href="#1-1-2-表" class="headerlink" title="1.1.2 表"></a>1.1.2 表</h3><p>将数据库比作文件柜，则表视为文件柜中的某个文件，<br>即表保存在数据库中。</p>
+<p><strong>表(table)</strong>：某种特定类型数据的结构化清单。<br>一种结构化文件，可抽象视为Excel表格，分为行和列。</p>
+<p>数据库中每个表都有一个唯一的名字作为标识。</p>
+<blockquote>
+<p>同一个数据库不能有相同的表名，<br>但是不同数据库可以同时存在表名相同的表。</p>
+</blockquote>
+<p><strong>模式(schema)</strong>：关于数据库和表的布局及特性的信息。</p>
+<p>有一些特性定义了数据在表中如何存储，比如可以存储的数据类型，<br>数据如何分解等。描述表的这些信息就是<strong>模式</strong>。模式可以用来描述数据库中特定的表以及整个数据库（和其中表的关系）。</p>
+<blockquote>
+<p>有时候，模式用作数据库的同义词，<br>当在该书中，模式指上述定义。</p>
+</blockquote>
+<h3 id="1-1-3-列（rolumn）和数据类型（datatype）"><a href="#1-1-3-列（rolumn）和数据类型（datatype）" class="headerlink" title="1.1.3 列（rolumn）和数据类型（datatype）"></a>1.1.3 列（rolumn）和数据类型（datatype）</h3><p><em>本节内容通过联想Excel表格更容易理解</em></p>
+<p><strong>列(column)</strong>：表中的一个字段。所有表都是由一个或多个列组成的。</p>
+<p>例如：在顾客表中，一个列存储顾客的编号，另一个列存储顾客名。</p>
+<blockquote>
+<p><strong>分解数据</strong> 数据应正确地分解为多个列，如省和城市分为两个列，<br>方便进行排列及过滤，若在同一列，则难以过滤。</p>
+</blockquote>
+<p>数据库中每个列都有相应的数据类型。数据类型定义该列可以存储的数据种类。</p>
+<blockquote>
+<p><strong>数据类型</strong> 每个表的每一列都有相应的数据类型。<br>正确的数据类型可以优化磁盘使用并帮助正确地排序数据。</p>
+</blockquote>
+<h3 id="1-1-4-行（row）"><a href="#1-1-4-行（row）" class="headerlink" title="1.1.4 行（row）"></a>1.1.4 行（row）</h3><p><em>请再次联想Excel表格</em></p>
+<p><strong>行(row)</strong> 表中的一个记录。</p>
+<p>表中的数据是按行存储的，即存储一个数据即添加一行，<br>每一行都包括该表格的所有列。</p>
+<blockquote>
+<p>有人在提到行（row）时称其为数据库记录（record）。<br>在两个术语可以相互替代，但是准确来说，行才是准确的术语。</p>
+</blockquote>
+<h3 id="1-1-5-主键"><a href="#1-1-5-主键" class="headerlink" title="1.1.5 主键"></a>1.1.5 主键</h3><p>在表中，每一行都应该有一个唯一的标识，以进行查找的时候不会产生歧义。<br>例如某些订单ID。</p>
+<p><strong>主键(primary key)</strong><sup><a href="#fn_01" id="reffn_01">01</a></sup> 一列（或一组列），其值能够唯一区分表中的每个行。</p>
+<p>能唯一标识表中每行的这个列（或这组列）称为主键。<br>主键用来唯一标识某行，并确保无歧义。</p>
+<blockquote>
+<p>主键可由多列共同组成，只要这些列的组合唯一。</p>
+<p>应该总是定义主键 虽然并不总是需要主键，<br>但是应当保证创建的每个表都具有一个主键，便于以后的数据操纵和管理。</p>
+</blockquote>
+<ul>
+<li>任意两行都不具有相同的主键值。</li>
+<li>每个行都必须具有一个主键值（主键列不允许NULL值）。（即不允许留空）</li>
+</ul>
+<p><em>以上列出的主键规则据说是MySQL本身强制实施的</em></p>
+<blockquote>
+<p><strong>主键相关的习惯</strong> 除MySQL强制实施的规则外，还有一些普遍认可的习惯：</p>
+<ul>
+<li>不更新主键列中的值；</li>
+<li>不重用主键列的值；</li>
+<li>不在主键列中使用可能会更改的值（如可能会被换掉的供应商……）</li>
+</ul>
+</blockquote>
+<h2 id="1-2-什么是SQL"><a href="#1-2-什么是SQL" class="headerlink" title="1.2 什么是SQL"></a>1.2 什么是SQL</h2><p>SQL（发音为字母S-Q-L或sequel）是结构化查询语言（Structured Query Language）的缩写。<br>SQL是一种专门用来与数据库通信的语言。（即，操纵数据库？）</p>
+<p>SQL特点：</p>
+<ul>
+<li>几乎所有重要的DBMS都支持SQL。</li>
+<li>SQL简单易行，语句由描述性很强的单词组成。</li>
+</ul>
+<blockquote>
+<p><strong>DBMS专用的SQL</strong> SQL不是一种专利语言，<br>存在一个标准委员会，他们试图定义可供所有DBMS使用的SQL语法。<br>事实上任意两个DBMS实现的SQL都不完全相同。</p>
+</blockquote>
+<h2 id="1-3-动手实践"><a href="#1-3-动手实践" class="headerlink" title="1.3 动手实践"></a>1.3 动手实践</h2><p>书中包含很多例子可上机运行。应先在主机部署MySQL。</p>
+<p>书中有附录B，用来下载相关数据库内容，作为示例数据用来操作。</p>
+<p>附录B相关<a href="../MySQL必知必会样例表笔记">在这！</a></p>
+<blockquote id="fn_01">
+<sup>01</sup>. 全国科学技术名词审定委员会审定的key在数据库中的对应名词为“键码”或“码”，本书采用了已约定俗成的“键”，请读者注意。——《MySQL必知必会》编者注<a href="#reffn_01" title="Jump back to footnote [01] in the text."> &#8617;</a>
+</blockquote>
+]]></content>
       <categories>
-          
-          <category> SQL </category>
-          
-          <category> 笔记 </category>
-          
-          <category> MySQL </category>
-          
+        <category>SQL</category>
+        <category>笔记</category>
+        <category>MySQL</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> MySQL </tag>
-            
-            <tag> SQL </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Vim 相关笔记</title>
-      <link href="2021/06/02/vimUsage/"/>
-      <url>2021/06/02/vimUsage/</url>
-      
-        <content type="html"><![CDATA[<h1 id="the-usage-of-vim"><a href="#the-usage-of-vim" class="headerlink" title="the usage of vim"></a>the usage of vim</h1><h2 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h2><p>vim共分三种模式：</p><ul><li>命令模式(Command mode)</li><li>输入模式(Insert mode)</li><li>“底线命令模式”(Last line mode)</li></ul><h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><ul><li>i 切换到输入模式，以输入字符</li><li>x删除当前光标所在字符</li><li>：切换到底线命令模式，在最后一行输入命令</li></ul><h3 id="输入模式"><a href="#输入模式" class="headerlink" title="输入模式"></a>输入模式</h3><ul><li>字符及<kbd>Shift</kbd>键组合，输入字符</li><li><kbd>ENTER</kbd>，回车键，换行</li><li><kbd>BACK SPACE</kbd>退格键，删除光标前一个字符</li><li><kbd>DEL</kbd>删除键，删除光标后一个字符</li><li>方向键，在文本中移动光标</li><li><kbd>HOME/END</kbd>移动光标到行首/行尾</li><li><kbd>Page Up/Page Down</kbd>上下翻页</li><li><kbd>Insert</kbd>切换光标尾输入/替换模式，光标将变成竖线/下划线  <sup><a href="#fn_tag1" id="reffn_tag1">tag1</a></sup></li><li><kbd>ESC</kbd>退出输入模式，切换到命令模式</li></ul><blockquote id="fn_tag1"><sup>tag1</sup>. 具体实现效果因系统而异<a href="#reffn_tag1" title="Jump back to footnote [tag1] in the text."> &#8617;</a></blockquote><h3 id="底线命令模式-Last-line-mode"><a href="#底线命令模式-Last-line-mode" class="headerlink" title="底线命令模式(Last line mode)"></a>底线命令模式(Last line mode)</h3><p><em>在命令模式下按下:（英文冒号）就进入了底线命令模式。</em></p><ul><li><kbd>q</kbd>退出程序</li><li><kbd>w</kbd>保存文件</li><li>……</li></ul><h2 id="补充其它按键命令"><a href="#补充其它按键命令" class="headerlink" title="补充其它按键命令"></a>补充其它按键命令</h2><h3 id="第一部分：一般模式使用的光标移动、复制粘贴、搜索替换等"><a href="#第一部分：一般模式使用的光标移动、复制粘贴、搜索替换等" class="headerlink" title="第一部分：一般模式使用的光标移动、复制粘贴、搜索替换等"></a>第一部分：一般模式使用的光标移动、复制粘贴、搜索替换等</h3><p><strong>移动光标的方法</strong></p><div class="table-container"><table><thead><tr><th style="text-align:right">按键</th><th style="text-align:right">效果</th></tr></thead><tbody><tr><td style="text-align:right"><kbd>h</kbd>/<kbd>$\leftarrow$</kbd></td><td style="text-align:right">光标向左移动一个字符</td></tr><tr><td style="text-align:right"><kbd>j</kbd>/<kbd>$\downarrow$</kbd></td><td style="text-align:right">光标向下移动</td></tr><tr><td style="text-align:right"><kbd>k</kbd>/<kbd>$\uparrow$</kbd></td><td style="text-align:right">光标向上移动</td></tr><tr><td style="text-align:right"><kbd>l</kbd>/<kbd>$\rightarrow$</kbd></td><td style="text-align:right">光标向右移动一个字符</td></tr></tbody></table></div><p><strong>可以使用数字加按键的形式进行移动，如先输入“30”再按<kbd>h</kbd>，光标就会向左移动30个字符</strong> </p><h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><div class="table-container"><table><thead><tr><th style="text-align:right">按键</th><th style="text-align:right">功能</th></tr></thead><tbody><tr><td style="text-align:right">数字0或<kbd>Home</kbd></td><td style="text-align:right">移动到这一行的最前面字符处</td></tr><tr><td style="text-align:right">$ 或 <kbd>End</kbd></td><td style="text-align:right">移动到这一行的最后一个字符处</td></tr><tr><td style="text-align:right">G</td><td style="text-align:right">光标移动到该档案的最后一行</td></tr><tr><td style="text-align:right">nG</td><td style="text-align:right">n为数字，移动到第n行</td></tr><tr><td style="text-align:right">gg</td><td style="text-align:right">移动到这个档案的第一行，相当于1G</td></tr><tr><td style="text-align:right">n<kbd>Enter</kbd></td><td style="text-align:right">n为数字，光标向下移动n行</td></tr></tbody></table></div><p><strong>搜索替换</strong></p><div class="table-container"><table><thead><tr><th style="text-align:right">按键</th><th style="text-align:right">功能</th></tr></thead><tbody><tr><td style="text-align:right">/word</td><td style="text-align:right">向光标之下寻找一个名为word的字符串，如要查找字符串 usage ，只需要输入/usage即可。</td></tr><tr><td style="text-align:right">?word</td><td style="text-align:right">向光标之上寻找字符串word</td></tr><tr><td style="text-align:right"><kbd>n</kbd></td><td style="text-align:right">执行上一个搜索命令，如上一个命令是/word,则按下<kbd>n</kbd>后，会再次执行/word 。</td></tr><tr><td style="text-align:right"><kbd>N</kbd></td><td style="text-align:right">“反向”执行上一个搜索命令，如上一个命令是/word , 则按下<kbd>N</kbd>后，会执行向上搜索的命令?word 。</td></tr></tbody></table></div><p><strong>长命令</strong></p><blockquote><ul><li>:n1,n2s/word1/word2/g<ul><li>n1，n2为数字，在第n1与n2行之间寻找word1这个字符串，并将其改为word2 。</li><li>举例：将100到200行之间的所有usage字符串修改为USAGE，则：</li><li>:100,200s/usage/USAGE/g</li></ul></li><li>:1,$s/word1/word2/g 或者 :%s/word1/word2/g<ul><li>将第一行到最后一行的所有word1字符串修改为word2</li></ul></li><li>:1,$s/word1/word2/gc 或者 :%s/word1/word2/gc<ul><li>将第一行到最后一行的所有word1字符串替换为word2，每次替换时提示用户是否确认（confirm）替换。</li></ul></li></ul></blockquote><p><strong>删除，复制与贴上（粘贴）</strong></p><div class="table-container"><table><thead><tr><th style="text-align:right">按键</th><th style="text-align:right">功能</th></tr></thead><tbody><tr><td style="text-align:right">x，X</td><td style="text-align:right">在一行中，x为向后删除一个字符，X为向前删除一个字符，同时删除的字符会被复制，按p会粘贴</td></tr><tr><td style="text-align:right">nx</td><td style="text-align:right">n为数字，连续向后删除n个字符。如：要连续向后删除10个字符，则是10x</td></tr><tr><td style="text-align:right">dd</td><td style="text-align:right">删除游标所在那一整行</td></tr><tr><td style="text-align:right">ndd</td><td style="text-align:right">n为数字，删除光标所在的向下n行（包括所在那一行）。如：20dd是连续删除20行</td></tr><tr><td style="text-align:right">d1G</td><td style="text-align:right">删除光标所在行到第一行的所有数据</td></tr><tr><td style="text-align:right">dG</td><td style="text-align:right">删除光标所在行到最后一行的所有数据</td></tr><tr><td style="text-align:right">d$</td><td style="text-align:right">删除光标所在处到该行最后一个字符</td></tr><tr><td style="text-align:right">d0</td><td style="text-align:right">数字0，删除光标所在处到该行第一个字符</td></tr><tr><td style="text-align:right">yy （常用）</td><td style="text-align:right">复制光标所在行</td></tr><tr><td style="text-align:right">nyy</td><td style="text-align:right">复制光标所在行以下n行（包括该行）</td></tr><tr><td style="text-align:right">y1G，yG，y0，y$</td><td style="text-align:right">同删除命令，分别是复制光标所在行到第一行数据，复制光标所在行到最后一行数据，复制光标所在处到该行第一个字符，复制光标所在处到该行最后一个字符</td></tr><tr><td style="text-align:right">p，P</td><td style="text-align:right">p为将已复制数据粘贴在光标下一行，P则是光标上一行</td></tr><tr><td style="text-align:right">J</td><td style="text-align:right">将光标所在行与下一行的数据结合成同一行</td></tr><tr><td style="text-align:right">c</td><td style="text-align:right">重复删除多个数据，如向下删除10行，10cj 。补充解释，c即为删除指令，数字表示执行次数，最后的j表示方向，j为向下移动，则10cj是向下执行10次删除，即向下删除10行。同理，10cl是向右执行10次删除，即删除光标后的10个字符，不会超出该行。</td></tr><tr><td style="text-align:right">u（常用）</td><td style="text-align:right">撤销上一个操作</td></tr><tr><td style="text-align:right"><kbd>Ctrl</kbd>+r</td><td style="text-align:right">重复上一个操作</td></tr><tr><td style="text-align:right">.</td><td style="text-align:right">小数点，重复前一个命令</td></tr></tbody></table></div><h3 id="第二部分：一般模式切换到编辑模式的可用按键"><a href="#第二部分：一般模式切换到编辑模式的可用按键" class="headerlink" title="第二部分：一般模式切换到编辑模式的可用按键"></a>第二部分：一般模式切换到编辑模式的可用按键</h3><div class="table-container"><table><thead><tr><th style="text-align:right">按键</th><th style="text-align:right">功能</th></tr></thead><tbody><tr><td style="text-align:right">i,I</td><td style="text-align:right">进入输入模式（Insert mode）：i为从目前光标所在处输入，I（大写i）为从所在行的第一个非空字符处输入</td></tr><tr><td style="text-align:right">a，A</td><td style="text-align:right">a为从目前光标所在的下一个字符处输入，A为所在行的最后一个字符处输入</td></tr><tr><td style="text-align:right">o，O</td><td style="text-align:right">英文字母o的大小写，小写o在所在行的下一行插入新的一行，大写O在所在行的上一行插入新一行</td></tr><tr><td style="text-align:right">r，R</td><td style="text-align:right">进入取代模式（Replace mode）：r只会取代光标所在的字符一次，R会一直取代光标所在的文字，直到按下<kbd>ESC</kbd></td></tr></tbody></table></div><h3 id="第三部分：一般模式切换到指令行模式的可用的按键及命令"><a href="#第三部分：一般模式切换到指令行模式的可用的按键及命令" class="headerlink" title="第三部分：一般模式切换到指令行模式的可用的按键及命令"></a>第三部分：一般模式切换到指令行模式的可用的按键及命令</h3><div class="table-container"><table><thead><tr><th style="text-align:right">按键</th><th style="text-align:right">功能</th></tr></thead><tbody><tr><td style="text-align:right">:w</td><td style="text-align:right">将编辑的数据写入硬盘中（保存）</td></tr><tr><td style="text-align:right">:w!</td><td style="text-align:right">如果文件为只读，强制写入（如果有相关权限的话）</td></tr><tr><td style="text-align:right">:q</td><td style="text-align:right">退出vim</td></tr><tr><td style="text-align:right">:q!</td><td style="text-align:right">强制退出而不保存修改</td></tr><tr><td style="text-align:right">:wq</td><td style="text-align:right">保存后退出，若为:wq!则是强制保存后退出</td></tr><tr><td style="text-align:right">ZZ</td><td style="text-align:right">大写的英文字母Z，保存并退出，相当于:wq</td></tr><tr><td style="text-align:right">ZQ</td><td style="text-align:right">不保存，强制退出，相当于:q!</td></tr><tr><td style="text-align:right">:w [filename]</td><td style="text-align:right">相当于另存为filename</td></tr><tr><td style="text-align:right">:r [filename]</td><td style="text-align:right">读入一个新文件，即将filename文件中的数据从下一行开始写入</td></tr><tr><td style="text-align:right">:n1,n2 w [filename]</td><td style="text-align:right">将n1，n2行之间的内容存储为filename</td></tr><tr><td style="text-align:right">:! command</td><td style="text-align:right">暂时离开vi/vim到指令行模式下执行command的显示结果。如：<br />:! ls /home <br />即可在vi/vim中查看/home下的ls的输出</td></tr><tr><td style="text-align:right">:set nu</td><td style="text-align:right">显示每一行的行号</td></tr><tr><td style="text-align:right">:set nonu</td><td style="text-align:right">与set nu相反，取消行号</td></tr></tbody></table></div>]]></content>
-      
-      
+      <tags>
+        <tag>笔记</tag>
+        <tag>MySQL</tag>
+        <tag>SQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络空间安全案例分析记录汇总</title>
+    <url>/2021/06/18/%E7%BD%91%E7%BB%9C%E7%A9%BA%E9%97%B4%E5%AE%89%E5%85%A8%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E8%AE%B0%E5%BD%95%E6%B1%87%E6%80%BB/</url>
+    <content><![CDATA[<h1 id="网络空间安全案例分析记录汇总"><a href="#网络空间安全案例分析记录汇总" class="headerlink" title="网络空间安全案例分析记录汇总"></a>网络空间安全案例分析记录汇总</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p><strong>暂无</strong></p>
+<h2 id="DDoS攻击与防御"><a href="#DDoS攻击与防御" class="headerlink" title="DDoS攻击与防御"></a>DDoS攻击与防御</h2><h3 id="基本概念与原理"><a href="#基本概念与原理" class="headerlink" title="基本概念与原理"></a>基本概念与原理</h3><p>（DDoS/DoS攻击）</p>
+<blockquote>
+<p>DoS（Denial of Service） 攻击，利用系统网络服务功能缺陷或直接消耗其系统资源，使得该目标系统？？</p>
+<p>单一DoS攻击：当攻击目标各项性能指标不高，它的效果是显著的。</p>
+<p>DDoS攻击：利用更多的傀儡机来发起攻击。</p>
+<p>DDoS 分布式拒绝服务攻击</p>
+<ul>
+<li>在传统的DoS攻击基础产生的一类攻击方式</li>
+<li>借助于客户/服务器技术</li>
+</ul>
+<blockquote>
+<p>信息安全三要素：</p>
+<ul>
+<li>保密性：要求保护数据内容不被泄露</li>
+<li>完整性：要求保护的数据是完整的、没有被篡改的</li>
+<li>可用性：要求保护的资源是“随需所得”的</li>
+</ul>
+</blockquote>
+</blockquote>
+<h3 id="攻击历史"><a href="#攻击历史" class="headerlink" title="攻击历史"></a>攻击历史</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>时期</th>
+<th>使用者</th>
+<th>目的</th>
+<th>时机</th>
+<th>目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>探索期</td>
+<td>黑客个体</td>
+<td>兴趣、炫耀</td>
+<td>随意</td>
+<td>随意</td>
+</tr>
+<tr>
+<td>工具化</td>
+<td>政治、宗教、商业组织</td>
+<td>勒索、竞争、报复</td>
+<td>精确</td>
+<td>精确</td>
+</tr>
+<tr>
+<td>武器化</td>
+<td>国家</td>
+<td>网络战</td>
+<td>精确</td>
+<td>精确</td>
+</tr>
+<tr>
+<td>普及化</td>
+<td>群体组织</td>
+<td>表达主张</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h6 id="探索期：个人黑客的攻击"><a href="#探索期：个人黑客的攻击" class="headerlink" title="探索期：个人黑客的攻击"></a>探索期：个人黑客的攻击</h6><ul>
+<li>早期的“黑客”都是一些技术爱好者</li>
+<li>缺乏明确的目的性</li>
+<li>这些行为基本不会给攻击者带来经济上的收益，影响范围大，具有轰动效果，但对具体个人和组织损害可以接受</li>
+</ul>
+<p><em>案例：</em></p>
+<blockquote>
+<p>1996年9月6日下午5：30</p>
+<p>受害者：Panix</p>
+<p>损失：至少6000名用户因此而无法收取邮件。</p>
+<p>方法：不断向服务器发送链接请求（TCP SYN请求），后被称为“SYN FLOOD攻击”。</p>
+</blockquote>
+<h6 id="工具化：有组织的攻击"><a href="#工具化：有组织的攻击" class="headerlink" title="工具化：有组织的攻击"></a>工具化：有组织的攻击</h6><h6 id="武器化：网络战"><a href="#武器化：网络战" class="headerlink" title="武器化：网络战"></a>武器化：网络战</h6><h6 id="普及化：黑客行动主义"><a href="#普及化：黑客行动主义" class="headerlink" title="普及化：黑客行动主义"></a>普及化：黑客行动主义</h6><blockquote>
+<p>维基解密事件</p>
+<p>Anonymous组织（匿名者组织） 前身是恶作剧论坛，最早活跃于美国贴图讨论版4chan（4chan.com)</p>
+</blockquote>
+<h3 id="常见攻击手段"><a href="#常见攻击手段" class="headerlink" title="常见攻击手段"></a>常见攻击手段</h3><p><strong>以力取胜</strong></p>
+<blockquote>
+<p>ICMP Flood </p>
+<ul>
+<li>ICMP（Internet控制报文协议）</li>
+<li>通过对目标系统发送海量数据包，就可以令目标主机瘫痪</li>
+</ul>
+<p>UDP Flood</p>
+<ul>
+<li>UDP协议是一种无连接的服务</li>
+</ul>
+<p>NTP Flood</p>
+<ul>
+<li>NTP：标准的基于UDP协议传输的网络时间同步协议，由于UDP协议的无连接性，方便伪造源地址。</li>
+<li></li>
+<li></li>
+</ul>
+<blockquote>
+<p>”问-答“方式的协议都可以被反射型攻击利用</p>
+</blockquote>
+<p>反射攻击</p>
+<p>反射攻击（DRDoS）也叫放大攻击，该类攻击以UDP协议为主，一般请求回应的流量远远大于请求本身流量的大小</p>
+</blockquote>
+<p><strong>攻击系统/应用：以巧取胜</strong></p>
+<blockquote>
+<p>SYN Flood</p>
+<ul>
+<li>这是一种利用TCP协议缺陷，发送大量伪造的TCP连接请求，从而使得被攻击方资源耗尽的攻击方法。</li>
+<li></li>
+<li>SYN Flood 就是用户向服务器发送报文后突然死机或掉线，那么服务器在发出应答报文后就无法收到客户端的确认报文（第三次握手无法完成），这时服务器一般会重试并等待一段时间后再丢弃这个未完成的连接。</li>
+<li>恶意攻击者大量模拟上述情况，</li>
+</ul>
+<blockquote>
+<p>SYN洪水攻击发动简单，效果明显，至今仍然是攻击者的最爱好的攻击方式之一。</p>
+</blockquote>
+<p>CC攻击</p>
+<ul>
+<li>CC（ChallengeCollapsar）攻击是目前应用层攻击的主要手段之一，借助代理服务器生成指向目标系统的合法请求，实现伪装和DDoS。</li>
+<li>攻击者使用CC攻击软件控制大量肉鸡发动攻击，模拟多个正常用户不停地访问如论坛这些需要大量数据操作的页面，造成服务器资源的浪费。</li>
+<li>CPU长时间处于100%，永远都有处理不完的请求，网络拥塞，正常访问被中止。</li>
+<li>这种攻击技术性高，见不到真实源IP，见不到特别大的异常流量，但服务器就是无法进行正常连接。</li>
+<li>由于CC攻击成本低、威力大，80%的DDoS攻击都是CC攻击。</li>
+</ul>
+<p>DNS Query Flood</p>
+<ul>
+<li>~采用的方法是操纵大量傀儡机器，向目标服务器发送大量的域名解析请求。</li>
+</ul>
+</blockquote>
+<p><strong>三、混合攻击：流量与技巧的比拼</strong></p>
+<h3 id="常见防御手段"><a href="#常见防御手段" class="headerlink" title="常见防御手段"></a>常见防御手段</h3><h6 id="网络设备设施"><a href="#网络设备设施" class="headerlink" title="网络设备设施"></a>网络设备设施</h6><ul>
+<li>用足够的机器、容量去承受攻击。</li>
+</ul>
+<p><strong>扩充带宽硬抗</strong></p>
+<ul>
+<li>网络带宽直接决定了承受攻击的能力</li>
+<li>成本极高……</li>
+</ul>
+<p><strong>使用硬件防火墙</strong></p>
+<ul>
+<li>针对DDoS攻击和黑客入侵而设计的专业级防火墙通过对异常流量的清洗过滤，可对抗多种流量型DDoS攻击。</li>
+<li>若DDoS攻击上升到应用层，防御能力较弱</li>
+</ul>
+<p><strong>选用高性能设备</strong></p>
+<ul>
+<li>应尽量提升硬件配置</li>
+</ul>
+<h6 id="有效的抗D思想方案"><a href="#有效的抗D思想方案" class="headerlink" title="有效的抗D思想方案"></a>有效的抗D思想方案</h6><p><strong>负载均衡</strong></p>
+<ul>
+<li>负载均衡建立在现有的网络结构之上</li>
+<li>对DDoS流量攻击和CC攻击都很见效</li>
+</ul>
+<p><strong>CDN流量清洗</strong></p>
+<p><strong>分布式集群防御</strong></p>
+<ul>
+<li>在每个节点服务器配置多个IP地址</li>
+<li>如一个节点受攻击……</li>
+</ul>
+<h6 id="预防为主保安全"><a href="#预防为主保安全" class="headerlink" title="预防为主保安全"></a>预防为主保安全</h6><ul>
+<li>通过日常惯性的运维操作</li>
+</ul>
+<p><strong>筛查系统漏洞</strong></p>
+<ul>
+<li>及早发现系统存在的攻击漏洞，及时安装系统补丁</li>
+<li>对重要信息建立和完善备份机制</li>
+<li>对一些特权账号的密码谨慎设置</li>
+</ul>
+<p><strong>系统资源优化</strong></p>
+<ul>
+<li>合理优化系统，避免系统资源的浪费。</li>
+<li>更改工作模式，删除不必要的中断让机器运行更有效。</li>
+</ul>
+<p><strong>过滤不必要的服务和端口</strong></p>
+<p><strong>限制特定的流量</strong></p>
+<h3 id="DDoS产业化"><a href="#DDoS产业化" class="headerlink" title="DDoS产业化"></a>DDoS产业化</h3><p><strong>“肉鸡”的来源</strong></p>
+<ul>
+<li>DDoS的肉鸡可以来自各种联网的设备</li>
+</ul>
+<p><strong><em>DDoS攻击态势报告：</em></strong></p>
+<blockquote>
+<p>百度……</p>
+</blockquote>
+<h2 id="Wi-Fi攻防案例"><a href="#Wi-Fi攻防案例" class="headerlink" title="Wi-Fi攻防案例"></a>Wi-Fi攻防案例</h2><h3 id="警惕公共WIFI"><a href="#警惕公共WIFI" class="headerlink" title="警惕公共WIFI"></a>警惕公共WIFI</h3><p>2015、2016年 315晚会</p>
+<h3 id="WIFI安全初探"><a href="#WIFI安全初探" class="headerlink" title="WIFI安全初探"></a>WIFI安全初探</h3><h4 id="谁动了我的WIFI"><a href="#谁动了我的WIFI" class="headerlink" title="谁动了我的WIFI"></a>谁动了我的WIFI</h4><blockquote>
+<p>无线路由器 = 单纯性无线AP（无线访问点） + 宽带路由器</p>
+</blockquote>
+<ul>
+<li>判断网络是否被蹭的两种方法<ol>
+<li>使用无线路由器后台查看接入用户</li>
+<li></li>
+</ol>
+</li>
+<li>防蹭网<ul>
+<li>修改无线路由器默认管理IP地址及账号</li>
+<li>用安全的认证和加密方式（WPA-PSK/WPA2-PSK认证，AES加密算法）</li>
+<li>设置MAC地址过滤<ul>
+<li>无线MAC地址过滤</li>
+</ul>
+</li>
+<li>关闭路由器QSS功能</li>
+<li>隐藏路由器SSID<ul>
+<li>终端要连接，要手动输入SSID</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="防范无线路由器被入侵"><a href="#防范无线路由器被入侵" class="headerlink" title="防范无线路由器被入侵"></a>防范无线路由器被入侵</h4><p><strong>网络安全事件——账号被盗、银行卡被网上消费</strong></p>
+<p>DNS钓鱼攻击</p>
+<ul>
+<li><p>入侵到无线路由器的步骤</p>
+<ul>
+<li>找到目标网络</li>
+<li>破解并登录网络</li>
+<li>篡改DNS地址</li>
+<li>预留后门</li>
+</ul>
+</li>
+<li><p>配置无线路由器防范被钓鱼攻击入侵</p>
+<ul>
+<li>登录无线路由器</li>
+<li>更改路由器默认管理地址和管理员账号</li>
+<li>确认路由器DNS获得是否设置为“自动获得”或确认DNS是否式ISP提供的正确DNS地址</li>
+<li>确认路由器DHCP设置中的DNS服务器设置是否为“0”？</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+<h4 id="公共WI-FI的常见认证方法"><a href="#公共WI-FI的常见认证方法" class="headerlink" title="公共WI-FI的常见认证方法"></a>公共WI-FI的常见认证方法</h4><ul>
+<li>家庭WIFI和公共WIFI区别<ul>
+<li>家庭WIFI使用胖AP架构</li>
+<li>公共WIFI两种加工都有<ul>
+<li>胖AP：小面积区域</li>
+<li>瘦AP：大面积区域，用户漫游问题</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>四种常用认证方法的特点<ul>
+<li>密码认证：过于简单，WIFI容易被仿冒</li>
+<li>短信认证：手机号会被暴露</li>
+<li>第三方数据源认证：多用于企业、图书馆和学校等已有相关用户信息的场所。账号密码泄露后容易被冒用。</li>
+<li>微信认证：</li>
+</ul>
+</li>
+<li>公共WIFI安全使用建议<ul>
+<li>少用“密码认证”的WIFI</li>
+<li><strong>不用没有密码的WIFI</strong></li>
+<li>其它认证时慎重填写个人隐私信息</li>
+</ul>
+</li>
+</ul>
+<h4 id="真假公共WIFI都要防"><a href="#真假公共WIFI都要防" class="headerlink" title="真假公共WIFI都要防"></a>真假公共WIFI都要防</h4><p><em>66%公共WI-FI不够安全</em></p>
+<ul>
+<li><p>公共WIFI类型</p>
+<ul>
+<li>通信运行商提供WIFI热点</li>
+<li>商家自行搭建的WIFI热点</li>
+</ul>
+<blockquote>
+<p>上网数据被监视，被劫持，被篡改</p>
+</blockquote>
+</li>
+<li><p>WIFI攻击类型</p>
+<ul>
+<li><p>网关欺骗</p>
+<ul>
+<li>正常情况<ul>
+<li>终端寻问网关的MAC地址</li>
+<li>网关回复自己的MAC地址，终端建立一条对应关系</li>
+<li>终端依据存储的网关MAC地址，通过网关询问互联网</li>
+</ul>
+</li>
+<li>欺骗攻击情况<ul>
+<li>中间人攻击</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>钓鱼WI-FI</p>
+<blockquote>
+<ul>
+<li>关于SSID<ul>
+<li>每个无线网络都会有一个SSID，像身份证号</li>
+</ul>
+</li>
+<li>SSID的问题<ul>
+<li>SSID没有注册机制，可取任意名字</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>钓鱼WIFI会仿冒知名路由器的默认WIFI热点，如：Netcore、TP-Link、Dlink等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>使用公共WIFI，以下原则：</p>
+<ul>
+<li>绝对不用陌生的公共WIFI</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+<h3 id="WIFI的网络基础课程"><a href="#WIFI的网络基础课程" class="headerlink" title="WIFI的网络基础课程"></a>WIFI的网络基础课程</h3><h4 id="无线网卡的6种运行模式"><a href="#无线网卡的6种运行模式" class="headerlink" title="无线网卡的6种运行模式"></a>无线网卡的6种运行模式</h4><ul>
+<li>监控模式</li>
+<li>主模式</li>
+<li>……</li>
+</ul>
+<h4 id="IEEE-802-11及无线安全"><a href="#IEEE-802-11及无线安全" class="headerlink" title="IEEE 802.11及无线安全"></a>IEEE 802.11及无线安全</h4><ul>
+<li>IEEE 802.11时现今无线局域网通用的标准，由国际电机电子工程学会（IEEE）所定义的无线网络通信的标准</li>
+<li>其中定义了媒体访问控制层（MAC层）和物理层</li>
+<li>两个设备可以自行构建临时网络，也可以在基站或者接入点的协调性通信</li>
+<li>为了在不同的通讯环境下获取良好的通信质量，采用CSMA/CA硬件沟通方式。</li>
+<li>……</li>
+</ul>
+<ul>
+<li>无线安全“六面五层”威胁模型<ul>
+<li>针对物理层面攻击</li>
+<li>针对连接有效性的攻击</li>
+<li>针对业务连续性的国际</li>
+<li>针对连接合法性的攻击</li>
+<li>针对私有信息的攻击</li>
+</ul>
+</li>
+</ul>
+<h4 id="媒体服务控制地址"><a href="#媒体服务控制地址" class="headerlink" title="媒体服务控制地址"></a>媒体服务控制地址</h4><ul>
+<li>MAC地址，用来确认网上设备位置的地址</li>
+<li>在OSI模型中，第三层网络层负责IP地址</li>
+</ul>
+<h4 id="WLAN三种网络拓扑结构"><a href="#WLAN三种网络拓扑结构" class="headerlink" title="WLAN三种网络拓扑结构"></a>WLAN三种网络拓扑结构</h4><ul>
+<li>独立基本服务集 网络</li>
+<li>基本服务集</li>
+<li>？？</li>
+</ul>
+<h4 id="WIFI数据包类型"><a href="#WIFI数据包类型" class="headerlink" title="WIFI数据包类型"></a>WIFI数据包类型</h4><h3 id="安全企业的WIFI安全观"><a href="#安全企业的WIFI安全观" class="headerlink" title="安全企业的WIFI安全观"></a>安全企业的WIFI安全观</h3><h3 id="无线安全实验"><a href="#无线安全实验" class="headerlink" title="无线安全实验"></a>无线安全实验</h3><h3 id="课外扩展学习-无线电安全技术"><a href="#课外扩展学习-无线电安全技术" class="headerlink" title="课外扩展学习-无线电安全技术"></a>课外扩展学习-无线电安全技术</h3><h3 id="WIFI-中的药与毒"><a href="#WIFI-中的药与毒" class="headerlink" title="WIFI 中的药与毒"></a>WIFI 中的药与毒</h3><h4 id="WIFI安全的焦点"><a href="#WIFI安全的焦点" class="headerlink" title="WIFI安全的焦点"></a>WIFI安全的焦点</h4><p><strong>WIFI安全问题仅有这些？</strong></p>
+<blockquote>
+<p>加密方式、密码强度、ARP/DNS/DHCP/欺骗</p>
+</blockquote>
+<p><strong>第一层信息不对称</strong></p>
+<ul>
+<li>用户：<ul>
+<li>被攻击了吗？</li>
+<li>损失了什么？</li>
+<li>怎么去判断？</li>
+</ul>
+</li>
+<li>攻击者：<ul>
+<li>能偷什么东西</li>
+<li>哪些东西值钱</li>
+<li>不值钱的怎么跑量？</li>
+<li>黑产一般行为，有价值的信息拿去卖，无价值的加密勒索，无数据的成为肉鸡或挖矿</li>
+</ul>
+</li>
+</ul>
+<p><strong>第二层信息不对称</strong></p>
+<ul>
+<li>用户：<ul>
+<li>运营商问题？</li>
+<li>路由器问题？</li>
+<li>手机问题？</li>
+<li>APP应用问题？</li>
+</ul>
+</li>
+<li>攻击者：<ul>
+<li>……</li>
+</ul>
+</li>
+</ul>
+<p>真正的焦点是场景</p>
+<p><strong>全场景下不存在“银弹”</strong></p>
+<ul>
+<li>家庭场景：WIFI已经是现在家庭必不可少的配备，并且已经成为智能家居的首选方案</li>
+<li>公共场景</li>
+<li>办公/工业场景</li>
+<li>特殊/保密场景：特殊场景中有不少不允许出现WIFI信号，而绕过的方法层出不穷</li>
+</ul>
+<h2 id="近距离通信安全与攻击案例"><a href="#近距离通信安全与攻击案例" class="headerlink" title="近距离通信安全与攻击案例"></a>近距离通信安全与攻击案例</h2><h3 id="近距离通信概述"><a href="#近距离通信概述" class="headerlink" title="近距离通信概述"></a>近距离通信概述</h3><p><strong>什么是近距离通信</strong></p>
+<ul>
+<li>一种短距离<strong>高频</strong>无线通信技术，允许电子设备之间进行<strong>非接触式</strong>点对点数据传输、交换数据</li>
+</ul>
+<h3 id="近距离通信技术"><a href="#近距离通信技术" class="headerlink" title="近距离通信技术"></a>近距离通信技术</h3><h4 id="蓝牙技术（Bluetooth）"><a href="#蓝牙技术（Bluetooth）" class="headerlink" title="蓝牙技术（Bluetooth）"></a>蓝牙技术（Bluetooth）</h4><ul>
+<li>由爱立信公司于1994年提出，当时是作为RS 232数据传输技术的替代</li>
+<li>使用2.4—2.485GHz ISM波段的UHF无线电波</li>
+<li>适用于短距离大体积信号的传输</li>
+<li>目前由<strong>蓝牙技术联盟</strong>管理，有25000家成员公司</li>
+<li>最初1.1版协议发展到现在5.0</li>
+</ul>
+<h5 id="蓝牙技术的发展"><a href="#蓝牙技术的发展" class="headerlink" title="蓝牙技术的发展"></a>蓝牙技术的发展</h5><ul>
+<li>1.1~1.2版：速率为748—810KB/s，容易受干扰</li>
+<li>2.0版：速率增加到1.8—2.1M/s，</li>
+<li>3.0版：速率到24M/s</li>
+<li>4.0版：省电，AES加密，3ms低延迟，广泛用于物联网</li>
+<li>4.1—4.2版：支持4G和IPv6，速率比4.0版提高2.5倍</li>
+<li>5.0版：目前最高版本，与4.0版相比传输距离远4倍，带宽提高2倍，结合WI-FI可以实现精度&lt;1m的室内定位</li>
+</ul>
+<h5 id="蓝牙通信的相关技术参数"><a href="#蓝牙通信的相关技术参数" class="headerlink" title="蓝牙通信的相关技术参数"></a>蓝牙通信的相关技术参数</h5><ul>
+<li>一个蓝牙主设备可与7个其它蓝牙设备组网</li>
+<li>功率越大，传输距离越远</li>
+<li>有效范围变化取决于传播条件、材料覆盖、天线配置、电池状况等。</li>
+</ul>
+<h5 id="蓝牙的特点"><a href="#蓝牙的特点" class="headerlink" title="蓝牙的特点"></a>蓝牙的特点</h5><ul>
+<li>全球范围适用</li>
+<li>近距离通信</li>
+<li>功耗低、体积小</li>
+<li>近距离通信<ul>
+<li>蓝牙技术通信距离可根据需要扩展至300m</li>
+</ul>
+</li>
+<li>良好的抗干扰能力和安全性</li>
+<li>可建立临时对等连接</li>
+</ul>
+<h5 id="蓝牙设备的通信过程"><a href="#蓝牙设备的通信过程" class="headerlink" title="蓝牙设备的通信过程"></a>蓝牙设备的通信过程</h5><ol>
+<li>主设备查找周围蓝牙设备，即从设备</li>
+<li>找到从设备后，主设备与其进行配对</li>
+<li>输入从设备的PIN，完成配对</li>
+<li>从设备记录下主设备的信任信息</li>
+<li>主-从设备之间建立安全链路，进行双向数据/语音通讯</li>
+<li>主-从设备可随时断开链路，中断通讯</li>
+</ol>
+<h5 id="蓝牙技术的应用"><a href="#蓝牙技术的应用" class="headerlink" title="蓝牙技术的应用"></a>蓝牙技术的应用</h5><ul>
+<li><p>手提和手机</p>
+</li>
+<li><p>智能家电</p>
+</li>
+<li><p>移动应用</p>
+</li>
+<li><p>其它：</p>
+<ul>
+<li><p>蓝牙耳机</p>
+</li>
+<li><p>GPS接收设备</p>
+</li>
+<li><p>智能手环</p>
+</li>
+<li><p>游戏机</p>
+</li>
+<li><p>机顶盒</p>
+</li>
+<li><p>传感器</p>
+</li>
+<li><h6 id="……"><a href="#……" class="headerlink" title="……"></a>……</h6></li>
+</ul>
+</li>
+</ul>
+<h4 id="射频识别技术（RFID）"><a href="#射频识别技术（RFID）" class="headerlink" title="射频识别技术（RFID）"></a>射频识别技术（RFID）</h4><p><strong>Radio Frequency Identification,RFID</strong></p>
+<ul>
+<li>起源于英国，二战中被用于辨别敌我飞机身份</li>
+<li>上世纪60年代开始商用</li>
+<li>通过无线电讯号识别特定目标并读写相关数据</li>
+<li>无需识别系统与特定目标之间进行物理接触</li>
+<li>频率为1-100GHz，适用于短距离识别通信</li>
+<li>读取速度快，&lt;100ms，能穿透雪、冰、尘垢、涂料等</li>
+</ul>
+<h5 id="RFID系统的构成"><a href="#RFID系统的构成" class="headerlink" title="RFID系统的构成"></a>RFID系统的构成</h5><ul>
+<li>RFID阅读器（reader）、RFID标签（tag）、应用软件</li>
+<li>阅读器：耦合模块（线圈、天线）</li>
+<li>RFID标签：耦合模块，微芯片<ul>
+<li>有源（有电池供电）</li>
+<li>无源（无电池供电，通过感应电流供电）</li>
+</ul>
+</li>
+</ul>
+<h5 id="RFID的技术原理"><a href="#RFID的技术原理" class="headerlink" title="RFID的技术原理"></a>RFID的技术原理</h5><ul>
+<li>Reader通过天线产生电磁场</li>
+<li>Tag进入电磁范围后，接收Reader发出的RF信号</li>
+<li>Tag的天线通过感应获得电流，将存储芯片中的信息发送给Reader</li>
+</ul>
+<h5 id="RFID技术的特点"><a href="#RFID技术的特点" class="headerlink" title="RFID技术的特点"></a>RFID技术的特点</h5><ol>
+<li>扫描速度快，可同时识别读取多个RFID标签</li>
+<li>体积小、形状多样化</li>
+<li>抗污染能力强，耐久性</li>
+<li>可重复使用：增加、修改、删除Tag芯片中的数据</li>
+<li>穿透性强：纸张、木材、塑料、非金属材质</li>
+<li>Tag存储容量大：将近1MB（相比，条形码50字符，二维码3K字符）</li>
+<li>较安全：数据由密码系统保护</li>
+</ol>
+<h5 id="RFID产品的种类"><a href="#RFID产品的种类" class="headerlink" title="RFID产品的种类"></a>RFID产品的种类</h5><ul>
+<li>无源<ul>
+<li>Tag中无供电单元：发展最早，应用最广</li>
+</ul>
+</li>
+<li>有源<ul>
+<li>Tag有供电单元：用于远距离自动识别，如：智能监狱、智能医院、智能交通、物联网</li>
+</ul>
+</li>
+<li>半有源<ul>
+<li>平时处于休眠，只有近距进入低频激活器信号范围才激活工作，远距离识别及上传数据</li>
+</ul>
+</li>
+</ul>
+<h5 id="RFID技术的应用"><a href="#RFID技术的应用" class="headerlink" title="RFID技术的应用"></a>RFID技术的应用</h5><ul>
+<li>物流和供应链管理<ul>
+<li>美军需物资管理、FDA药品追踪，Walmart、Metro、Amazon等Walmart采用RFID后每年可节省83.5亿美元（劳动力、商品被盗）</li>
+</ul>
+</li>
+<li>文档追踪、图书馆管理</li>
+<li>航空行李处理</li>
+<li>邮件/快递包裹处理</li>
+<li>动/植物身份标识</li>
+<li>食品安全和溯源</li>
+<li>道路交通和收费</li>
+<li>门禁和物业管理</li>
+<li>……</li>
+</ul>
+<h4 id="近场通信技术（NFC）"><a href="#近场通信技术（NFC）" class="headerlink" title="近场通信技术（NFC）"></a>近场通信技术（NFC）</h4><p>Near Field Communication，NFC</p>
+<ul>
+<li>由飞利浦和索尼与2003年共同研发，基于RFID及互连技术</li>
+<li>短距高频无线通信技术，实现设备非接触式点对点数据传输</li>
+<li>NFC在单一芯片上结合感应式Reader、Tag和点对点传输功能</li>
+<li>在手机支付、电子票务、门禁系统等领域有很大应用前景</li>
+<li>工作频率为13.56MHz</li>
+</ul>
+<h5 id="NFC的特点"><a href="#NFC的特点" class="headerlink" title="NFC的特点"></a>NFC的特点</h5><ul>
+<li>与蓝牙相比，NFC使用更方便，成本更低，能耗更低</li>
+<li>连接速度更快，~0.1s</li>
+<li>使用距离比蓝牙短得多，约10cm~几十cm</li>
+</ul>
+<h5 id="NFC工作原理"><a href="#NFC工作原理" class="headerlink" title="NFC工作原理"></a>NFC工作原理</h5><ul>
+<li>点对点通信模式<ul>
+<li>每台设备要向另一台设备发送数据时3必须产生RF，以便进行通信；以ASK/FSK载波调制方式传输数据信号</li>
+</ul>
+</li>
+<li>读卡器模式(Reader/writer mode)<ul>
+<li>NFC设备能够从电子标签上读取数据</li>
+</ul>
+</li>
+<li>卡模式<ul>
+<li>此模式下，NFC设备为RFID智能卡，用于小额支付、车票、门禁等</li>
+</ul>
+</li>
+</ul>
+<h5 id="NFC的应用范围"><a href="#NFC的应用范围" class="headerlink" title="NFC的应用范围"></a>NFC的应用范围</h5><ul>
+<li>身份识别</li>
+<li>打卡</li>
+<li>门禁</li>
+<li>安全登录</li>
+<li>物流</li>
+<li>支付</li>
+<li>票据</li>
+<li>……</li>
+</ul>
+<h5 id="NFC的使用途径"><a href="#NFC的使用途径" class="headerlink" title="NFC的使用途径"></a>NFC的使用途径</h5><ul>
+<li>与手机完全整合<ul>
+<li>将NFC通信控制器、安全部件整合进手机</li>
+</ul>
+</li>
+<li>整合到SIM卡上<ul>
+<li>可以在运营商的蜂窝网络上识别手机卡</li>
+</ul>
+</li>
+<li>整合进microSD卡上<ul>
+<li>NFC部件整合进移动存储卡</li>
+</ul>
+</li>
+</ul>
+<h5 id="支持NFC的支付系统"><a href="#支持NFC的支付系统" class="headerlink" title="支持NFC的支付系统"></a>支持NFC的支付系统</h5><ul>
+<li>苹果公司的Apple Pay</li>
+<li>国内各大银行的云闪付功能</li>
+<li>……</li>
+</ul>
+<h3 id="近距离通信攻击案例"><a href="#近距离通信攻击案例" class="headerlink" title="近距离通信攻击案例"></a>近距离通信攻击案例</h3><h4 id="近距离通信技术的安全问题"><a href="#近距离通信技术的安全问题" class="headerlink" title="近距离通信技术的安全问题"></a>近距离通信技术的安全问题</h4><ul>
+<li>任何技术都有可能存在设计缺陷和漏洞</li>
+<li>实现技术的过程中可能引入错误和漏洞</li>
+<li>部署和运营技术的时候可能存在管理漏洞</li>
+<li>So，安全性是非常重要的</li>
+</ul>
+<h4 id="蓝牙技术的安全性"><a href="#蓝牙技术的安全性" class="headerlink" title="蓝牙技术的安全性"></a>蓝牙技术的安全性</h4><ul>
+<li><p>与任何无线技术一样，蓝牙易受各种安全威胁</p>
+</li>
+<li><p>安全公司Armis发现了蓝牙技术的大量漏洞</p>
+</li>
+</ul>
+<h5 id="蓝牙技术易受到的攻击"><a href="#蓝牙技术易受到的攻击" class="headerlink" title="蓝牙技术易受到的攻击"></a>蓝牙技术易受到的攻击</h5><ul>
+<li>漏洞攻击<ul>
+<li>利用旧蓝牙设备的硬件漏洞去连接其它蓝牙设备</li>
+</ul>
+</li>
+<li>劫持<ul>
+<li>攻击者发送未经请求的消息到其它蓝牙设备，以发起劫持攻击</li>
+</ul>
+</li>
+<li><p>控制</p>
+<ul>
+<li>利用早期版本设备硬件漏洞来获取访问权限使得攻击者可以访问数据……</li>
+</ul>
+</li>
+<li><p>设备指纹采集攻击</p>
+<ul>
+<li>在用户不知情的情况下远程采集到蓝牙设备指纹</li>
+</ul>
+</li>
+<li>拒绝连接服务</li>
+<li><p>碰撞攻击</p>
+<ul>
+<li>允许攻击者根据蓝牙设备地址查找和识别用户</li>
+</ul>
+</li>
+<li><p>模糊攻击</p>
+<ul>
+<li>发送格式错误或者非标准的数据，观察蓝牙设备RF接口及如何反应；如果该设备反应减慢或者停止，则该设备可能有严重的协议漏洞</li>
+</ul>
+</li>
+<li>PIN码穷尽攻击<ul>
+<li>蓝牙用户倾向于使用短的PIN码：短的PIN码容易被穷举攻击</li>
+</ul>
+</li>
+<li>在链接超过23.3小时后，加密密钥流会发生重复<ul>
+<li>从而产生一个与之前连接使用的相同的密钥流，使得攻击者容易确定原始明文</li>
+</ul>
+</li>
+<li>不同级别安全模式的设备链接时，允许回退到下级安全模式<ul>
+<li>最坏的场景是1个设备回退到安全模式1，即该模式不提供任何安全性</li>
+</ul>
+</li>
+</ul>
+<h5 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h5><ul>
+<li><p>BlueBorne Attack</p>
+<ul>
+<li>2017年9月由Armis公司公布的新型物联网攻击手段</li>
+<li>几乎所有联网设备都受这种攻击的威胁</li>
+<li>后果<ul>
+<li>攻击者获取物联网设备绝对控制权</li>
+<li>非法访问和窃取企业数据</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="RFID技术的安全问题"><a href="#RFID技术的安全问题" class="headerlink" title="RFID技术的安全问题"></a>RFID技术的安全问题</h4><h5 id="RFID系统的安全需求"><a href="#RFID系统的安全需求" class="headerlink" title="RFID系统的安全需求"></a>RFID系统的安全需求</h5><ul>
+<li>数据保密性<ul>
+<li>RFID tag 不应泄露任何信息给非法Reader</li>
+</ul>
+</li>
+<li>数据完整性<ul>
+<li>传输过程中数据不会被篡改、删除、插入等</li>
+</ul>
+</li>
+<li>数据真实性</li>
+<li>用户隐私性</li>
+<li>前向与后向安全性</li>
+</ul>
+<h5 id="RFID系统易受到的攻击"><a href="#RFID系统易受到的攻击" class="headerlink" title="RFID系统易受到的攻击"></a>RFID系统易受到的攻击</h5><ul>
+<li><p>窃听攻击</p>
+<ul>
+<li>RFID reader和tag 间通过电磁波通信，容易被直接窃听</li>
+</ul>
+</li>
+<li><p>中间人攻击</p>
+<ul>
+<li>攻击者使用非法RFID reader靠近受害者的tag；tag响应信号后发送tag里的信息；……</li>
+</ul>
+</li>
+<li><p>欺骗 、重放、克隆攻击</p>
+<ul>
+<li>欺骗：攻击者将非法获取的tag数据发送给reader</li>
+<li>重放：攻击者将tag的信号记录下来，然后在reader询问时播放</li>
+<li>克隆：攻击者将合法的tag中的内容复制到一个非法tag中</li>
+</ul>
+</li>
+<li><p>物理攻击</p>
+<ul>
+<li>Tag分三大类：基本版、对称密钥版、公钥版。基本版Tag不使用密码技术容易被欺骗和修改</li>
+</ul>
+<ol>
+<li>攻击者使用工具非法修改或者擦除目标tag里面的数据</li>
+<li>攻击者将病毒代码非法写入tag；当该tag的信息被读取然后送到后台服务器中后，病毒就有可能被注入到系统中</li>
+<li>攻击者人为将tag撕下来或者破坏掉，使reader无法读取</li>
+</ol>
+</li>
+<li><p>拒绝服务攻击</p>
+<ul>
+<li>攻击者使得reader与tag多次进行交互，使服务器处于忙状态，无法完成正常reader和tag间的“验证”和“通讯”</li>
+</ul>
+</li>
+<li>追踪<ul>
+<li>攻击者通过使用非法的reader来跟踪定位受害者的tag所在位置</li>
+</ul>
+</li>
+<li>扫描攻击<ul>
+<li>攻击者使用reader在受害者不知情的情况下非法读取tag</li>
+</ul>
+</li>
+<li>接力、中继攻击<ul>
+<li>攻击者将受害者的tag信号通过放大器、无线传输器传给reader，从而使得reader做出合法的响应；用于有时效要求的RFID攻击场合</li>
+</ul>
+</li>
+</ul>
+<h4 id="近场通讯NFC技术的安全问题"><a href="#近场通讯NFC技术的安全问题" class="headerlink" title="近场通讯NFC技术的安全问题"></a>近场通讯NFC技术的安全问题</h4><ul>
+<li>NFC存在与RFID相似的问题</li>
+</ul>
+<h5 id="NFC系统易受到的国际"><a href="#NFC系统易受到的国际" class="headerlink" title="NFC系统易受到的国际"></a>NFC系统易受到的国际</h5><ul>
+<li>窃听攻击</li>
+<li>克隆攻击</li>
+<li>中间人攻击</li>
+<li>中继攻击</li>
+<li>近场攻击</li>
+</ul>
+<h3 id="近距离通信攻击的防范措施"><a href="#近距离通信攻击的防范措施" class="headerlink" title="近距离通信攻击的防范措施"></a>近距离通信攻击的防范措施</h3><ul>
+<li>所有近距离通信技术都有安全漏洞</li>
+<li>绝大部分安全隐患可以在管理、使用过程中防范</li>
+<li>通用的安全防范建议</li>
+</ul>
+<h4 id="蓝牙系统防范攻击的技术措施"><a href="#蓝牙系统防范攻击的技术措施" class="headerlink" title="蓝牙系统防范攻击的技术措施"></a>蓝牙系统防范攻击的技术措施</h4><ol>
+<li>更改蓝牙设备的默认设置</li>
+<li>将蓝牙功率设置为最低可用，减少信号范围</li>
+<li>选择足够长、足够复杂的PIN码，密码</li>
+<li>将蓝牙设备设为不可见</li>
+<li>对所有蓝牙连接进行加密，保护数据的私密</li>
+<li>确保对所有连接执行相互设备认证</li>
+<li>将加密密钥大小设为最大值（128bit），防止暴力攻击</li>
+<li>定期部署蓝牙软件的更新</li>
+</ol>
+<h4 id="蓝牙系统防范攻击的技术措施-1"><a href="#蓝牙系统防范攻击的技术措施-1" class="headerlink" title="蓝牙系统防范攻击的技术措施"></a>蓝牙系统防范攻击的技术措施</h4><ol>
+<li>仅在必要的时候启用蓝牙，平时关闭蓝牙</li>
+<li>当蓝牙链接处于活动状态时，尽量缩短设备间距离</li>
+<li>最大化与其它蓝牙设备、陌生人的距离，减少窃听机会</li>
+<li>在pairing时如发现异常，不要输入PIN、密码</li>
+<li>从pairing设备列表中删除丢失、被盗或未使用的设备</li>
+<li>维护所有蓝牙设备的清单及其地址，以供查验</li>
+<li>个人及时了解蓝牙技术的安全威胁和漏洞信息</li>
+<li>不接受任何来自未知或可疑蓝牙设备的传输</li>
+</ol>
+<h4 id="RFID系统防范攻击的措施"><a href="#RFID系统防范攻击的措施" class="headerlink" title="RFID系统防范攻击的措施"></a>RFID系统防范攻击的措施</h4><ol>
+<li>有源tag不支持验证和加密，应在安全操作环境中使用</li>
+<li>执行禁用tag的kill命令，即“灭活” 指令时要认证，并使用32位密码</li>
+<li>默认情况下设备的NFC功能应该处于禁用状态</li>
+<li>在服务器端建立tag的数据映射，不在tag中存储明文信息</li>
+<li>限制无关人员靠近办公大楼、数据中心和IT房</li>
+<li>落实RFID的安全管控措施和安全检查制度</li>
+<li>使用法拉第网罩，或金属网箔，来屏蔽电磁波，保护RFID tag</li>
+<li>主动干扰，发送电磁波来阻止、破坏非法reader的读取</li>
+</ol>
+<h4 id="近场通信NFC系统防范攻击的措施"><a href="#近场通信NFC系统防范攻击的措施" class="headerlink" title="近场通信NFC系统防范攻击的措施"></a>近场通信NFC系统防范攻击的措施</h4><ol>
+<li>大部分措施和RFID系统安全措施类似</li>
+<li>远离陌生人，远离陌生环境</li>
+<li>默认情况下禁用NFC功能</li>
+<li>执行Paysafe近距离检查，防止Relay攻击</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>近距离通信技术都存在安全漏洞</li>
+<li>任何安全漏洞都有可能遭受到黑客的攻击</li>
+<li>近距离通信系统被攻击后的负面影响巨大</li>
+<li>安全防范措施主要在日常管理和使用方面</li>
+<li>正常的防范措施能够有效地阻止黑客攻击</li>
+</ul>
+<h2 id="存储设备上的数据安全及案例分析"><a href="#存储设备上的数据安全及案例分析" class="headerlink" title="存储设备上的数据安全及案例分析"></a>存储设备上的数据安全及案例分析</h2><p><strong>存储设备数据安全事件</strong></p>
+<blockquote>
+<p>2019年11月</p>
+<p>Facebook公司硬盘失窃，数万名在美员工个人信息泄露</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>2019年初，湖北武汉某科技公司41台笔记本电脑失窃，涉及正在研发的估值达8000余万元的某项目核心机密内容。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>2020年5月，Greentheonly在社交媒体上指出特斯拉存在数据泄露的问题。</p>
+<p>媒体控制单元（MCU）：手机通讯录、通话记录、日历项目、Wi-Fi密码、家庭住址、导航去过的地点等</p>
+<p><em>销毁不彻底，固件内存在相关信息</em></p>
+<p>SQLite数据库：恢复出厂设置只意味着操作系统将释放该特定模块上的空间，但已经写入的数据仍保留在原处。只有当硬盘驱动器上的特定模块被新消息覆盖重新写入，原有信息才会被真正消除。</p>
+</blockquote>
+<hr>
+<h3 id="存储设备发展历程"><a href="#存储设备发展历程" class="headerlink" title="存储设备发展历程"></a>存储设备发展历程</h3><ul>
+<li>穿孔卡片&amp;穿孔纸带<ul>
+<li>穿孔卡片是最早的数据存储媒介</li>
+</ul>
+</li>
+<li>磁鼓存储器<ul>
+<li>1932年发明</li>
+<li>被认为是硬盘驱动器(HDD）的前身</li>
+</ul>
+</li>
+<li>磁带存储器：一种经久不灭的介质<ul>
+<li>1928年 录音磁带</li>
+<li>1952年 第一台IBM磁带机</li>
+<li>是所有存储媒体中单位存储成本最低</li>
+</ul>
+</li>
+<li>软盘（Floppy Disk）存储器<ul>
+<li>是个人计算机中最早使用的可移介质，软盘的读写是通过软盘驱动器完成的</li>
+</ul>
+</li>
+<li>硬盘（hard-disk drive，HDD）存储器<ul>
+<li>1956年，IBM第一块硬盘，5MB</li>
+<li>防震抗摔性差</li>
+<li>标准IDE硬盘</li>
+<li>移动硬盘：便捷性，多采用USB2.0、USB3.0、IEEE 1394等传输接口</li>
+<li>磁盘阵列</li>
+</ul>
+</li>
+<li>Flash存储器：SLC、MLC、TLC、QLC、3D-NAND、……<ul>
+<li>闪存类的产品一般有：U盘、CF卡、SM卡、SD/MMC卡、记忆棒、XD卡……</li>
+<li>基于Flash存储器的固态硬盘简称固盘或SSD：高速、大容量、可移动</li>
+<li>SSD目前最大容量为100TB4</li>
+</ul>
+</li>
+</ul>
+<h4 id="常用数据存储设备"><a href="#常用数据存储设备" class="headerlink" title="常用数据存储设备"></a>常用数据存储设备</h4><p>个人数据存储载体</p>
+<ul>
+<li>HDD</li>
+<li>Flash</li>
+<li>SSD</li>
+</ul>
+<p>企业：</p>
+<ul>
+<li>HDD和SSD</li>
+<li>磁盘阵列、闪存阵列</li>
+<li>网络存储：DAS、NAS……</li>
+</ul>
+<h3 id="数据存储、删除和恢复"><a href="#数据存储、删除和恢复" class="headerlink" title="数据存储、删除和恢复"></a>数据存储、删除和恢复</h3><p><strong>软件DiskGenius恢复 shred粉碎软件</strong></p>
+<p>不同存储介质，存储、读取、删除数据的方式各不相同</p>
+<h3 id="存储设备上的数据安全"><a href="#存储设备上的数据安全" class="headerlink" title="存储设备上的数据安全"></a>存储设备上的数据安全</h3><h4 id="数据生命周期"><a href="#数据生命周期" class="headerlink" title="数据生命周期"></a>数据生命周期</h4><ul>
+<li>数据产生与初存储</li>
+<li>数据传输</li>
+<li>数据处理与再处理</li>
+<li>数据消亡</li>
+</ul>
+<hr>
+<ul>
+<li>采集<ul>
+<li>非用户授权采集<ul>
+<li>授权采集</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>分析加工<ul>
+<li>分类分级不当<ul>
+<li>合理分级、分类</li>
+</ul>
+</li>
+<li>恶意篡改、误操作<ul>
+<li>脱敏加密</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>存储<ul>
+<li>明文存储</li>
+<li>非法访问</li>
+<li>脱库</li>
+<li>数据遗失</li>
+<li>防护手段<ul>
+<li>数据库审计</li>
+<li>数据库防火墙</li>
+<li>加密脱敏存储</li>
+<li>容灾备震</li>
+<li>文件DLP</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>内部消费<ul>
+<li>授权不当</li>
+<li>数据滥用</li>
+<li>防护<ul>
+<li>企业人员访问授权</li>
+<li>应用授权管理</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>外部共享<ul>
+<li>非法数据交换</li>
+<li>合作伙伴数据授权不当</li>
+<li>API非法访问</li>
+<li>用户无法获取自身隐私数据</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>数据产生、初存储时的安全保障</strong></p>
+<ul>
+<li>涉及隐私或密级的信息：密码手段加密、数据库正确使用<ul>
+<li>本地存储：密码设置、密码手段加密</li>
+<li>云端存储：<ul>
+<li>数据库正确配置，防脱库等攻击</li>
+<li>访问控制、权限控制等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="存储设备数据安全解决方案的思考"><a href="#存储设备数据安全解决方案的思考" class="headerlink" title="存储设备数据安全解决方案的思考"></a>存储设备数据安全解决方案的思考</h3><ul>
+<li>国家层面：加强相关标准建立和立法</li>
+<li>企业层面：<ul>
+<li>安全管理：安全培训、员工管理、安全预警</li>
+<li>企业级数据安全保护技术及其更新<ul>
+<li>数据管理与数据备份：文档加密，存储介质的管理与维护</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>个人层面：善于利用各种安全手段<ul>
+<li>安全使用存储设备</li>
+<li>保护重要文档：密码技术</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="推荐阅读资料"><a href="#推荐阅读资料" class="headerlink" title="推荐阅读资料"></a>推荐阅读资料</h3><ol>
+<li></li>
+<li>……</li>
+</ol>
+<h3 id="课后实践与思考"><a href="#课后实践与思考" class="headerlink" title="课后实践与思考"></a>课后实践与思考</h3><ol>
+<li>探讨个人设备数据安全保护方案</li>
+<li>区块链分布式安全存储技术研究</li>
+<li>调研目前国内外关于数据安全的法律法规</li>
+</ol>
+<h2 id="无线通信网络安全案例分析"><a href="#无线通信网络安全案例分析" class="headerlink" title="无线通信网络安全案例分析"></a>无线通信网络安全案例分析</h2><h3 id="无线通信安全概述"><a href="#无线通信安全概述" class="headerlink" title="无线通信安全概述"></a>无线通信安全概述</h3><h4 id="无线通信的发展史"><a href="#无线通信的发展史" class="headerlink" title="无线通信的发展史"></a>无线通信的发展史</h4><ul>
+<li><p>移动通信（蜂窝网）</p>
+<ul>
+<li>第一代（1G）：模拟通信（大哥大）</li>
+<li>第二代（2G）：GSM（FDMA频分多址），数字通信的开始</li>
+<li>第三代（3G）：CDMA2000（电信），WCDMA（联通），TD-SCDMA（移动，我国自主研发）<ul>
+<li>CDMA：码分多址</li>
+</ul>
+</li>
+<li>第四代（4G）：LTE（TD-LTE，FD-LTE），OFDM+MIMO<ul>
+<li>OFMA：频分重合，加码分</li>
+<li>MIMO：空分，通过空间区分用户信息，</li>
+</ul>
+</li>
+<li>第五代（5G）：NR（New Radio），三大场景（eMBB，mMTC，URLLC）<ul>
+<li>eMBB：超宽带？</li>
+<li>mMTC：海量接入(Massive Machine Type Communication)</li>
+<li>URLLC：高速率，低时延，<em>针对物联网</em></li>
+</ul>
+</li>
+<li>第六代（6G：AI+无线）？？？</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>天线长度为波长四分之一，即$\frac{\lambda}{4}$</p>
+</blockquote>
+<ul>
+<li>局域网：WLAN（WiFi）<ul>
+<li>1997年第一个无线局域网标准</li>
+<li>……</li>
+</ul>
+</li>
+</ul>
+<h4 id="无线通信安全简史"><a href="#无线通信安全简史" class="headerlink" title="无线通信安全简史"></a>无线通信安全简史</h4><p>移动通信方面</p>
+<ol>
+<li>第一代<ul>
+<li>几乎没有安全措施，用户（手机）把自己的序列号发送至网络（例如基站），网络查一下有这个序列号就允许其连接<ul>
+<li>一旦手机序列号被克隆，别人就可以使用相应的网络服务</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第二代（GSM）：<ul>
+<li>特点：<ul>
+<li>采用基于私钥密码体制的安全机制</li>
+<li>通过鉴权（认证）来防止非法用户使用网络</li>
+<li>通过加密技术防止无线信道的窃听</li>
+<li>缺点：</li>
+<li>所使用的身份认证和加密算法存在许多安全隐患</li>
+<li>安全密钥太短可能被短时间破译</li>
+<li>SIM卡可能被克隆</li>
+<li>没有考虑数据完整性保护，难以发现数据被篡改</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>3G，4G，5G：</li>
+</ol>
+<ul>
+<li><p>特点：</p>
+<ul>
+<li><p>重新设计安全算法</p>
+<ul>
+<li>增加密钥长度</li>
+<li>提供双向认证（用户与网络）</li>
+<li>保证数据的完整性</li>
+<li>安全体系趋于稳定</li>
+</ul>
+</li>
+<li><p>挑战：</p>
+<ul>
+<li>超级计算机</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>密钥分发和管理</li>
+</ul>
+<ul>
+<li>WLAN<ul>
+<li>非商用，不盈利，所以研究人员只关注速率、时延等性能，安全性考虑较少</li>
+<li>目前常用的是RC4和AES算法</li>
+</ul>
+</li>
+</ul>
+<h4 id="无线通信网面临的主要安全威胁"><a href="#无线通信网面临的主要安全威胁" class="headerlink" title="无线通信网面临的主要安全威胁"></a>无线通信网面临的主要安全威胁</h4><ul>
+<li>概念<ul>
+<li>无线终端：手机，pad，笔记本电脑</li>
+<li>无线接入点：小基站、路由器等</li>
+<li>网络基础设施：大基站、交换机</li>
+<li>空中接口：无线终端与无线接入点之间的接口</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>威胁<ul>
+<li>对传递信息的威胁<ul>
+<li>针对系统中传输的个人信息</li>
+<li>侦听<ul>
+<li>非法窃听</li>
+<li>无线通信的广播特性使得任何具有天线的设备都能收到其他用户的数据</li>
+</ul>
+</li>
+<li>篡改<ul>
+<li>非授权方更改系统中的各种信息</li>
+<li>伪装成合法用户进行信息的修改</li>
+</ul>
+</li>
+<li>抵赖<ul>
+<li>通信一方否认自己的行为</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对用户的威胁<ul>
+<li>针对用户的行为</li>
+<li>流量分析<ul>
+<li>分析信息速率，消息长度，接收者或者发送者标识等</li>
+</ul>
+</li>
+<li>监视<ul>
+<li>了解用户在何时何地进行通信</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对通信系统的威胁<ul>
+<li>对系统的功能的威胁？</li>
+<li>拒绝服务<ul>
+<li>非法攻击使系统无法提供服务</li>
+<li>例如发送大量垃圾信息造成网络拥堵，阻止系统对正常用户的服务</li>
+</ul>
+</li>
+<li>资源的非授权访问<ul>
+<li>越权使用超过其职权范围的资源</li>
+<li>例如学信网学生注册信息丢失</li>
+<li>强行占用不属于自己的信道</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="移动通信系统的安全要求"><a href="#移动通信系统的安全要求" class="headerlink" title="移动通信系统的安全要求"></a>移动通信系统的安全要求</h4><ol>
+<li>能唯一地标识用户</li>
+<li>冒充合法用户是困难的</li>
+<li>双向认证，用户和服务器之间相互信任</li>
+<li>机密性，保证传输数据的安全</li>
+<li>用户身份的匿名性，不向第三方暴露自己的身份</li>
+<li>不可否认性，防止抵赖</li>
+<li>完整性</li>
+</ol>
+<h4 id="移动通信系统的安全体系"><a href="#移动通信系统的安全体系" class="headerlink" title="移动通信系统的安全体系"></a>移动通信系统的安全体系</h4><ul>
+<li>移动通信系统安全体系定义了5种安全服务：认证，访问控制，数据完整，保密，不可否认。各种服务相互依赖</li>
+<li>协议层简介：<ul>
+<li>管理层：负责安全威胁的管理以及制定合理的管理目标</li>
+<li>用户层：提供端到端的安全（例如，密钥协商）</li>
+<li>控制层：负责鉴权和用户管理</li>
+<li>链路层：空中接口加密</li>
+<li>物理层：防止对信道的窃听（跳频）</li>
+</ul>
+</li>
+</ul>
+<p><strong>安全域</strong></p>
+<ul>
+<li>网络接入域安全<ul>
+<li>提供安全接入服务，防止被窃听，串改等。</li>
+</ul>
+</li>
+<li>网络域安全<ul>
+<li>保证核心网</li>
+</ul>
+</li>
+<li>用户域安全</li>
+</ul>
+<h3 id="个人移动通信系统安全"><a href="#个人移动通信系统安全" class="headerlink" title="个人移动通信系统安全"></a>个人移动通信系统安全</h3><ol>
+<li><p>第二代（2G）移动通信系统安全技术</p>
+<ul>
+<li><p>第二代的代表性系统为GSM</p>
+</li>
+<li><p>为何GSM如此重要</p>
+<ul>
+<li>3G、4G、5G依然是在GSM的大框架下进行性能优化和提升</li>
+<li>偏远地区依然使用</li>
+</ul>
+</li>
+<li><p>GSM系统的基本构成</p>
+<ul>
+<li><p>基站收发器：BTS</p>
+</li>
+<li><p>基站控制器：BSC</p>
+</li>
+<li><p>移动业务中心：MSC</p>
+<ul>
+<li>VLR：访问者位置寄存器</li>
+<li>HLR：归属用户位置寄存器</li>
+<li>AuC：鉴权中心</li>
+<li>EIR：移动设备标识寄存器</li>
+</ul>
+</li>
+<li><pre><code class="lang-mermaid">graph LR
+u(user)--&gt;a
+u1(user)--&gt;a
+u2(user)--&gt;a
+a(BTS:基站收发器)--&gt;b(BSC:基站控制器)
+b--&gt;c(MSL:移动业务中心)
+c--&gt;VLR:访问者位置寄存器
+c--&gt;HLR:归属用户位置寄存器
+c--&gt;AuC:鉴权中心
+c--&gt;EIR:移动设备寄存器
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>GSM的安全目标</p>
+<ol>
+<li>防止未经授权的用户进入网络</li>
+<li>保护用户的隐私（信息，语音等）</li>
+</ol>
+</li>
+<li><p>三大安全特征</p>
+<ul>
+<li>用户身份认证（网络不被未授权用户使用）</li>
+<li>数据机密性（不泄露信息）</li>
+<li>用户身份（IMSI）保密（攻击者无法识别是哪个用户在使用信息）</li>
+</ul>
+</li>
+<li><p>GSM系统中实现安全的主要模块是：SIM卡，手机和基站，网络子系统：</p>
+<ol>
+<li>SIM卡（俗称手机卡）<ul>
+<li>卡内有专门的操作系统，以便控制外部设备（手机）对卡上存储的数据进行访问</li>
+<li>SIM卡存储了用户密钥（只有卡和基站有密钥的具体信息，Ki）、IMSI（用户唯一身份号，不是手机号）、移动用户临时标志（TMSI）、鉴权算法A3、加密密钥生成算法（A8）等私密信息</li>
+<li>其中，密钥Ki和IMSI是在用户入网时获得的全球唯一的一组数据，这组数据在用户使用期间保持不变</li>
+</ul>
+</li>
+<li>手机和基站：<ul>
+<li>手机从SIM卡中获得会话密钥Kc（由Ki，A3算法，A8算法产生），然后用A5算法产生密钥流，用于数据加密</li>
+<li>基站从网络子系统中（例如AuC：鉴权中心）获得会话密钥Kc，同样用A5算法产生加密密钥流</li>
+</ul>
+</li>
+<li>网络子系统：<ul>
+<li>网络子系统中的AuC（鉴权中心）包含A3，A8算法。A3，A8算法产生会话密钥Kc，随机数（RAND），预期相应（RES）。将AuC产生的（RAND，RES，</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>GSM的鉴权机制</p>
+<ul>
+<li>所谓鉴权，就是指认证，证明自己是合法用户</li>
+<li>GSM标识码<ul>
+<li>要想对系统中的用户进行鉴别，首先需要标志用户（相当于给用户起一个名字）</li>
+<li>名字1：IMEI（国际移动设备标识）<ul>
+<li>手机唯一编码（是手机不是SIM卡）</li>
+</ul>
+</li>
+<li>名字2：MSISDN（……</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>GSM鉴权过程<ul>
+<li>GSM网络需要通过用户鉴权机制来识别SIM是否合法，防止非法用户接入网络……</li>
+</ul>
+</li>
+<li>GSM系统的安全隐患<ol>
+<li>GSM的认证是单向的，只有网络对用户的认证，没有用户对网络的认证。因此，可能存在非法的设备伪装成基站欺骗用户</li>
+<li>GSM的加密只有无线信道部分，即手机到基站的传输。在网络子系统中是明文传输。因此，如果窃听者能够在子系统中窃取认证向量三元组，就可以对用户发起攻击（如窃听）</li>
+<li>没有考虑数据完整性保护，如果数据被篡改，难以发现</li>
+<li>……</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>第三代移动通信系统安全技术<ul>
+<li>系统构架<ul>
+<li>3G-SGSN：GPRS服务支持节点</li>
+<li>GGSN：GPRS网管支持节点</li>
+</ul>
+</li>
+<li>3G系统的认证与密钥协商<ul>
+<li>GSM系统采用了3元参数值</li>
+<li>3G系统产生5个参数的认证向量：RAND，XRES，CK，IK，AUTN</li>
+<li>XRES表示应答信号</li>
+<li>CK，IK分别表示……</li>
+</ul>
+</li>
+<li>认证过程<ol>
+<li>AuC产生n个认证向量给VLR，每个向量都是由5个参数构成</li>
+<li>VLR在n个向量中选中一个向量Vector（i）并将其中的RAND（i）和AUTN（i）发给用户。其中AUTN（i）中含有一个叫做MAC的值</li>
+<li>用户收到RAND（i）和AUTN（i）后计算XMAC值，并与AUTN（i）中携带的MAC值比较。如果不同，则向VLR发送鉴权失败的信号。如果相同，用户产生一个响应RES（i）发送给VLR。这里完成了对网络的认证。</li>
+<li>VLR对比RES（i）……</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="WannaCry勒索病毒案例分析"><a href="#WannaCry勒索病毒案例分析" class="headerlink" title="WannaCry勒索病毒案例分析"></a>WannaCry勒索病毒案例分析</h2><h3 id="什么是WannaCry勒索病毒"><a href="#什么是WannaCry勒索病毒" class="headerlink" title="什么是WannaCry勒索病毒"></a>什么是WannaCry勒索病毒</h3><blockquote>
+<p>2017年5月12日，一款新型病毒攻击了包括西班牙、英国、意大利、俄罗斯、中国在内的众多国家</p>
+<p>这场网络攻击的罪魁祸首就是一种叫WannaCry的勒索病毒</p>
+</blockquote>
+<h3 id="的前世今生"><a href="#的前世今生" class="headerlink" title="~的前世今生"></a>~的前世今生</h3><p>WannaCry病毒分为两部分：</p>
+<ol>
+<li>蠕虫部分—用于传播和释放病毒</li>
+<li>勒索病毒部分—攻击用户加密文件</li>
+</ol>
+<ul>
+<li>蠕虫病毒<ul>
+<li>蠕虫是一种可以主动地寻找更多目标机器进行感染，而每台被感染的机器又变成对其他机器实施攻击的源头的程序</li>
+<li>蠕虫可以借助网络连接在系统间传播，也可以借助共享媒体……</li>
+</ul>
+</li>
+<li>为了实现自身的复制，蠕虫病毒需要使用一些方法来访问远程系统，如：<ul>
+<li>电子邮件或即时通讯设施<ul>
+<li>借助电子邮件将自身的副本邮寄给其它系统</li>
+</ul>
+</li>
+<li>文件共享</li>
+<li>远程执行功能<ul>
+<li>使用直接的远程可执行攻击或利用一个网络服务中的程序缺陷去破坏该系统的操作</li>
+</ul>
+</li>
+<li>远程文件访问或传输能力</li>
+<li>远程登录能力</li>
+</ul>
+</li>
+<li>典型的蠕虫运行周期：<ul>
+<li>休眠</li>
+<li>传播</li>
+<li>触发</li>
+<li>执行</li>
+</ul>
+</li>
+<li>传播阶段通常执行以下功能<ul>
+<li>检查已感染的主机的宿主表、地址簿、好友列表、信任同伴或其它类似的存放远程系统访问细节的相应文件</li>
+<li>通过扫描可能的目标宿主地址，得到感染其它系统的合适访问机制</li>
+<li>使用找到的访问机制传送自身副本</li>
+</ul>
+</li>
+<li>搜索其它可感染系统的过程称为扫描或指纹识别，网络地址扫描使用如下策略：<ul>
+<li>随机<ul>
+<li>每一台受影响的主机都会借助不同的种子探测其ip地址空间中的随机地址</li>
+</ul>
+</li>
+<li>预先生成的目标列表<ul>
+<li>攻击者预先编制一张潜在的可攻击计算机列表</li>
+</ul>
+</li>
+<li>内部目标列表<ul>
+<li>使用被感染的计算机中包含的信息去寻找更多可以扫描的主机</li>
+</ul>
+</li>
+<li>本地子网<ul>
+<li>如果一台主机在防火墙的保护下被感染，那么之后该主机就会在其自身的本地网络中寻找攻击目标</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>蠕虫病毒技术的现状：</strong></p>
+<ul>
+<li>多平台<ul>
+<li>不再局限于Windows操作系统</li>
+</ul>
+</li>
+<li>多攻击点<ul>
+<li>多种方式入侵系统</li>
+</ul>
+</li>
+<li>超速传播<ul>
+<li>利用各种技术优化蠕虫传播速度</li>
+</ul>
+</li>
+<li>多态<ul>
+<li>为逃避检测，利用功能上等价的指令以及加密技术</li>
+</ul>
+</li>
+<li>变形</li>
+<li>传输工具</li>
+<li>零天攻击（0day）</li>
+</ul>
+<p><strong>历史上的蠕虫病毒：</strong></p>
+<ul>
+<li>莫里斯蠕虫病毒</li>
+<li>美丽杀手1999年</li>
+<li>爱虫病毒2000年</li>
+<li>熊猫烧香2007年</li>
+</ul>
+<p>此次WannaCry病毒制造者正是利用前段时间美国国家安全局泄露的Windows SMB远程漏洞利用工具“永恒之蓝”来进行传播的。</p>
+<p><strong>勒索病毒：</strong></p>
+<ul>
+<li>勒索软件最早出现在1989年，名为“AIDS Trojan”</li>
+<li>1996年，明确勒索病毒的概念：利用恶意代码干扰中毒者的正常使用，只有交钱才能恢复正常</li>
+</ul>
+<h3 id="的攻击方式及分析"><a href="#的攻击方式及分析" class="headerlink" title="~的攻击方式及分析"></a>~的攻击方式及分析</h3><h3 id="的应对分析"><a href="#的应对分析" class="headerlink" title="~的应对分析"></a>~的应对分析</h3>]]></content>
       <categories>
-          
-          <category> 笔记 </category>
-          
+        <category>记录</category>
+        <category>案例分析</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> vim </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-  
-  
+      <tags>
+        <tag>记录</tag>
+        <tag>案例分析</tag>
+      </tags>
+  </entry>
 </search>
