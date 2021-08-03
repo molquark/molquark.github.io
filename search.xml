@@ -93,7 +93,71 @@
 </blockquote>
 <p>本文章旨在记录学习python时的一些想法，以及一些较为琐碎，暂时用不上以至于容易遗忘的各种模块等……</p>
 <p>包含一些知识要点，一些模块用法，一些尝试……</p>
+<h2 id="异步IO"><a href="#异步IO" class="headerlink" title="异步IO"></a>异步IO</h2><p><em>可以用多线程实现，但异步IO不等于多线程？</em></p>
+<h3 id="协程-coroutine"><a href="#协程-coroutine" class="headerlink" title="协程(coroutine)"></a>协程(coroutine)</h3><p><em>有些类似于生成器，但是有一些要点要记录一下</em></p>
+<blockquote>
+<p>定义: 协程看上去也是子程序(即调用的函数)，但执行过程中，在子程序内部可中断，然后转而执行别的子程序，在适当的时候再返回来接着执行。</p>
+<p>个人理解,即是在函数运行到一半,暂停,跳到别的函数,然后再在适当的时候回到该函数. 且参考python的实现,即该”回到该函数”的行为是可操纵的,即由语句明确跳转,而不是像多线程那样,由CPU的时分实现,导致不可预测的跳转,以至于需要锁防止乱序的读写. 因此,协程不需要锁,所有的跳转都是可预测的.</p>
+</blockquote>
+<p>Python对协程的支持是通过generator(生成器)实现的. <strong>Python的<code>yield</code>不但可以返回一个值,还可以接收调用者传入的值</strong></p>
+<p>如下:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">consumer</span>():</span>  <span class="comment"># 此为&#x27;生成器&#x27;</span></span><br><span class="line">    r = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        n = <span class="keyword">yield</span> r  <span class="comment"># 第一次调用生成器时,返回r为&#x27;&#x27;,随后第二次调用,传入send方法的参数</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> n:  <span class="comment"># 只要send方法传入的非None,则继续</span></span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;[CONSUMER] Consuming %s...&#x27;</span> % n)  <span class="comment"># 打印出传入的send方法的参数</span></span><br><span class="line">        r = <span class="string">&#x27;200 OK&#x27;</span>  <span class="comment"># 赋值r,并作为生成的值返回(上方的yield)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">produce</span>(<span class="params">c</span>):</span>  <span class="comment"># 该函数与consumer协作完成任务</span></span><br><span class="line">    c.send(<span class="literal">None</span>)  <span class="comment"># 第一次调用生成器consumer(),传入None,此时生成器还未启动,无法传入参数,只能传None</span></span><br><span class="line">    n = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> n &lt; <span class="number">5</span>:</span><br><span class="line">        n = n + <span class="number">1</span>  </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;[PRODUCER] Producing %s...&#x27;</span> % n)</span><br><span class="line">        r = c.send(n)  <span class="comment"># 给生成器传入n的值,生成器开始在yield语句继续</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;[PRODUCER] Consumer return: %s&#x27;</span> % r)  <span class="comment"># 打印生成器返回的值</span></span><br><span class="line">    c.close()  <span class="comment"># 结束生成器的调用</span></span><br><span class="line"><span class="comment">#  &quot;主函数&quot;</span></span><br><span class="line">c = consumer()  </span><br><span class="line">produce(c)  <span class="comment"># 将函数consumer传入函数produce</span></span><br></pre></td></tr></table></figure>
+<p>值得一提的是,这个例子类似接收一次输入,立即处理该输入,然后再等待下一个输入.</p>
+<p>貌似与直接在循环内依次调用读取、处理方法无异. 同样的,也存在IO阻塞.</p>
+<blockquote>
+<p>套用Donald Knuth的一句话总结协程的特点：</p>
+<p>“子程序就是协程的一种特例。”</p>
+</blockquote>
+<p><strong><em>等待新例子…既然提出了协程的概念,那么应当有所不同</em></strong></p>
+<p>关于协程以及后续异步IO的一些讲解:</p>
+<p><a href="https://blog.csdn.net/SL_World/article/details/86597738">Python异步IO之协程(一):从yield from到async的使用</a></p>
+<hr>
+<h4 id="yield-和-yield-from"><a href="#yield-和-yield-from" class="headerlink" title="yield 和 yield from"></a>yield 和 yield from</h4><p>如上,已知yield可中断生成器返回值,也可接收外部传入的值,而<code>yield from</code>据说为简化的<code>yield</code></p>
+<p>如下例子:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generator_1</span>(<span class="params">titles</span>):</span></span><br><span class="line">    <span class="keyword">yield</span> titles</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generator_2</span>(<span class="params">titles</span>):</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">from</span> titles</span><br><span class="line"></span><br><span class="line">titles = [<span class="string">&#x27;Python&#x27;</span>,<span class="string">&#x27;Java&#x27;</span>,<span class="string">&#x27;C++&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> title <span class="keyword">in</span> generator_1(titles):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;生成器1:&#x27;</span>,title)</span><br><span class="line"><span class="keyword">for</span> title <span class="keyword">in</span> generator_2(titles):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;生成器2:&#x27;</span>,title)</span><br></pre></td></tr></table></figure>
+<p>执行结果如下:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">生成器<span class="number">1</span>: [<span class="string">&#x27;Python&#x27;</span>, <span class="string">&#x27;Java&#x27;</span>, <span class="string">&#x27;C++&#x27;</span>]</span><br><span class="line">生成器<span class="number">2</span>: Python</span><br><span class="line">生成器<span class="number">2</span>: Java</span><br><span class="line">生成器<span class="number">2</span>: C++</span><br></pre></td></tr></table></figure>
+<p>可以简单地做出假设:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> title <span class="keyword">in</span> titles:　<span class="comment"># 等价于yield from titles</span></span><br><span class="line">    <span class="keyword">yield</span> title　　</span><br></pre></td></tr></table></figure>
+<p>类似于<code>with ... as ...:</code>语句,<code>yield from</code>内部也实现大部分异常处理</p>
+<p>下面有一个例子,用来考虑<code>yield from</code>语句:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generator_1</span>():</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        x = <span class="keyword">yield</span> </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;加&#x27;</span>,x)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> x:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        total += x</span><br><span class="line">    <span class="keyword">return</span> total</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generator_2</span>():</span> <span class="comment"># 委托生成器</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        total = <span class="keyword">yield</span> <span class="keyword">from</span> generator_1() <span class="comment"># 子生成器</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;加和总数是:&#x27;</span>,total)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span> <span class="comment"># 调用方</span></span><br><span class="line">    g1 = generator_1()</span><br><span class="line">    g1.send(<span class="literal">None</span>)</span><br><span class="line">    g1.send(<span class="number">2</span>)</span><br><span class="line">    g1.send(<span class="number">3</span>)</span><br><span class="line">    g1.send(<span class="literal">None</span>)</span><br><span class="line">    <span class="comment"># g2 = generator_2()</span></span><br><span class="line">    <span class="comment"># g2.send(None)</span></span><br><span class="line">    <span class="comment"># g2.send(2)</span></span><br><span class="line">    <span class="comment"># g2.send(3)</span></span><br><span class="line">    <span class="comment"># g2.send(None)</span></span><br><span class="line">    </span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
+<p>注意,若直接调用<code>generator_1</code>,最后会有异常<code>StopIteration</code>,异常信息即为返回值5,如下:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">加 <span class="number">2</span></span><br><span class="line">加 <span class="number">3</span></span><br><span class="line">加 <span class="literal">None</span></span><br><span class="line">------------------------------------------</span><br><span class="line">StopIteration       </span><br><span class="line">&lt;ipython-<span class="built_in">input</span>-<span class="number">37</span>-cf298490352b&gt; <span class="keyword">in</span> main()</span><br><span class="line">---&gt; <span class="number">19</span>     g1.send(<span class="literal">None</span>)</span><br><span class="line">StopIteration: <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<p>然而,若使用<code>generator_2</code>,在使用send方法时,可以认为在<code>generator_2</code>内部<strong>调用</strong>了<code>generator_1</code>方法.</p>
+<p>即,由于<code>generator_2</code>自身只有<code>yield from</code>调用<code>generator_1</code>,则调用<code>generator_2</code>时实际上是在调用<code>generator_1</code>,只有当生成器结束,出现<code>StopIteration</code>时,控制权才会从<code>generator_1</code>返回给<code>generator_2</code>,并且返回值5赋值给total,由<code>generator_2</code>输出.</p>
+<p>有如下概念:</p>
+<ul>
+<li><strong>【子生成器】</strong>：yield from后的generator_1()生成器函数是<strong>子生成器</strong></li>
+<li><strong>【委托生成器】</strong>：generator_2()是程序中的<strong>委托生成器</strong>，它负责委托<strong>子生成器</strong>完成具体任务。</li>
+<li><strong>【调用方】</strong>：main()是程序中的<strong>调用方</strong>，负责调用委托生成器。</li>
+</ul>
+<p>再根据上述分析,可暂且认为,调用方调用委托生成器时,若委托生成器执行到<code>yield from</code>,调用子生成器,则此时’控制权’在子生成器上,类似于调用方<strong>直接使用子生成器</strong>.仅当结束子生成器后,’控制权’才回到委托生成器,才是调用方使用委托生成器.(目前不确定该理解的准确性,但可能对于下面的异步IO有所帮助)</p>
+<hr>
+<h3 id="asyncio"><a href="#asyncio" class="headerlink" title="asyncio"></a>asyncio</h3><p><em>异步的(asynchronous).同步的(synchronous)</em></p>
+<p><em>那么,这个模块是指’异步的IO’,也就是’asynchronous IO’, 则模块名为: <code>asyncio</code></em></p>
+<p><em>另外,Linux系统关机前要使用sync命令将内存数据写入硬盘,大概是’synchronization’(同步n.)的缩写,或者更准确地说,应该是’synchronize’(使…同步vt)</em></p>
+<blockquote>
+<p>该模块为Python 3.4 引入的标准库, 内置了对异步IO的支持</p>
+</blockquote>
 <h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><p><em>记录一些模块的各种类、方法</em></p>
+<h3 id="itertools"><a href="#itertools" class="headerlink" title="itertools"></a>itertools</h3><p><em>顾名思义，该模块为一些迭代器相关的方法</em></p>
+<h4 id="无限迭代器"><a href="#无限迭代器" class="headerlink" title="无限迭代器"></a>无限迭代器</h4><p><strong>count方法</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line">natuals = itertools.count(<span class="number">1</span>)</span><br><span class="line"><span class="comment"># 生成自然数迭代器,第一个参数为起始数,第二个参数为步长</span></span><br></pre></td></tr></table></figure>
+<p><strong>cycle方法</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cs = itertools.cycle(<span class="string">&#x27;ABC&#x27;</span>)</span><br><span class="line"><span class="comment"># 将传入的序列形成闭环,无限重复,即ABCABCABC...</span></span><br></pre></td></tr></table></figure>
+<p><strong>repeat方法</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ns = itertools.repeat(<span class="string">&#x27;out&#x27;</span>, <span class="number">20</span>)</span><br><span class="line"><span class="comment"># 重复一个元素(参数一),参数二为重复次数(不传入即为无限重复)</span></span><br></pre></td></tr></table></figure>
+<p><strong>takewhile方法</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 可使用takewhile方法从迭代器中截取获得list</span></span><br><span class="line">naturals = itertools.count(<span class="number">1</span>)  <span class="comment"># 自然数迭代器</span></span><br><span class="line">ns = itertools.takewhile(<span class="keyword">lambda</span> x: x &lt;= <span class="number">10</span>, natuals)</span><br><span class="line"><span class="comment"># ns即为截取的1到10的对象,可用list转换为列表</span></span><br><span class="line">out = <span class="built_in">list</span>(ns)</span><br><span class="line"><span class="built_in">print</span>(out)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注:</p>
+<p>对于takewhile方法,有些类似于列表生成器</p>
+<p>如上述,似乎等同于[x for x in natuals if x &lt;= 10],</p>
+<p>然而,该列表生成器由于迭代对象无限,无法实现,而上述takewhile方法可以截取,</p>
+<p>另外,若匿名函数为(lambda x: 10 &lt;= x &lt;= 100),也无法输出,即用list转换为空列表,</p>
+<p>原因暂时不明</p>
+</blockquote>
 <h3 id="sys"><a href="#sys" class="headerlink" title="sys"></a>sys</h3><p><em>系统模块，大抵是针对系统的一系列设置？</em></p>
 <h4 id="修改本次运行默认编码"><a href="#修改本次运行默认编码" class="headerlink" title="修改本次运行默认编码"></a>修改本次运行默认编码</h4><p><strong>如下，将本次运行时的默认编码修改为utf-8</strong></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">&#x27;utf8&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Hello world&#x27;</span>.encode())  <span class="comment"># 此时encode方法即为utf-8编码</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
