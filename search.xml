@@ -2512,4 +2512,49 @@ c--&gt;EIR:移动设备寄存器
         <tag>Git</tag>
       </tags>
   </entry>
+  <entry>
+    <title>博客同步脚本描述</title>
+    <url>/2021/10/22/%E5%8D%9A%E5%AE%A2%E5%90%8C%E6%AD%A5%E8%84%9A%E6%9C%AC%E6%8F%8F%E8%BF%B0/</url>
+    <content><![CDATA[<p>脚本负责将在同一文件夹内的笔记文件同步到博客源文件夹, 并自动修正创建时间及更新笔记更改时间.</p>
+<p>用常量<code>blog_path</code>保存博客源文件夹 </p>
+<p>通过读取脚本所在路径作为笔记文件路径保存在常量<code>source_path</code></p>
+<p>通过datetime转化时间戳, 截取[:19]作为修改时间, <code>time_len</code>保存截取长度, 即<code>[:time_len]</code></p>
+<ol>
+<li>通过<code>source_path</code>读取所有笔记文件, 作为list保存在<code>source_files</code></li>
+<li>通过<code>blog_path</code>读取博客所有源文件, 作为list保存在<code>blog_files</code></li>
+<li>创建空list名为<code>blog_no_files</code>保存需要更新但博客源文件不存在的文件名, 提醒用户创建</li>
+<li>创建list <code>ignore_files</code>保存要忽略的文件名, 避免更新及提醒<ul>
+<li>初始内容为’Sync.bat’, 当前脚本名, ‘.syncIgnore’</li>
+</ul>
+</li>
+<li>创建list <code>ignore_file_matchs</code>保存正则表达式匹配字符串, 用作匹配要忽略的文件名, 保存到<code>ignore_files</code></li>
+<li>创建list<code>notice_file_matchs</code>, 保存正则表达式匹配字符串, 用作匹配从忽略的文件中剔除的需要更新的文件名.</li>
+</ol>
+<p><strong>具体步骤:</strong></p>
+<ol>
+<li>尝试读取<code>.syncIgnore</code>文件 <ul>
+<li>逐行搜索非空匹配字符串, 并忽略以’#’开头的行 </li>
+<li>将有效的匹配字符串用\^$包裹, 以实现头尾匹配, </li>
+<li>若匹配字符串以<code>!</code>开头, 剔除<code>!</code>后包裹后保存在<code>notice_file_matchs</code></li>
+<li>若匹配字符串不以<code>!</code>开头, 包裹后保存在<code>ignore_file_matchs</code></li>
+<li>如果没有该文件则输出提示仅忽略本脚本及Sync.bat</li>
+</ul>
+</li>
+<li>处理<code>source_files</code>list <ul>
+<li>将每个文件名逐个匹配<code>ignore_file_matchs</code>, 匹配的从list中删除, 进入<code>ignore_files</code>(可以是局部变量, 仅在方法内缓存)</li>
+<li>将<code>ignore_files</code>里的文件名逐个匹配<code>notice_file_matchs</code>, 匹配的再次进入<code>source_files</code></li>
+</ul>
+</li>
+<li>将处理后的<code>source_files</code>中每个文件名在<code>blog_files</code>里查找进行再处理 <ul>
+<li>不存在的文件名移除, 在<code>ignore_files</code>(全局变量, 主要排除Sync.bat等固定文件)中查找, 查到则忽略, 否则进入<code>blog_no_files</code></li>
+</ul>
+</li>
+<li>对再处理后的<code>source_files</code>中的每个文件进行更新.</li>
+<li>对用户输出<code>blog_no_files</code>里的文件名, 提醒用户创建缺少的源文件以进行更新.</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
 </search>
